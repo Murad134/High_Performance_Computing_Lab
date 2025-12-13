@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import LeftAside from "../Components/LeftAsideThesis";
+import LeftAside from "../Components/LeftAside/LeftAsideThesis";
 import React, { useState } from "react";
 
 export default function Publication() {

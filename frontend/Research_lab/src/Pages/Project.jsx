@@ -1,5 +1,5 @@
 import React from 'react'
-import LeftAside from '../Components/LeftAsideProject.jsx';
+import LeftAside from '../Components/LeftAside/LeftAsideProject.jsx';
 import CardProject from '../Components/CardProject.jsx';
 import { useLoaderData } from 'react-router-dom';
 function Project() {

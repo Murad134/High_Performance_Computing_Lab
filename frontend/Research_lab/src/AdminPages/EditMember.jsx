@@ -136,20 +136,6 @@ export default function AdminStudentForm() {
             required
           />
         </div>
-
-        {/* Project Image */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold text-gray-700">Project Image URL</label>
-          <input
-            type="text"
-            name="projectImage"
-            value={formData.projectImage}
-            onChange={handleChange}
-            placeholder="Enter project image link"
-            className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
         {/* Student Image */}
         <div className="flex flex-col gap-1">
           <label className="font-semibold text-gray-700">Student Image URL</label>
@@ -162,22 +148,8 @@ export default function AdminStudentForm() {
             className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400"
           />
         </div>
-
-        {/* Technologies */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold text-gray-700">Technologies</label>
-          <input
-            type="text"
-            name="technologies"
-            value={formData.technologies}
-            onChange={handleChange}
-            placeholder="React, Node.js, MongoDB"
-            className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
         {/* Details */}
-        <div className="flex flex-col gap-1">
+        {/* <div className="flex flex-col gap-1">
           <label className="font-semibold text-gray-700">Project Details</label>
           <textarea
             name="details"
@@ -187,37 +159,11 @@ export default function AdminStudentForm() {
             placeholder="Write about the project"
             className="border border-gray-300 rounded-lg p-3 resize-none focus:ring-2 focus:ring-blue-400"
           />
-        </div>
-
-        {/* Dates */}
-        {/* <div className="flex gap-3 w-full">
-          <div className="flex-1 flex flex-col gap-1">
-            <label className="font-semibold text-gray-700">Start Date</label>
-            <input
-              type="date"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div>
-
-          <div className="flex-1 flex flex-col gap-1">
-            <label className="font-semibold text-gray-700">End Date</label>
-            <input
-              type="date"
-              name="endDate"
-              value={formData.endDate}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div>
         </div> */}
-        <div className="flex gap-3 w-full">
 
-          {/* Start Date */}
+        
+        {/* <div className="flex gap-3 w-full">
+
           <div className="flex-1 flex flex-col gap-1">
             <label className="font-semibold text-gray-700">Start Date</label>
             <input
@@ -231,7 +177,6 @@ export default function AdminStudentForm() {
             />
           </div>
 
-          {/* End Date */}
           <div className="flex-1 flex flex-col gap-1">
             <label className="font-semibold text-gray-700">End Date</label>
             <input
@@ -245,7 +190,7 @@ export default function AdminStudentForm() {
             />
           </div>
 
-        </div>
+        </div> */}
 
 
         {/* Submit */}

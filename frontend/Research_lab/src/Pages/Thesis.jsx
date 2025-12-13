@@ -1,5 +1,5 @@
 import React from 'react'
-import LeftAsideThesis from '../Components/LeftAsideThesis'
+import LeftAsideThesis from '../Components/LeftAside/LeftAsideThesis'
 import { Outlet } from 'react-router-dom'
 function Thesis() {
   return (

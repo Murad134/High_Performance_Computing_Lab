@@ -29,6 +29,18 @@ function Header() {
                 </NavLink>
             </li>
             <li>
+                <NavLink
+                    to="/research"
+                    className={({ isActive }) =>
+                        isActive
+                            ? "text-red-500 underline font-semibold"
+                            : "hover:text-red-400 transition"
+                    }
+                >
+                    Research
+                </NavLink>
+            </li>
+            <li>
                 <details>
                     <summary>Publication</summary>
                     <ul className="p-2 bg-white shadow-md rounded-md">

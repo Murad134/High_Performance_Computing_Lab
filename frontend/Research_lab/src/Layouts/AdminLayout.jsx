@@ -23,7 +23,7 @@ export default function AdminLayout() {
             <div className="flex flex-1 mt-12">
                 {/* Sidebar */}
                 <aside className="hidden md:block w-64 bg-indigo-50 shadow-md border-r border-indigo-200 p-6">
-                    <h2 className="mb-6 text-xl font-bold text-indigo-700">Admin Panel</h2>
+                    <h2 className="mb-6 text-xl font-bold text-indigo-700">Profile</h2>
                     <nav className="flex flex-col space-y-2">
                         {navItems.map((item) => (
                             <NavLink
