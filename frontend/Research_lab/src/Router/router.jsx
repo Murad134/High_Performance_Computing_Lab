@@ -9,7 +9,7 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Home from "../Pages/Home";
 import About from "../Pages/About";
-import Research from "../Pages/Reaserch/Research";
+import Research from "../Pages/Research/Research.jsx";
 import Publication from "../Pages/Publication";
 import Project from "../Pages/Project";
 import Member from '../Pages/Member'
@@ -25,8 +25,16 @@ import EditContact from "../AdminPages/EditContact";
 import EditMember from "../AdminPages/EditMember";
 import EditPublication from "../AdminPages/EditPublication";
 
-import ViewDetails from "../Components/Details/ViewDetails.jsx";
-import Student from "../Pages/Student";
+import ViewDetails from "../Components/Details/ProjectsDetails.jsx";
+import Student from "../Components/Student.jsx";
+
+import Departments from "../Pages/Research/Departments.jsx";
+import DepartmentDetails from "../Components/Details/DepartmentDetails.jsx";
+import Teams from "../Pages/Research/Teams.jsx";
+import TeamDetails from "../Components/Details/TeamDetails.jsx";
+import ExperimentalPlatforms from "../Pages/Research/ExperimentalPlatforms.jsx";
+import OtherCountryProjects from "../Pages/Research/OtherCountryProjects.jsx";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -34,7 +42,60 @@ const router = createBrowserRouter([
         children: [
             { path: "/", element: <Home /> },
             { path: "about", element: <About /> },
-            { path: "research", element: <Research /> },
+            {
+                path: "research",
+                element: <Research />,
+                loader: () => fetch("/Research/Navigation.json").then(res => res.json()),
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="departments" replace />
+                    },
+                    {
+                        path: "departments",
+                        element: <Departments />,
+                        loader: () => fetch("/Research/Departments.json").then(res => res.json())
+                    },
+                    {
+                        // Single department details by slug
+                        path: "departments/:slug",
+                        element: <DepartmentDetails />,
+                        loader: async ({ params }) => {
+                            const res = await fetch("/Research/Departments.json");
+                            const data = await res.json();
+                            const dept = data.departments.find(item => item.slug === params.slug);
+                            if (!dept) {
+                                throw new Response("Department not found", { status: 404 });
+                            }
+                            return { ...data, selectedDept: dept };
+                        }
+                    },
+                    {
+                        path: "teams",
+                        element: <Teams />,
+                        loader: () => fetch("/Research/Teams.json").then(res => res.json())
+                    },
+                    {
+                        path: "teams/:teamName",
+                        element: <TeamDetails />,
+                        loader: async ({ params }) => {
+                            const res = await fetch("/Research/Teams.json");
+                            const data = await res.json();
+                            return data.find(item => item.name === params.teamName);
+                        }
+                    },
+                    {
+                        path: "platforms",
+                        element: <ExperimentalPlatforms />,
+                        loader: () => fetch("/Research/ExperimentalPlatforms.json").then(res => res.json())
+                    },
+                    {
+                        path: "projects",
+                        element: <OtherCountryProjects />,
+                        loader: () => fetch("/Research/OtherCountryProject.json").then(res => res.json())
+                    }
+                ]
+            },
             {
                 path: "publication",
                 element: <Publication />,
@@ -71,7 +132,7 @@ const router = createBrowserRouter([
                         element: <Navigate to="bsc/current" replace />
                     },
                     {
-                        path: ":level/:type",   // bsc/current, msc/alumni, phd/current etc.
+                        path: ":level/:type",
                         element: <Student />,
                         loader: () => fetch("/member.json").then(res => res.json())
                     }

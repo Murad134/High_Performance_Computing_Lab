@@ -1,5 +1,5 @@
 import React from "react";
-import ImageSlider from "../Pages/ImageSlider";
+import ImageSlider from "../Components/ImageSlider";
 import ResearchInterest from "../Components/ResearchInterest";
 function Home() {
   return (

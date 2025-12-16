@@ -1,9 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function StudentCard({ item }) {
+export default function StudentCard({ item, onUpdate, onDelete }) {
+    // Handle marking student as alumni (completed)
+    const handleCompleted = () => {
+        const updatedStudent = {
+            ...item,
+            isAlumni: true
+        };
+        onUpdate(updatedStudent);
+    };
+
+    // Handle deleting student
+    const handleDelete = () => {
+        // Optional: Add confirmation dialog
+        if (window.confirm(`Are you sure you want to delete ${item.studentName}?`)) {
+            onDelete(item.id);
+        }
+    };
+
     return (
-        <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+        <div className="card bg-base-100 hover:shadow-2xl transition-shadow duration-300">
             {/* Student Picture */}
             <figure className="px-4 pt-4">
                 <img
@@ -24,10 +41,10 @@ export default function StudentCard({ item }) {
 
                 {/* Roll and Session */}
                 <div className="flex justify-between items-center my-2">
-                    <span className=" py-1 text-sm">
+                    <span className="py-1 text-sm">
                         Roll: {item.roll}
                     </span>
-                    <span className=" py-1 text-sm">
+                    <span className="py-1 text-sm">
                         Session: {item.session}
                     </span>
                 </div>
@@ -39,10 +56,14 @@ export default function StudentCard({ item }) {
                         ({item.type === "thesis" ? "Thesis" : "Project"})
                     </span>
                 </p>
+
                 {/* Action Buttons */}
                 <div className="card-actions justify-end gap-5 mt-4">
                     {/* Completed Button */}
-                    <button className="btn btn-sm bg-green-400 hover:bg-green-600 p-2 text-white border-none flex items-center gap-2">
+                    <button
+                        onClick={handleCompleted}
+                        className="btn btn-sm bg-green-400 hover:bg-green-600 p-2 text-white border-none flex items-center gap-2"
+                    >
                         {/* Tick Icon */}
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -56,7 +77,10 @@ export default function StudentCard({ item }) {
                     </button>
 
                     {/* Delete Button */}
-                    <button className="btn btn-sm bg-red-400 hover:bg-red-600 p-2 text-white border-none flex items-center gap-2">
+                    <button
+                        onClick={handleDelete}
+                        className="btn btn-sm bg-red-400 hover:bg-red-600 p-2 text-white border-none flex items-center gap-2"
+                    >
                         {/* Trash Icon */}
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -69,9 +93,7 @@ export default function StudentCard({ item }) {
                         Delete
                     </button>
                 </div>
-
             </div>
         </div>
     );
 }
-

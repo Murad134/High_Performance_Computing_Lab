@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import img1 from "../assets/sliderImage/1.jpg";
 import img2 from "../assets/sliderImage/3.jpg";
 import img3 from "../assets/sliderImage/4.jpg";
 import img4 from "../assets/sliderImage/1.jpg";
@@ -6,13 +7,11 @@ import img5 from "../assets/sliderImage/2.jpg";
 import img6 from "../assets/sliderImage/6.jpg";
 import img7 from "../assets/sliderImage/7.jpg";
 import img8 from "../assets/sliderImage/8.jpg";
-import img9 from "../assets/sliderImage/9.jpg";
-import img10 from "../assets/sliderImage/10.jpeg";
-import img11 from "../assets/sliderImage/11.jpeg";
-import img1 from "../assets/sliderImage/5.jpg";
-
+import img10 from "../assets/sliderImage/10.JPG";
+import img12 from "../assets/sliderImage/12.JPG";
+import img13 from "../assets/sliderImage/13.png";
 export default function AutoScrollCarousel() {
-  const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+  const images = [img1, img12, img2, img4, img6, img13, img8, img7, img10,img3, img5];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {

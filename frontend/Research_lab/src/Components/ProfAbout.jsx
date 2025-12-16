@@ -4,9 +4,9 @@ import deputyP from "../assets/Murad.jpg";
 
 function ProfAbout() {
   return (
-    <div className="grid grid-cols-1  gap-6">
+    <div className="grid grid-cols-1  gap-3">
       {/* Head of Lab */}
-      <div className="bg-white shadow-lg rounded-xl p-6 text-center hover:shadow-2xl transition">
+      <div className="bg-white  rounded-xl p-6 text-center hover:shadow-2xl transition">
         <img
           src={profP}
           alt="Head of Lab"
@@ -28,7 +28,7 @@ function ProfAbout() {
       </div>
 
       {/* Deputy Head of Lab */}
-      <div className="bg-white shadow-lg rounded-xl p-6 text-center hover:shadow-2xl transition">
+      <div className="bg-white rounded-xl p-6 text-center hover:shadow-2xl transition">
         <img
           src={deputyP}
           alt="Deputy Head of Lab"

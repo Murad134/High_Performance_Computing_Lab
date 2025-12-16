@@ -7,7 +7,7 @@ function Contact() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start rounded-xl p-8 pt-16">
       {/* Left */}
-      <aside className="md:col-span-4 bg-gray-100 p-4 rounded-lg shadow">
+      <aside className="md:col-span-4  p-4 rounded-lg ">
         <ProfAbout />
       </aside>
 

@@ -8,7 +8,7 @@ export default function Footer() {
         
         {/* Brand / Tagline */}
         <div>
-          <h2 className="text-2xl font-extrabold mb-3">Professor Portfolio</h2>
+          <h2 className="text-2xl font-extrabold mb-3">HPC Research Lab</h2>
           <p className="text-sm leading-relaxed text-gray-700">
             Inspiring innovation and advancing research in High Performance Computing, AI, ML and Data Science.
           </p>
@@ -64,7 +64,7 @@ export default function Footer() {
       </div>
       {/* Bottom Bar */}
       <div className="border-t border-gray-400 py-4 text-center text-sm text-gray-700">
-        © {new Date().getFullYear()} Professor Portfolio — All rights reserved.
+        © {new Date().getFullYear()} HPC Research Lab — All rights reserved.
       </div>
     </footer>
   );

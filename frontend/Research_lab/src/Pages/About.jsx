@@ -1,6 +1,6 @@
 import React from "react";
 import ProfAbout from "../Components/profAbout";
-import Lababout from "../Pages/Lababout";
+import Lababout from "../Components/Lababout";
 import ResearchInterest from "../Components/ResearchInterest";
 function About() {
     return (
