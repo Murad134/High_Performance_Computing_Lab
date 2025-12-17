@@ -1,26 +1,29 @@
-import React from 'react'
-
-function LeftAsideThesis() {
+function LeftAsideThesis({ activeTab, setActiveTab }) {
   return (
-    <div className="w-full bg-white border-t border-gray-200 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex divide-x divide-gray-300 border-x border-gray-300 text-sm md:text-base font-semibold text-gray-700 rounded-lg overflow-hidden">
-          <button className="flex-1 py-2 md:py-3 text-center bg-white hover:bg-green-100 focus:bg-green-200 transition-colors duration-200">
-            Journal
-          </button>
-          <button className="flex-1 py-2 md:py-3 text-center bg-white hover:bg-yellow-100 focus:bg-yellow-200 transition-colors duration-200">
-            Conferences
-          </button>
-          <button className="flex-1 py-2 md:py-3 text-center bg-white hover:bg-purple-100 focus:bg-purple-200 transition-colors duration-200">
-            Seminar
-          </button>
-          <button className="flex-1 py-2 md:py-3 text-center bg-white hover:bg-pink-100 focus:bg-pink-200 transition-colors duration-200">
-            Book/Book Chapter
-          </button>
-        </div>
-      </div>
+    <div className="flex divide-x border text-sm font-semibold rounded-lg overflow-hidden">
+      <button
+        onClick={() => setActiveTab('current')}
+        className={`flex-1 py-3 ${
+          activeTab === 'current'
+            ? 'bg-blue-200'
+            : 'hover:bg-blue-100'
+        }`}
+      >
+        Current Theses
+      </button>
+
+      <button
+        onClick={() => setActiveTab('completed')}
+        className={`flex-1 py-3 ${
+          activeTab === 'completed'
+            ? 'bg-purple-200'
+            : 'hover:bg-purple-100'
+        }`}
+      >
+        Completed Theses
+      </button>
     </div>
-  )
+  );
 }
 
-export default LeftAsideThesis
+export default LeftAsideThesis;

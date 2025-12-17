@@ -22,11 +22,11 @@ function TeamDetails() {
     <div className="px-3">
       {/* Breadcrumb */}
       <div className="mb-6 text-sm flex items-center space-x-2">
-        <Link to="/" className="text-pink-600 hover:text-pink-700 font-medium">LORIA</Link>
+        <Link to="/" className="text-pink-600 hover:text-pink-700 font-medium">HPC</Link>
         <span className="text-gray-400">/</span>
-        <Link to="/research" className="text-pink-600 hover:text-pink-700 font-medium">Research</Link>
+        <Link to="/research/researchs" className="text-pink-600 hover:text-pink-700 font-medium">Research</Link>
         <span className="text-gray-400">/</span>
-        <Link to="/research/teams" className="text-pink-600 hover:text-pink-700 font-medium">Teams</Link>
+        <Link to="/research/researchs/teams" className="text-pink-600 hover:text-pink-700 font-medium">Teams</Link>
         <span className="text-gray-400">/</span>
         <span className="text-gray-800 font-semibold">{team.name}</span>
       </div>

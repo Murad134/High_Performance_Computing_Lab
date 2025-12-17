@@ -1,21 +1,81 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-
 function Header() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [isPublicationOpen, setIsPublicationOpen] = useState(false);
+    const [isSupervisionsOpen, setIsSupervisionsOpen] = useState(false);
+    const [isResearchOpen, setIsResearchOpen] = useState(false);
+    // Desktop dropdown refs
+    const researchDropdownRef = useRef(null);
+    const supervisionsDropdownRef = useRef(null);
+
+    // Auto-close timer refs
+    const researchTimerRef = useRef(null);
+    const supervisionsTimerRef = useRef(null);
 
     // Drawer close করার function (Mobile)
     const closeDrawer = () => {
         setIsDrawerOpen(false);
-        setIsPublicationOpen(false);
+        setIsSupervisionsOpen(false);
+        setIsResearchOpen(false);
     };
 
-    // Dropdown close করার function (Desktop)
-    const closeDropdown = () => {
-        const details = document.querySelector('details');
-        if (details) {
-            details.removeAttribute('open');
+    // Desktop dropdown close করার function
+    const closeAllDropdowns = () => {
+        const allDetails = document.querySelectorAll('details[open]');
+        allDetails.forEach(detail => detail.removeAttribute('open'));
+
+        // Clear timers
+        if (researchTimerRef.current) clearTimeout(researchTimerRef.current);
+        if (supervisionsTimerRef.current) clearTimeout(supervisionsTimerRef.current);
+    };
+
+    // Start auto-close timer
+    const startAutoCloseTimer = (dropdownType) => {
+        const timerRef = dropdownType === 'research' ? researchTimerRef : supervisionsTimerRef;
+
+        // Clear existing timer
+        if (timerRef.current) clearTimeout(timerRef.current);
+
+        // Set new 30-second timer
+        timerRef.current = setTimeout(() => {
+            closeAllDropdowns();
+        }, 30000); // 30 seconds
+    };
+
+    // Handle click outside navbar to close dropdowns
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const navbar = document.querySelector('.navbar');
+            if (navbar && !navbar.contains(event.target)) {
+                closeAllDropdowns();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            // Cleanup timers
+            if (researchTimerRef.current) clearTimeout(researchTimerRef.current);
+            if (supervisionsTimerRef.current) clearTimeout(supervisionsTimerRef.current);
+        };
+    }, []);
+
+    // Handle dropdown open/close with timer
+    const handleDropdownToggle = (dropdownType, event) => {
+        const currentDetail = event.currentTarget;
+        const isOpening = currentDetail.hasAttribute('open');
+
+        if (isOpening) {
+            // Close all other dropdowns
+            const allDetails = document.querySelectorAll('details');
+            allDetails.forEach(detail => {
+                if (detail !== currentDetail && detail.hasAttribute('open')) {
+                    detail.removeAttribute('open');
+                }
+            });
+
+            // Start auto-close timer for newly opened dropdown
+            startAutoCloseTimer(dropdownType);
         }
     };
 
@@ -53,6 +113,7 @@ function Header() {
                         {/* Logo */}
                         <Link
                             to="/"
+                            onClick={closeAllDropdowns}
                             className="ml-2 text-xl md:text-2xl font-extrabold text-white hover:text-yellow-300 transition"
                         >
                             HPC LAB
@@ -65,7 +126,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/"
-                                    onClick={closeDropdown}
+                                    onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "text-red-500 underline font-semibold"
@@ -78,7 +139,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/about"
-                                    onClick={closeDropdown}
+                                    onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "text-red-500 underline font-semibold"
@@ -89,46 +150,72 @@ function Header() {
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink
-                                    to="/research"
-                                    onClick={closeDropdown}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "text-red-500 underline font-semibold"
-                                            : "hover:text-red-400 transition"
-                                    }
+                                <details
+                                    ref={researchDropdownRef}
+                                    onToggle={(e) => handleDropdownToggle('Research', e)}
                                 >
-                                    Research
-                                </NavLink>
-                            </li>
-                            <li>
-                                <details>
-                                    <summary className="cursor-pointer">Publication</summary>
+                                    <summary className="cursor-pointer">Research</summary>
                                     <ul className="absolute left-0 mt-2 p-2 bg-white shadow-lg rounded-md w-40 z-50">
                                         <li>
                                             <NavLink
-                                                to="/publication/thesis"
-                                                onClick={closeDropdown}
+                                                to="/research/researchs/departments"
+                                                onClick={closeAllDropdowns}
                                                 className={({ isActive }) =>
                                                     isActive
                                                         ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
                                                         : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
                                                 }
                                             >
-                                                Thesis
+                                                Researchs
                                             </NavLink>
                                         </li>
                                         <li>
                                             <NavLink
-                                                to="/publication/projects"
-                                                onClick={closeDropdown}
+                                                to="/research/publications"
+                                                onClick={closeAllDropdowns}
                                                 className={({ isActive }) =>
                                                     isActive
                                                         ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
                                                         : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
                                                 }
                                             >
-                                                Projects
+                                                Publications
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details
+                                    ref={supervisionsDropdownRef}
+                                    onToggle={(e) => handleDropdownToggle('Supervisons', e)}
+                                >
+                                    <summary className="cursor-pointer">Supervisons</summary>
+                                    <ul className="absolute left-0 mt-2 p-2 bg-white shadow-lg rounded-md w-40 z-50">
+                                        <li>
+                                            <NavLink
+                                                to="/supervison/thesis"
+                                                onClick={closeAllDropdowns}
+                                                className={({ isActive }) =>
+                                                    isActive
+                                                        ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
+                                                        : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
+                                                }
+                                            >
+                                                Academic Thesis
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/supervison/projects"
+                                                onClick={closeAllDropdowns}
+                                                className={({ isActive }) =>
+                                                    isActive
+                                                        ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
+                                                        : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
+                                                }
+                                            >
+                                                Academic Projects
                                             </NavLink>
                                         </li>
                                     </ul>
@@ -137,7 +224,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/member"
-                                    onClick={closeDropdown}
+                                    onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "text-red-500 underline font-semibold"
@@ -150,7 +237,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/contact"
-                                    onClick={closeDropdown}
+                                    onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "text-red-500 underline font-semibold"
@@ -163,7 +250,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/admin"
-                                    onClick={closeDropdown}
+                                    onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "text-red-500 underline font-semibold"
@@ -180,6 +267,7 @@ function Header() {
                     <div className="navbar-end">
                         <Link
                             to="/auth/login"
+                            onClick={closeAllDropdowns}
                             className="btn btn-sm md:btn-md bg-yellow-400 hover:bg-yellow-500 text-black font-semibold shadow-md transition border-none"
                         >
                             Login
@@ -241,28 +329,13 @@ function Header() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink
-                            to="/research"
-                            onClick={closeDrawer}
-                            className={({ isActive }) =>
-                                isActive
-                                    ? "bg-red-100 text-red-600 font-semibold rounded-lg"
-                                    : "hover:bg-gray-100 transition rounded-lg"
-                            }
-                        >
-                            🔬 Research
-                        </NavLink>
-                    </li>
-
-                    {/* Publication Submenu */}
-                    <li>
                         <button
-                            onClick={() => setIsPublicationOpen(!isPublicationOpen)}
+                            onClick={() => setIsResearchOpen(!isResearchOpen)}
                             className="w-full text-left flex items-center justify-between hover:bg-gray-100 transition rounded-lg px-4 py-2"
                         >
-                            📚 Publication
+                            📚 Research
                             <svg
-                                className={`w-4 h-4 transition-transform ${isPublicationOpen ? 'rotate-180' : ''}`}
+                                className={`w-4 h-4 transition-transform ${isResearchOpen ? 'rotate-180' : ''}`}
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -270,11 +343,11 @@ function Header() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        {isPublicationOpen && (
+                        {isResearchOpen && (
                             <ul className="ml-6 mt-2 space-y-1">
                                 <li>
                                     <NavLink
-                                        to="/publication/thesis"
+                                        to="/research/researchs/departments"
                                         onClick={closeDrawer}
                                         className={({ isActive }) =>
                                             isActive
@@ -282,12 +355,12 @@ function Header() {
                                                 : "block py-2 px-3 hover:bg-gray-100 transition rounded"
                                         }
                                     >
-                                        📄 Thesis
+                                        📄 Researchs
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                        to="/publication/projects"
+                                        to="/research/publications"
                                         onClick={closeDrawer}
                                         className={({ isActive }) =>
                                             isActive
@@ -295,7 +368,55 @@ function Header() {
                                                 : "block py-2 px-3 hover:bg-gray-100 transition rounded"
                                         }
                                     >
-                                        💼 Projects
+                                        📄 Publications
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        )}
+                    </li>
+
+                    {/* Supervison Submenu */}
+                    <li>
+                        <button
+                            onClick={() => setIsSupervisionsOpen(!isSupervisionsOpen)}
+                            className="w-full text-left flex items-center justify-between hover:bg-gray-100 transition rounded-lg px-4 py-2"
+                        >
+                            📚 Supervisons
+                            <svg
+                                className={`w-4 h-4 transition-transform ${isSupervisionsOpen ? 'rotate-180' : ''}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {isSupervisionsOpen && (
+                            <ul className="ml-6 mt-2 space-y-1">
+                                <li>
+                                    <NavLink
+                                        to="/supervison/thesis"
+                                        onClick={closeDrawer}
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "block py-2 px-3 bg-red-100 text-red-600 font-semibold rounded"
+                                                : "block py-2 px-3 hover:bg-gray-100 transition rounded"
+                                        }
+                                    >
+                                        📄Academic Thesis
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to="/supervison/projects"
+                                        onClick={closeDrawer}
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "block py-2 px-3 bg-red-100 text-red-600 font-semibold rounded"
+                                                : "block py-2 px-3 hover:bg-gray-100 transition rounded"
+                                        }
+                                    >
+                                        💼Academic Projects
                                     </NavLink>
                                 </li>
                             </ul>

@@ -1,6 +1,6 @@
 import { Outlet, useLoaderData } from "react-router-dom";
 import NavigationResearch from "../../Components/LeftAside/Navigation_Research";
-function Research() {
+function Researchs() {
   const { navigation } = useLoaderData();
 
   return (
@@ -13,7 +13,7 @@ function Research() {
     //     <Outlet />
     //   </main>
     // </div>
-    <div className="grid grid-cols-[320px_1fr] gap-6 pt-16 bg-gray-50 min-h-screen">
+    <div className="grid grid-cols-[320px_1fr] gap-6 bg-gray-50 min-h-screen">
       {/* Left Navigation - Fixed width */}
       <NavigationResearch navigation={navigation} />
 
@@ -24,4 +24,4 @@ function Research() {
     </div>
   );
 }
-export default Research;
+export default Researchs;

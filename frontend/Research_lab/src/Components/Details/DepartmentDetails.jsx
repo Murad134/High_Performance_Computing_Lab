@@ -25,9 +25,9 @@ function DepartmentDetails() {
       <div className="mb-6 text-sm">
         <Link to="/" className="text-pink-500 hover:underline">HPC</Link>
         <span className="text-gray-500"> &gt; </span>
-        <Link to="/research" className="text-pink-500 hover:underline">Research</Link>
+        <Link to="/research/researchs" className="text-pink-500 hover:underline">Research</Link>
         <span className="text-gray-500"> &gt; </span>
-        <Link to="/research/departments" className="text-pink-500 hover:underline">Departments</Link>
+        <Link to="/research/researchs/departments" className="text-pink-500 hover:underline">Departments</Link>
         <span className="text-gray-500"> &gt; </span>
         <span className="text-pink-500">{dept.name}</span>
       </div>
@@ -85,7 +85,7 @@ function DepartmentDetails() {
               {dept.details.teams.map((team, idx) => (
                 <div key={idx}>
                   <Link
-                    to={`/research/teams/${team}`}
+                    to={`/research/researchs/teams/${team}`}
                     className="text-pink-500 hover:underline"
                   >
                     {team}

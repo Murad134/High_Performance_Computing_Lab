@@ -1,109 +1,178 @@
 import React from "react";
-import ImageSlider from "../Components/ImageSlider";
-import ResearchInterest from "../Components/ResearchInterest";
+import ImageSlider from "../Components/ImageSlider"
+import ReaserchInterest from "../Components/ResearchInterest";
+import { Sparkles, ExternalLink, Award, BookOpen, Users, Brain, Database, TrendingUp } from "lucide-react";
+
 function Home() {
+  const publications = [
+    {
+      icon: <Brain className="w-6 h-6" />,
+      category: "Machine Learning",
+      color: "from-purple-400 to-indigo-500",
+      title: "Deep Learning Architectures for Natural Language Processing",
+      description: "A comprehensive analysis of transformer-based models and their applications in multilingual text understanding.",
+      date: "December 2024",
+      link: "/publication/research"
+    },
+    {
+      icon: <Database className="w-6 h-6" />,
+      category: "Data Science",
+      color: "from-blue-400 to-cyan-500",
+      title: "Big Data Analytics in Healthcare Systems",
+      description: "Exploring advanced statistical methods and machine learning algorithms for patient outcome prediction.",
+      date: "November 2024",
+      link: "/publication/research"
+    },
+    {
+      icon: <TrendingUp className="w-6 h-6" />,
+      category: "High Performance Computing",
+      color: "from-emerald-400 to-teal-500",
+      title: "Scalable Cloud Architectures for Distributed Computing",
+      description: "Investigating performance optimization strategies in modern cloud-based parallel computing systems.",
+      date: "October 2024",
+      link: "/publication/research"
+    }
+  ];
+
   return (
+
     <div className="pt-16">
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-r bg-purple-500 text-white py-20 text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
+      <section className="min-h-screen flex flex-col items-center justify-center bg-cyan-300 text-white px-6 py-20 text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-lg text-red-500">
           Welcome to HPC Lab
         </h1>
-        <p className="text-lg md:text-xl mb-6">
+
+        <p className="text-lg md:text-xl mb-8 max-w-3xl leading-relaxed text-blue-700">
           High Performance Computing • Artificial Intelligence • Data Science
         </p>
+
         <a
           href="/about"
-          className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition"
+          className="inline-block bg-yellow-400 text-blue-900 px-8 py-3 rounded-xl font-semibold shadow-md hover:bg-yellow-500 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
         >
           Learn More
         </a>
       </section>
 
-      {/* Quick Highlights */}
-      <section className="py-16 px-6 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div className="bg-white shadow-md p-6 rounded-lg">
-          <h3 className="text-3xl font-bold text-indigo-600">15+</h3>
-          <p className="mt-2 text-gray-600">Years of Experience</p>
-        </div>
-        <div className="bg-white shadow-md p-6 rounded-lg">
-          <h3 className="text-3xl font-bold text-indigo-600">50+</h3>
-          <p className="mt-2 text-gray-600">Publications</p>
-        </div>
-        <div className="bg-white shadow-md p-6 rounded-lg">
-          <h3 className="text-3xl font-bold text-indigo-600">20+</h3>
-          <p className="mt-2 text-gray-600">Students Supervised</p>
+
+
+      {/* Highlights */}
+      <section className="py-20 px-6 md:px-20 bg-gray-50">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+          {[
+            { icon: <Award />, value: "15+", label: "Years of Experience", color: "indigo" },
+            { icon: <BookOpen />, value: "50+", label: "Publications", color: "blue" },
+            { icon: <Users />, value: "20+", label: "Students Supervised", color: "emerald" }
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="bg-white p-8 rounded-2xl shadow hover:-translate-y-1 transition"
+            >
+              <div className={`w-16 h-16 flex items-center justify-center rounded-2xl mb-4 bg-${item.color}-600 text-white`}>
+                {item.icon}
+              </div>
+              <h3 className={`text-4xl font-bold text-${item.color}-600`}>
+                {item.value}
+              </h3>
+              <p className="text-gray-600">{item.label}</p>
+            </div>
+          ))}
+
         </div>
       </section>
 
-      {/* About Snapshot */}
-      <section className="py-16 px-6 md:px-20 text-center">
-        <h2 className="text-3xl font-bold mb-4">About Me</h2>
-        <p className="text-gray-700 max-w-2xl mx-auto">
-          I am a professor at JUST specializing in High Performance Computing,
-          Machine Learning, and Cloud Systems. My research focuses on scalable
-          architectures and impactful applications.
-        </p>
-        <a
-          href="/about"
-          className="mt-6 inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
-        >
-          Read More
-        </a>
+      {/* About */}
+      <section className="py-20 px-6 md:px-20 bg-indigo-50 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-indigo-600">
+            About Me
+          </h2>
+
+          <p className="text-gray-700 text-lg mb-8">
+            I am a professor at JUST specializing in High Performance Computing,
+            Machine Learning, and Cloud Systems.
+          </p>
+
+          <a
+            href="/about"
+            className="inline-flex items-center gap-2 bg-indigo-600 text-white px-8 py-4 rounded-xl hover:bg-indigo-700 transition"
+          >
+            Read More
+            <ExternalLink className="w-5 h-5" />
+          </a>
+        </div>
       </section>
-      <div>
-        <h2 className="text-3xl font-bold text-center mb-8"> Awards & some Achievements pictures</h2>
-        <ImageSlider />
-      </div>
+
+      {/* Image Slider */}
+      <ImageSlider />
+
       {/* Research Interests */}
-      <section className="py-16 px-6 md:px-20 bg-gray-50">
-        <h2 className="text-3xl font-bold text-center mb-8">
+      <section className="py-20">
+        <h2 className="text-center text-4xl md:text-5xl font-bold mb-6 text-indigo-600">
           Research Interests
         </h2>
-        <ResearchInterest />
+        <ReaserchInterest />
       </section>
 
-      {/* Featured Publications */}
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Featured Publications
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white shadow-md p-6 rounded-lg">
-            <h3 className="font-semibold text-lg mb-2">
-              Research Paper Title 1
-            </h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Short description of the research paper goes here.
-            </p>
-            <a href="/publication/research" className="text-indigo-600 hover:underline">
-              Read More →
+      {/* Publications */}
+      <section className="py-20 px-6 md:px-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto">
+
+          <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">
+            Featured Publications
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {publications.map((pub, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl border hover:shadow-lg transition"
+              >
+                <div className={`p-6 bg-gradient-to-r ${pub.color} text-white`}>
+                  <div className="flex items-center gap-2">
+                    {pub.icon}
+                    <span className="font-semibold">{pub.category}</span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <span className="text-sm text-gray-500">{pub.date}</span>
+
+                  <h3 className="text-xl font-bold mt-2 mb-3">
+                    {pub.title}
+                  </h3>
+
+                  <p className="text-gray-600 mb-6">
+                    {pub.description}
+                  </p>
+
+                  <a
+                    href={pub.link}
+                    className="inline-flex items-center gap-2 bg-indigo-500 text-white py-2 px-5 rounded-lg hover:bg-indigo-600 transition"
+                  >
+                    Read More
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <a
+              href="/publication/research"
+              className="inline-block border border-indigo-300 text-indigo-600 py-3 px-8 rounded-lg hover:bg-indigo-50 transition"
+            >
+              View All Publications
             </a>
           </div>
-          <div className="bg-white shadow-md p-6 rounded-lg">
-            <h3 className="font-semibold text-lg mb-2">
-              Research Paper Title 2
-            </h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Short description of the research paper goes here.
-            </p>
-            <a href="/publication/research" className="text-indigo-600 hover:underline">
-              Read More →
-            </a>
-          </div>
-          <div className="bg-white shadow-md p-6 rounded-lg">
-            <h3 className="font-semibold text-lg mb-2">
-              Research Paper Title 3
-            </h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Short description of the research paper goes here.
-            </p>
-            <a href="/publication/research" className="text-indigo-600 hover:underline">
-              Read More →
-            </a>
-          </div>
+
         </div>
       </section>
+
     </div>
   );
 }

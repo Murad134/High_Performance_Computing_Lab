@@ -9,12 +9,20 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Home from "../Pages/Home";
 import About from "../Pages/About";
-import Research from "../Pages/Research/Research.jsx";
-import Publication from "../Pages/Publication";
+import Researchs from "../Pages/Researchs/Researchs.jsx";
+import Research from "../Pages/Research.jsx";
+import Supervison from "../Pages/Supervison.jsx";
 import Project from "../Pages/Project";
 import Member from '../Pages/Member'
 import Thesis from "../Pages/Thesis";
 import Contact from "../Pages/Contact";
+import Publications from "../Pages/Publications.jsx";
+
+import Journal from "../Pages//Publication/Journal.jsx";
+import Conferences from "../Pages//Publication/Conferences.jsx";
+import Seminar from "../Pages//Publication/Seminar.jsx";
+import Books from "../Pages/Publication/Book.jsx";
+
 
 import Dashboard from "../AdminPages/Dashboard";
 import EditHome from "../AdminPages/EditHome";
@@ -28,12 +36,13 @@ import EditPublication from "../AdminPages/EditPublication";
 import ViewDetails from "../Components/Details/ProjectsDetails.jsx";
 import Student from "../Components/Student.jsx";
 
-import Departments from "../Pages/Research/Departments.jsx";
+import Departments from "../Pages/Researchs/Departments.jsx";
 import DepartmentDetails from "../Components/Details/DepartmentDetails.jsx";
-import Teams from "../Pages/Research/Teams.jsx";
+import Teams from "../Pages/Researchs/Teams.jsx";
 import TeamDetails from "../Components/Details/TeamDetails.jsx";
-import ExperimentalPlatforms from "../Pages/Research/ExperimentalPlatforms.jsx";
-import OtherCountryProjects from "../Pages/Research/OtherCountryProjects.jsx";
+import ExperimentalPlatforms from "../Pages/Researchs/ExperimentalPlatforms.jsx";
+import OtherCountryProjects from "../Pages/Researchs/OtherCountryProjects.jsx";
+import ThesisDetails from "../Components/Details/ThesisDetails.jsx";
 
 const router = createBrowserRouter([
     {
@@ -45,78 +54,126 @@ const router = createBrowserRouter([
             {
                 path: "research",
                 element: <Research />,
-                loader: () => fetch("/Research/Navigation.json").then(res => res.json()),
                 children: [
                     {
-                        index: true,
-                        element: <Navigate to="departments" replace />
-                    },
-                    {
-                        path: "departments",
-                        element: <Departments />,
-                        loader: () => fetch("/Research/Departments.json").then(res => res.json())
-                    },
-                    {
-                        // Single department details by slug
-                        path: "departments/:slug",
-                        element: <DepartmentDetails />,
-                        loader: async ({ params }) => {
-                            const res = await fetch("/Research/Departments.json");
-                            const data = await res.json();
-                            const dept = data.departments.find(item => item.slug === params.slug);
-                            if (!dept) {
-                                throw new Response("Department not found", { status: 404 });
+                        path: "researchs",
+                        element: <Researchs />,
+                        loader: () => fetch("/Research/Navigation.json").then(res => res.json()),
+                        children: [
+                            {
+                                index: true,
+                                element: <Navigate to="departments" replace />
+                            },
+                            {
+                                path: "departments",
+                                element: <Departments />,
+                                loader: () => fetch("/Research/Departments.json").then(res => res.json())
+                            },
+                            {
+                                path: "departments/:slug",
+                                element: <DepartmentDetails />,
+                                loader: async ({ params }) => {
+                                    const res = await fetch("/Research/Departments.json");
+                                    const data = await res.json();
+                                    const dept = data.departments.find(item => item.slug === params.slug);
+                                    if (!dept) {
+                                        throw new Response("Department not found", { status: 404 });
+                                    }
+                                    return { ...data, selectedDept: dept };
+                                }
+                            },
+                            {
+                                path: "teams",
+                                element: <Teams />,
+                                loader: () => fetch("/Research/Teams.json").then(res => res.json())
+                            },
+                            {
+                                path: "teams/:teamName",
+                                element: <TeamDetails />,
+                                loader: async ({ params }) => {
+                                    const res = await fetch("/Research/Teams.json");
+                                    const data = await res.json();
+                                    return data.find(item => item.name === params.teamName);
+                                }
+                            },
+                            {
+                                path: "platforms",
+                                element: <ExperimentalPlatforms />,
+                                loader: () => fetch("/Research/ExperimentalPlatforms.json").then(res => res.json())
+                            },
+                            {
+                                path: "projects",
+                                element: <OtherCountryProjects />,
+                                loader: () => fetch("/Research/OtherCountryProject.json").then(res => res.json())
                             }
-                            return { ...data, selectedDept: dept };
-                        }
+                        ]
                     },
+                    // {
+                    //     path: "publications",
+                    //     element: <Publications />,
+                    // }
                     {
-                        path: "teams",
-                        element: <Teams />,
-                        loader: () => fetch("/Research/Teams.json").then(res => res.json())
-                    },
-                    {
-                        path: "teams/:teamName",
-                        element: <TeamDetails />,
-                        loader: async ({ params }) => {
-                            const res = await fetch("/Research/Teams.json");
-                            const data = await res.json();
-                            return data.find(item => item.name === params.teamName);
-                        }
-                    },
-                    {
-                        path: "platforms",
-                        element: <ExperimentalPlatforms />,
-                        loader: () => fetch("/Research/ExperimentalPlatforms.json").then(res => res.json())
-                    },
-                    {
-                        path: "projects",
-                        element: <OtherCountryProjects />,
-                        loader: () => fetch("/Research/OtherCountryProject.json").then(res => res.json())
+                        path: "publications",
+                        element: <Publications />,
+                        children: [
+                            {
+                                index: true,
+                                element: <Navigate to="journal" replace />
+                            },
+                            {
+                                path: "journal",
+                                element: <Journal />,
+                                // loader: () => fetch("/Publications/Journal.json").then(res => res.json())
+                            },
+                            {
+                                path: "conferences",
+                                element: <Conferences />,
+                                // loader: () => fetch("/Publications/Conferences.json").then(res => res.json())
+                            },
+                            {
+                                path: "seminar",
+                                element: <Seminar />,
+                                // loader: () => fetch("/Publications/Seminar.json").then(res => res.json())
+                            },
+                            {
+                                path: "books",
+                                element: <Books />,
+                                // loader: () => fetch("/Publications/Books.json").then(res => res.json())
+                            }
+                        ]
                     }
                 ]
             },
             {
-                path: "publication",
-                element: <Publication />,
+                path: "supervison",
+                element: <Supervison />,
                 children: [
                     {
                         path: "thesis",
                         element: <Thesis />,
                         loader: () =>
-                            fetch("/publication.json").then(res => res.json()),
+                            fetch("/thesis.json").then(res => res.json()),
+                    },
+                    {
+                        path: "thesis/:id",
+                        element: <ThesisDetails />,
+                        loader: async ({ params }) => {
+                            const res = await fetch("/thesis.json");
+                            const data = await res.json();
+                            return data.find(item => item.id === Number(params.id));
+                        }
                     },
                     {
                         path: "projects",
                         element: <Project />,
                         loader: () =>
-                            fetch("/publication.json").then(res => res.json()),
+                            fetch("/project.json").then(res => res.json()),
                     },
                     {
                         path: "projects/:id",
                         element: <ViewDetails />,
                         loader: async ({ params }) => {
-                            const res = await fetch("/publication.json");
+                            const res = await fetch("/project.json");
                             const data = await res.json();
                             return data.find(item => item.id === Number(params.id));
                         }

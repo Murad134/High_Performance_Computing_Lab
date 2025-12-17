@@ -12,6 +12,7 @@
     "details": "This project applies deep learning to medical imaging. It focuses on early detection of diseases using convolutional neural networks.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -27,6 +28,7 @@
     "details": "A project on scalable big data analytics using cloud platforms.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -42,6 +44,7 @@
     "details": "Focuses on machine learning models for detecting cyber threats.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -57,6 +60,7 @@
     "details": "This project explores IoT applications in smart cities.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Electrical & Electronic Engineering (EEE)"
   },
   {
@@ -72,6 +76,7 @@
     "details": "Applies NLP techniques to sentiment analysis.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -87,6 +92,7 @@
     "details": "Research on autonomous vehicle navigation using ROS.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Electrical & Electronic Engineering (EEE)"
   },
   {
@@ -102,6 +108,7 @@
     "details": "A scalable parallel computing framework.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -117,6 +124,7 @@
     "details": "AI system for disease detection from medical images.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -132,6 +140,7 @@
     "details": "Secure cloud-based file storage platform.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -147,6 +156,7 @@
     "details": "Tamper-proof blockchain-based voting system.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -162,6 +172,7 @@
     "details": "IoT solution for smart farming.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Industrial & Production Engineering (IPE)"
   },
   {
@@ -177,6 +188,7 @@
     "details": "Interactive online learning platform.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -192,6 +204,7 @@
     "details": "Hospital management software system.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Computer Science & Engineering (CSE)"
   },
   {
@@ -207,6 +220,7 @@
     "details": "AI system for weather prediction.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "BSc",
     "department": "Chemical Engineering (ChE)"
   },
   {
@@ -222,6 +236,7 @@
     "details": "Full-stack e-commerce system.",
     "startDate": "2023-01-01",
     "endDate": "2023-12-31",
+    "studentLevel": "MSc",
     "department": "Computer Science & Engineering (CSE)"
   }
 ]

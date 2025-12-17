@@ -79,7 +79,7 @@ export default function CardProject({
   onMarkComplete,
   onMarkIncomplete
 }) {
-  const { id } = item;
+  const { id} = item;
 
   return (
     <div className="bg-gray-50 border border-gray-200 rounded-lg shadow-md hover:shadow-xl hover:border-indigo-300 transition duration-300 ease-in-out flex flex-col gap-4 justify-between h-full">
@@ -95,7 +95,17 @@ export default function CardProject({
       <h3 className="text-lg font-semibold text-gray-900 px-3">
         {item.name}
       </h3>
-
+      <div className="px-3 ">
+        <p className="text-gray-700">
+          <span className="font-semibold">Student:</span> {item.studentName}
+        </p>
+        <p className="text-gray-700">
+          <span className="font-semibold">Program:</span> {item.studentLevel}
+        </p>
+        <p className="text-gray-700">
+          <span className="font-semibold">Session:</span> {item.session}
+        </p>
+      </div>
       <div className="text-sm text-gray-600 px-3">
         {activeTab === "current" ? (
           <>📅 Started: {item.startDate}</>
@@ -104,11 +114,11 @@ export default function CardProject({
         )}
       </div>
 
-      <div className="mt-auto px-3 pb-3 flex items-center gap-2">
+      <div className="mt-auto px-3 pt-2 pb-3 flex items-center gap-2 border-t border-gray-300">
 
         {/* ✅ এইটা change করুন - state add করুন */}
         <Link
-          to={`/publication/projects/${id}`}
+          to={`/supervison/projects/${id}`}
           state={{ updatedProject: item }}
           className="text-indigo-600 text-sm font-medium hover:underline"
         >
