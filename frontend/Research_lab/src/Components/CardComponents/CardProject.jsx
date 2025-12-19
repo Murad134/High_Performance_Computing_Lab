@@ -92,7 +92,7 @@ export default function CardProject({
         />
       )}
 
-      <h3 className="text-lg font-semibold text-gray-900 px-3">
+      <h3 className="text-lg font-semibold text-gray-900 px-3 border-t border-gray-300">
         {item.name}
       </h3>
       <div className="px-3 ">

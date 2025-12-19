@@ -23,16 +23,6 @@ import Conferences from "../Pages//Publication/Conferences.jsx";
 import Seminar from "../Pages//Publication/Seminar.jsx";
 import Books from "../Pages/Publication/Book.jsx";
 
-
-import Dashboard from "../AdminPages/Dashboard";
-import EditHome from "../AdminPages/EditHome";
-import EditAboutPro from "../AdminPages/EditAboutLab.jsx";
-import EditAboutProfess from "../AdminPages/EditAboutProfessor.jsx";
-import EditExperience from "../AdminPages/EditExperience";
-import EditContact from "../AdminPages/EditContact";
-import EditMember from "../AdminPages/EditMember";
-import EditPublication from "../AdminPages/EditPublication";
-
 import ViewDetails from "../Components/Details/ProjectsDetails.jsx";
 import Student from "../Components/Student.jsx";
 
@@ -43,6 +33,28 @@ import TeamDetails from "../Components/Details/TeamDetails.jsx";
 import ExperimentalPlatforms from "../Pages/Researchs/ExperimentalPlatforms.jsx";
 import OtherCountryProjects from "../Pages/Researchs/OtherCountryProjects.jsx";
 import ThesisDetails from "../Components/Details/ThesisDetails.jsx";
+
+import EditHome from "../AdminPages/Information/EditHome.jsx";
+import EditImage from "../AdminPages/Information/EditImage.jsx";
+import EditAboutLab from "../AdminPages/About/EditAboutLab.jsx";
+import EditAboutProf from "../AdminPages/About/EditAboutProfessor.jsx";
+import EditResearchInterest from "../AdminPages/About/EditResearch_Interest.jsx";
+import EditDepartments from "../AdminPages/Research/EditDepartments.jsx";
+import EditTeams from "../AdminPages/Research/EditTeams.jsx";
+import EditNavigation from "../AdminPages/Research/EditNavigation.jsx";
+import EditExperimentalPlatforms from "../AdminPages/Research/EditExperimentalPlatforms.jsx";
+import EditOtherCountryProjects from "../AdminPages/Research/EditOtherCountryProjects.jsx";
+import EditJournal from "../AdminPages/Publication/EditJournal.jsx";
+import EditConferences from "../AdminPages/Publication/EditConferences.jsx";
+import EditSeminar from "../AdminPages/Publication/EditSeminar.jsx";
+import EditBookChapter from "../AdminPages/Publication/EditBookChapter.jsx";
+import EditAcademicThesis from "../AdminPages/Supervisors/EditAcademicThesis.jsx";
+import EditAcademicProjects from "../AdminPages/Supervisors/EditAcademicProjects.jsx";
+import EditMembers from "../AdminPages/EditMembers.jsx";
+import EditContacts from "../AdminPages/EditContact.jsx";
+import EditFooter from "../AdminPages/Footer.jsx";
+import Dashboard from "../AdminPages/Dashboard.jsx";
+
 
 const router = createBrowserRouter([
     {
@@ -123,12 +135,12 @@ const router = createBrowserRouter([
                             {
                                 path: "journal",
                                 element: <Journal />,
-                                // loader: () => fetch("/Publications/Journal.json").then(res => res.json())
+                                loader: () => fetch("/Publication/Journal.json").then(res => res.json())
                             },
                             {
                                 path: "conferences",
                                 element: <Conferences />,
-                                // loader: () => fetch("/Publications/Conferences.json").then(res => res.json())
+                                loader: () => fetch("/Publication/Conference.json").then(res => res.json())
                             },
                             {
                                 path: "seminar",
@@ -195,15 +207,6 @@ const router = createBrowserRouter([
                     }
                 ]
             },
-            // {
-            //     path: "member/:id",
-            //     element: <MemberDetails />,
-            //     loader: async ({ params }) => {
-            //         const res = await fetch("/member.json");
-            //         const data = await res.json();
-            //         return data.find(item => item.id === Number(params.id));
-            //     }
-            // },
             { path: "contact", element: <Contact /> }
         ]
     },
@@ -219,16 +222,118 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <AdminLayout />,
         children: [
+            // Dashboard
+            {
+                index: true,
+                element: <Dashboard />
+            },
 
-            { index: true, element: <Dashboard /> },
-            { path: "edithome", element: <EditHome /> },
-            { path: "editabout", element: <EditAboutPro /> },
-            { path: "editaboutpro", element: <EditAboutPro /> },
-            { path: "editaboutlab", element: <EditAboutProfess /> },
-            { path: "editexperience", element: <EditExperience /> },
-            { path: "editcontact", element: <EditContact /> },
-            { path: "editmember", element: <EditMember /> },
-            { path: "editpublication", element: <EditPublication /> }
+            // ==========================================
+            // INFORMATION SECTION
+            // ==========================================
+            {
+                path: "information/home",
+                element: <EditHome />
+            },
+            {
+                path: "information/image",
+                element: <EditImage />
+            },
+            // ==========================================
+            // ABOUT SECTION
+            // ==========================================
+            {
+                path: "about/lab",
+                element: <EditAboutLab />
+            },
+            {
+                path: "about/professor",
+                element: <EditAboutProf />
+            },
+            {
+                path: "about/research-interest",
+                element: <EditResearchInterest />
+            },
+
+            // ==========================================
+            // RESEARCH SECTION
+            // ==========================================
+            {
+                path: "research/departments",
+                element: <EditDepartments />
+            },
+            {
+                path: "research/teams",
+                element: <EditTeams />
+            },
+            {
+                path: "research/navigation",
+                element: <EditNavigation />
+            },
+            {
+                path: "research/experimental-platforms",
+                element: <EditExperimentalPlatforms />
+            },
+            {
+                path: "research/other-country-projects",
+                element: <EditOtherCountryProjects />
+            },
+
+            // ==========================================
+            // PUBLICATION SECTION
+            // ==========================================
+            {
+                path: "publication/journal",
+                element: <EditJournal />
+            },
+            {
+                path: "publication/conferences",
+                element: <EditConferences />
+            },
+            {
+                path: "publication/seminar",
+                element: <EditSeminar />
+            },
+            {
+                path: "publication/book-chapter",
+                element: <EditBookChapter />
+            },
+
+            // ==========================================
+            // SUPERVISORS SECTION
+            // ==========================================
+            {
+                path: "supervisors/academic-thesis",
+                element: <EditAcademicThesis />
+            },
+            {
+                path: "supervisors/academic-projects",
+                element: <EditAcademicProjects />
+            },
+
+            // ==========================================
+            // MEMBERS SECTION
+            // ==========================================
+            {
+                path: "members",
+                element: <EditMembers />
+            },
+
+            // ==========================================
+            // CONTACTS SECTION
+            // ==========================================
+            {
+                path: "contacts",
+                element: <EditContacts />
+            },
+
+            // ==========================================
+            // PROBLEM SECTION
+            // ==========================================
+            {
+                path: "footer",
+                element: <EditFooter />
+            }
         ]
     },
     { path: "*", element: <h2>Error</h2> }

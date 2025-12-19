@@ -2,7 +2,7 @@ import { FaFacebook, FaLinkedin, FaGithub } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-teal-300 text-gray-200">
+    <footer className="bg-gray-300 text-gray-200">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-3 py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -82,7 +82,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-blue-700/30 bg-blue-800/50">
+      <div className="border-t border-blue-600/30 bg-blue-700/50">
         <div className="max-w-7xl mx-auto px-3 py-2">
           <p className="text-center text-red-700 text-lg">
             © {new Date().getFullYear()} HPC Research Lab — All rights reserved.

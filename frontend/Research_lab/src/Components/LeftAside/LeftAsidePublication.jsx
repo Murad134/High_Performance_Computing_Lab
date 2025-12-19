@@ -109,5 +109,4 @@ function LeftAsidePublication() {
     </aside>
   );
 }
-
 export default LeftAsidePublication;
