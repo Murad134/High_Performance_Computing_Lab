@@ -1,89 +1,190 @@
-import React from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
 
-export default function EditAbout() {
-  return (
-    <section className="max-w-5xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-8">
-        Edit About Section
-      </h2>
+const AdminAboutLab = () => {
+  const axiosInstance = useAxios();
+  const queryClient = useQueryClient();
 
-      <div className="bg-white rounded-xl shadow-md p-8 space-y-6">
-        {/* Lab Name */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Lab Name
-          </label>
-          <input
-            type="text"
-            placeholder="HPC Research Lab"
-            className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-          />
-        </div>
+  const { data: aboutLab, isLoading } = useQuery({
+    queryKey: ["aboutlab"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/aboutlab");
+      return res.data;
+    },
+  });
 
-        {/* Department */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Department & University
-          </label>
-          <textarea
-            rows="3"
-            placeholder="Department of Computer Science and Engineering (CSE), Jashore University of Science and Technology (JUST), Bangladesh"
-            className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-          />
-        </div>
+  const { register, handleSubmit } = useForm({
+    values: aboutLab || {},
+  });
 
-        {/* Lab Introduction */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Lab Introduction
-          </label>
-          <textarea
-            rows="4"
-            placeholder="Write short introduction about the lab..."
-            className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-          />
-        </div>
+  const saveMutation = useMutation({
+    mutationFn: async (formData) => {
+      if (aboutLab?._id) {
+        return await axiosInstance.put("/aboutlab", formData);
+      } else {
+        return await axiosInstance.post("/aboutlab", formData);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["aboutlab"]);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "About Lab saved successfully",
+        confirmButtonColor: "#4f46e5",
+      });
+    },
+    onError: () => {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Something went wrong",
+      });
+    },
+  });
 
-        {/* Mission */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Mission
-          </label>
-          <textarea
-            rows="3"
-            placeholder="Write lab mission..."
-            className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-          />
-        </div>
+  const onSubmit = (data) => {
+    saveMutation.mutate(data);
+  };
 
-        {/* Vision */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Vision
-          </label>
-          <textarea
-            rows="3"
-            placeholder="Write lab vision..."
-            className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-          />
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-end gap-4 pt-4">
-          <button
-            type="button"
-            className="px-6 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="px-6 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
-          >
-            Save
-          </button>
-        </div>
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
-    </section>
+    );
+
+  return (
+    <div className="min-h-screen  py-12 px-4">
+      <div className=" mx-auto  rounded-3xl p-3 border border-gray-100">
+
+        {/* Gradient Heading */}
+        <h2 className="text-4xl font-extrabold text-center bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">
+          Update About Lab Information
+        </h2>
+        <div className="border-t border-gray-200 mb-8"></div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+
+          {/* Lab Name */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Lab Name
+            </label>
+            <input
+              {...register("labName")}
+              type="text"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition shadow-sm"
+              placeholder="Enter Lab Name"
+            />
+          </div>
+
+          {/* Department & University Split */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Department Name
+              </label>
+              <input
+                {...register("department")}
+                type="text"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition shadow-sm"
+                placeholder="Enter Department Name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                University Name
+              </label>
+              <input
+                {...register("university")}
+                type="text"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition shadow-sm"
+                placeholder="Enter University Name"
+              />
+            </div>
+          </div>
+
+          {/* Lab Introduction */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Lab Introduction
+            </label>
+            <textarea
+              {...register("labIntroduction")}
+              rows="4"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none shadow-sm"
+              placeholder="Write Lab Introduction"
+            ></textarea>
+          </div>
+
+          {/* Mission & Vision */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Mission
+              </label>
+              <textarea
+                {...register("mission")}
+                rows="4"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none shadow-sm"
+                placeholder="Write Mission"
+              ></textarea>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Vision
+              </label>
+              <textarea
+                {...register("vision")}
+                rows="4"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none shadow-sm"
+                placeholder="Write Vision"
+              ></textarea>
+            </div>
+          </div>
+
+          {/* Button */}
+          {/* <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={saveMutation.isPending}
+              className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60"
+            >
+              {saveMutation.isPending
+                ? "Saving..."
+                : aboutLab?._id
+                  ? "Update Information"
+                  : "Save Information"}
+            </button>
+          </div> */}
+          {/* Button */}
+          <div className="flex justify-end mt-4">
+            <button
+              type="submit"
+              disabled={saveMutation.isPending}
+              className="px-6 py-2 text-sm font-medium text-white 
+    bg-indigo-600 rounded-lg 
+    hover:bg-indigo-700 
+    disabled:opacity-50"
+            >
+              {saveMutation.isPending
+                ? "Saving..."
+                : aboutLab?._id
+                  ? "Update"
+                  : "Save"}
+            </button>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
   );
-}
+};
+
+export default AdminAboutLab;

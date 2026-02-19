@@ -1,164 +1,212 @@
-import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxios from "../hooks/useAxios";
+import Swal from "sweetalert2";
 
-export default function AdminContactForm() {
-  const [contactData, setContactData] = useState({
-    room: "",
-    department: "",
-    building: "",
-    university: "",
-    cityZip: "",
-    email: "",
-    linkedin: "",
-    facebook: "",
+const AdminContact = () => {
+  const axiosInstance = useAxios();
+  const queryClient = useQueryClient();
+
+  // 🔹 GET Contact (findOne from backend)
+  const { data: contact, isLoading } = useQuery({
+    queryKey: ["contact"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/contact");
+      return res.data; // backend uses findOne()
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setContactData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // 🔹 UPDATE Contact
+  const updateMutation = useMutation({
+    mutationFn: async (data) => await axiosInstance.put("/contact", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["contact"]);
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Contact information updated successfully.",
+        confirmButtonColor: "#4f46e5",
+      });
+    },
+    onError: (error) => {
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed!",
+        text: error.response?.data?.message || "Something went wrong",
+      });
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Contact Data Submitted:", contactData);
-    // API call / update database logic here
+    const form = e.target;
+
+    const formData = {
+      room: form.room.value,
+      department: form.department.value,
+      building: form.building.value,
+      university: form.university.value,
+      cityZip: form.cityZip.value,
+
+      headEmail: form.headEmail.value,
+      headLinkedin: form.headLinkedin.value,
+      headFacebook: form.headFacebook.value,
+
+      deputyHeadEmail: form.deputyHeadEmail.value,
+      deputyHeadLinkedin: form.deputyHeadLinkedin.value,
+      deputyHeadFacebook: form.deputyHeadFacebook.value,
+    };
+
+    updateMutation.mutate(formData);
   };
 
+  if (isLoading) return <p className="text-center mt-10">Loading contact data...</p>;
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-3xl mx-auto mt-6 bg-white shadow-lg rounded-2xl overflow-hidden p-6 flex flex-col gap-6"
-    >
-      <h2 className="text-xl font-bold text-gray-800">General Information</h2>
+    <section className="max-w-6xl mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-8 text-indigo-700">
+        Admin Panel – Edit Contact
+      </h2>
 
-      {/* Room No */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="room">Room No:</label>
-        <input
-          type="text"
-          id="room"
-          name="room"
-          value={contactData.room}
-          onChange={handleChange}
-          placeholder="e.g., 405"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          required
-        />
-      </div>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl shadow-lg p-8 space-y-10"
+      >
+        {/* ================= General Information ================= */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-400 pl-3 text-indigo-600">
+            General Information
+          </h3>
 
-      {/* Department */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="department">Department:</label>
-        <input
-          type="text"
-          id="department"
-          name="department"
-          value={contactData.department}
-          onChange={handleChange}
-          placeholder="e.g., Computer Science"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          required
-        />
-      </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            <input
+              name="room"
+              defaultValue={contact?.room}
+              type="text"
+              placeholder="Room No"
+              className="border rounded-md px-4 py-2"
+            />
 
-      {/* Building */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="building">Building:</label>
-        <input
-          type="text"
-          id="building"
-          name="building"
-          value={contactData.building}
-          onChange={handleChange}
-          placeholder="e.g., Engineering Block"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        />
-      </div>
+            <input
+              name="department"
+              defaultValue={contact?.department}
+              type="text"
+              placeholder="Department"
+              className="border rounded-md px-4 py-2"
+            />
 
-      {/* University */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="university">University:</label>
-        <input
-          type="text"
-          id="university"
-          name="university"
-          value={contactData.university}
-          onChange={handleChange}
-          placeholder="e.g., ABC University"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        />
-      </div>
+            <input
+              name="building"
+              defaultValue={contact?.building}
+              type="text"
+              placeholder="Building"
+              className="border rounded-md px-4 py-2"
+            />
 
-      {/* City-Zip */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="cityZip">City - Zip:</label>
-        <input
-          type="text"
-          id="cityZip"
-          name="cityZip"
-          value={contactData.cityZip}
-          onChange={handleChange}
-          placeholder="e.g., Dhaka - 1207"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        />
-      </div>
+            <input
+              name="university"
+              defaultValue={contact?.university}
+              type="text"
+              placeholder="University"
+              className="border rounded-md px-4 py-2"
+            />
 
-      {/* Email */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={contactData.email}
-          onChange={handleChange}
-          placeholder="example@university.edu"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          required
-        />
-      </div>
+            <input
+              name="cityZip"
+              defaultValue={contact?.cityZip}
+              type="text"
+              placeholder="City - Zip"
+              className="border rounded-md px-4 py-2"
+            />
+          </div>
+        </div>
 
-      <h2 className="text-xl font-bold text-gray-800 mt-4">Social Media Information</h2>
+        {/* ================= Social Information ================= */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-400 pl-3 text-indigo-600">
+            Social Information
+          </h3>
 
-      {/* LinkedIn */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="linkedin">LinkedIn:</label>
-        <input
-          type="url"
-          id="linkedin"
-          name="linkedin"
-          value={contactData.linkedin}
-          onChange={handleChange}
-          placeholder="https://www.linkedin.com/in/username"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        />
-      </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Head of Lab */}
+            <div className="space-y-3">
+              <h4 className="font-medium text-gray-700">Head of Lab</h4>
 
-      {/* Facebook */}
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-gray-700" htmlFor="facebook">Facebook:</label>
-        <input
-          type="url"
-          id="facebook"
-          name="facebook"
-          value={contactData.facebook}
-          onChange={handleChange}
-          placeholder="https://www.facebook.com/username"
-          className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        />
-      </div>
+              <input
+                name="headEmail"
+                defaultValue={contact?.headEmail}
+                type="email"
+                placeholder="Email"
+                className="w-full border rounded-md px-4 py-2"
+              />
 
-      {/* Submit Button */}
-      <div className="flex justify-end mt-4">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-        >
-          Update Contact
-        </button>
-      </div>
-    </form>
+              <input
+                name="headLinkedin"
+                defaultValue={contact?.headLinkedin}
+                type="url"
+                placeholder="LinkedIn URL"
+                className="w-full border rounded-md px-4 py-2"
+              />
+
+              <input
+                name="headFacebook"
+                defaultValue={contact?.headFacebook}
+                type="url"
+                placeholder="Facebook URL"
+                className="w-full border rounded-md px-4 py-2"
+              />
+            </div>
+
+            {/* Deputy Head */}
+            <div className="space-y-3">
+              <h4 className="font-medium text-gray-700">Deputy Head of Lab</h4>
+
+              <input
+                name="deputyHeadEmail"
+                defaultValue={contact?.deputyHeadEmail}
+                type="email"
+                placeholder="Email"
+                className="w-full border rounded-md px-4 py-2"
+              />
+
+              <input
+                name="deputyHeadLinkedin"
+                defaultValue={contact?.deputyHeadLinkedin}
+                type="url"
+                placeholder="LinkedIn URL"
+                className="w-full border rounded-md px-4 py-2"
+              />
+
+              <input
+                name="deputyHeadFacebook"
+                defaultValue={contact?.deputyHeadFacebook}
+                type="url"
+                placeholder="Facebook URL"
+                className="w-full border rounded-md px-4 py-2"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ================= Buttons ================= */}
+        <div className="flex justify-end gap-4 pt-6">
+          <button
+            type="button"
+            className="px-6 py-2 border rounded-md text-gray-700 hover:bg-gray-100"
+            onClick={() => window.location.reload()}
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          >
+            Update Contact
+          </button>
+        </div>
+      </form>
+    </section>
   );
-}
+};
+
+export default AdminContact;
