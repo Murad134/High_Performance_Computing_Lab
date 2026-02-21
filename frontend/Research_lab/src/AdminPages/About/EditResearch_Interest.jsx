@@ -1,276 +1,303 @@
-// // import React from 'react'
-
-// // function EditResearch_Interest() {
-// //     return (
-// //         <div>EditResearch_Interest</div>
-// //     )
-// // }
-// // export default EditResearch_Interest
-
 // import React from "react";
-// import {
-//     FaBrain,
-//     FaImage,
-//     FaRobot,
-//     FaNetworkWired,
-//     FaMicrochip,
-// } from "react-icons/fa";
+// import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+// import { useForm } from "react-hook-form";
+// import useAxios from "../../hooks/useAxios";
+// import Swal from "sweetalert2";
 
-// export default function EditResearchInterests() {
-//     return (
-//         <section className="max-w-5xl mx-auto p-6">
-//             <h2 className="text-2xl font-bold text-gray-800 mb-8">
-//                 Edit Research Interests
-//             </h2>
+// const AdminResearchInterest = () => {
+//   const axiosInstance = useAxios();
+//   const queryClient = useQueryClient();
+//   const { register, handleSubmit, reset } = useForm();
 
-//             {/* Add New Interest */}
-//             <div className="bg-white rounded-xl shadow-md p-6 mb-10">
-//                 <h3 className="text-lg font-semibold text-gray-700 mb-4">
-//                     Add New Interest
-//                 </h3>
+//   // ---------------- Fetch AboutProf Data ----------------
+//   const { data: aboutprof, isLoading, isError } = useQuery({
+//     queryKey: ["aboutprof"],
+//     queryFn: async () => (await axiosInstance.get("/aboutprof")).data,
+//   });
 
-//                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                     {/* Interest Name */}
-//                     <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-1">
-//                             Interest Title
-//                         </label>
-//                         <input
-//                             type="text"
-//                             placeholder="e.g. Machine Learning"
-//                             className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-//                         />
-//                     </div>
+//   // ---------------- Add Interest Mutation ----------------
+//   const addMutation = useMutation({
+//     mutationFn: (data) => axiosInstance.put("/aboutprof/add-interest", data),
+//     onSuccess: () => {
+//       Swal.fire("Added!", "Research Interest Added Successfully", "success");
+//       queryClient.invalidateQueries(["aboutprof"]);
+//       reset();
+//     },
+//     onError: () => Swal.fire("Error!", "Failed to Add Interest", "error"),
+//   });
 
-//                     {/* Icon */}
-//                     <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-1">
-//                             Icon Name (optional)
-//                         </label>
-//                         <input
-//                             type="text"
-//                             placeholder="FaBrain / FaRobot / FaImage"
-//                             className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-//                         />
-//                     </div>
-//                 </div>
+//   // ---------------- Delete Interest Mutation ----------------
+//   const deleteMutation = useMutation({
+//     mutationFn: (id) => axiosInstance.delete(`/aboutprof/interest/${id}`),
+//     onSuccess: () => {
+//       Swal.fire("Deleted!", "Interest Removed Successfully", "success");
+//       queryClient.invalidateQueries(["aboutprof"]);
+//     },
+//     onError: () => Swal.fire("Error!", "Failed to Delete Interest", "error"),
+//   });
 
-//                 <div className="flex justify-end mt-6">
-//                     <button
-//                         type="button"
-//                         className="px-6 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
-//                     >
-//                         Add Interest
-//                     </button>
-//                 </div>
+//   // ---------------- Submit Handler ----------------
+//   const onSubmit = (data) => {
+//     if (!data.title?.trim()) {
+//       Swal.fire("Warning!", "Research Interest cannot be empty", "warning");
+//       return;
+//     }
+//     addMutation.mutate({ title: data.title.trim() });
+//   };
+
+//   if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+//   if (isError) return <p className="text-center mt-10 text-red-500">Failed to load data.</p>;
+
+//   return (
+//     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-xl">
+//       {/* ---------- Page Header ---------- */}
+//       <h1 className="text-3xl font-semibold text-indigo-700 mb-2 text-center">
+//         Research Interests
+//       </h1>
+//       <p className="text-gray-500 mb-6 text-center">
+//         Add, view, and delete research interests for professors.
+//       </p>
+
+//       {/* ---------- Add Interest Form ---------- */}
+//       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 mb-6">
+//         <input
+//           type="text"
+//           placeholder="Enter Research Interest"
+//           {...register("title", { required: true })}
+//           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+//         />
+//         <button
+//           type="submit"
+//           disabled={addMutation.isLoading}
+//           className={`bg-indigo-600 text-white px-5 py-2 rounded-lg transition ${
+//             addMutation.isLoading
+//               ? "opacity-50 cursor-not-allowed"
+//               : "hover:bg-indigo-700"
+//           }`}
+//         >
+//           {addMutation.isLoading ? "Adding..." : "Add"}
+//         </button>
+//       </form>
+
+//       {/* ---------- Existing Interests ---------- */}
+//       <div className="space-y-2">
+//         {(!aboutprof?.researchInterests || aboutprof.researchInterests.length === 0) && (
+//           <p className="text-gray-400">No research interests added yet.</p>
+//         )}
+
+//         {Array.isArray(aboutprof?.researchInterests) &&
+//           aboutprof.researchInterests.map((item, idx) => (
+//             <div
+//               key={item._id?.toString() || idx}
+//               className="flex justify-between items-center p-3 bg-gray-50 border border-gray-200 rounded-lg"
+//             >
+//               <span className="text-gray-800">{idx + 1}. {item.title}</span>
+//               <button
+//                 onClick={() => {
+//                   Swal.fire({
+//                     title: "Are you sure?",
+//                     text: `Delete "${item.title}"?`,
+//                     icon: "warning",
+//                     showCancelButton: true,
+//                     confirmButtonColor: "#d33",
+//                     cancelButtonColor: "#3085d6",
+//                     confirmButtonText: "Yes, delete it!"
+//                   }).then((result) => {
+//                     if (result.isConfirmed) deleteMutation.mutate(item._id);
+//                   });
+//                 }}
+//                 disabled={deleteMutation.isLoading}
+//                 className={`text-red-500 font-semibold transition ${
+//                   deleteMutation.isLoading ? "opacity-50 cursor-not-allowed" : "hover:text-red-700"
+//                 }`}
+//               >
+//                 {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+//               </button>
 //             </div>
+//           ))}
+//       </div>
+//     </div>
+//   );
+// };
 
-//             {/* Existing Interests */}
-//             <div className="bg-white rounded-xl shadow-md p-6">
-//                 <h3 className="text-lg font-semibold text-gray-700 mb-6">
-//                     Existing Research Interests
-//                 </h3>
+// export default AdminResearchInterest;
 
-//                 <div className="space-y-4">
-//                     {/* Item */}
-//                     <div className="flex items-center justify-between border rounded-lg p-4">
-//                         <div className="flex items-center gap-4">
-//                             <FaBrain className="text-indigo-600 text-xl" />
-//                             <span className="font-medium text-gray-800">
-//                                 Machine Learning
-//                             </span>
-//                         </div>
-//                         <div className="flex gap-3">
-//                             <button className="text-sm text-indigo-600 hover:underline">
-//                                 Edit
-//                             </button>
-//                             <button className="text-sm text-red-600 hover:underline">
-//                                 Delete
-//                             </button>
-//                         </div>
-//                     </div>
-
-//                     <div className="flex items-center justify-between border rounded-lg p-4">
-//                         <div className="flex items-center gap-4">
-//                             <FaImage className="text-indigo-600 text-xl" />
-//                             <span className="font-medium text-gray-800">
-//                                 Image Processing
-//                             </span>
-//                         </div>
-//                         <div className="flex gap-3">
-//                             <button className="text-sm text-indigo-600 hover:underline">
-//                                 Edit
-//                             </button>
-//                             <button className="text-sm text-red-600 hover:underline">
-//                                 Delete
-//                             </button>
-//                         </div>
-//                     </div>
-
-//                     <div className="flex items-center justify-between border rounded-lg p-4">
-//                         <div className="flex items-center gap-4">
-//                             <FaRobot className="text-indigo-600 text-xl" />
-//                             <span className="font-medium text-gray-800">
-//                                 Artificial Intelligence
-//                             </span>
-//                         </div>
-//                         <div className="flex gap-3">
-//                             <button className="text-sm text-indigo-600 hover:underline">
-//                                 Edit
-//                             </button>
-//                             <button className="text-sm text-red-600 hover:underline">
-//                                 Delete
-//                             </button>
-//                         </div>
-//                     </div>
-
-//                     <div className="flex items-center justify-between border rounded-lg p-4">
-//                         <div className="flex items-center gap-4">
-//                             <FaNetworkWired className="text-indigo-600 text-xl" />
-//                             <span className="font-medium text-gray-800">
-//                                 Software Defined Networking
-//                             </span>
-//                         </div>
-//                         <div className="flex gap-3">
-//                             <button className="text-sm text-indigo-600 hover:underline">
-//                                 Edit
-//                             </button>
-//                             <button className="text-sm text-red-600 hover:underline">
-//                                 Delete
-//                             </button>
-//                         </div>
-//                     </div>
-
-//                     <div className="flex items-center justify-between border rounded-lg p-4">
-//                         <div className="flex items-center gap-4">
-//                             <FaMicrochip className="text-indigo-600 text-xl" />
-//                             <span className="font-medium text-gray-800">
-//                                 Internet of Things (IoT)
-//                             </span>
-//                         </div>
-//                         <div className="flex gap-3">
-//                             <button className="text-sm text-indigo-600 hover:underline">
-//                                 Edit
-//                             </button>
-//                             <button className="text-sm text-red-600 hover:underline">
-//                                 Delete
-//                             </button>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         </section>
-//     );
-// }
 
 import React, { useState } from "react";
-import { researchIcons } from "../Data/Research_Icon.jsx";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
 
-export default function EditResearchInterests() {
-  const [items, setItems] = useState(researchIcons);
-  const [title, setTitle] = useState("");
-  const [icon, setIcon] = useState("");
+const AdminResearchInterest = () => {
+  const axiosInstance = useAxios();
+  const queryClient = useQueryClient();
+  const { register, handleSubmit, reset } = useForm();
+  const [editingId, setEditingId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
-  // ADD
-  const handleAdd = () => {
-    if (!title || !icon) return;
+  // ---------------- Fetch AboutProf Data ----------------
+  const { data: aboutprof, isLoading, isError } = useQuery({
+    queryKey: ["aboutprof"],
+    queryFn: async () => (await axiosInstance.get("/aboutprof")).data,
+  });
 
-    const selectedIcon = researchIcons.find(
-      (i) => i.value === icon
-    );
+  // ---------------- Add Interest Mutation ----------------
+  const addMutation = useMutation({
+    mutationFn: (data) => axiosInstance.put("/aboutprof/add-interest", data),
+    onSuccess: () => {
+      Swal.fire("Added!", "Research Interest Added Successfully", "success");
+      queryClient.invalidateQueries(["aboutprof"]);
+      reset();
+    },
+    onError: () => Swal.fire("Error!", "Failed to Add Interest", "error"),
+  });
 
-    setItems([
-      ...items,
-      {
-        label: title,
-        value: Date.now(), // unique key for frontend
-        icon: selectedIcon.icon,
-      },
-    ]);
+  // ---------------- Delete Interest Mutation ----------------
+  const deleteMutation = useMutation({
+    mutationFn: (id) => axiosInstance.delete(`/aboutprof/interest/${id}`),
+    onSuccess: () => {
+      Swal.fire("Deleted!", "Interest Removed Successfully", "success");
+      queryClient.invalidateQueries(["aboutprof"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to Delete Interest", "error"),
+  });
 
-    setTitle("");
-    setIcon("");
+  // ---------------- Update Interest Mutation ----------------
+  const updateMutation = useMutation({
+    mutationFn: ({ id, title }) =>
+      axiosInstance.put(`/aboutprof/interest/${id}`, { title }),
+    onSuccess: () => {
+      Swal.fire("Updated!", "Research Interest Updated Successfully", "success");
+      queryClient.invalidateQueries(["aboutprof"]);
+      setEditingId(null);
+      setEditingTitle("");
+    },
+    onError: () => Swal.fire("Error!", "Failed to Update Interest", "error"),
+  });
+
+  // ---------------- Submit Handler ----------------
+  const onSubmit = (data) => {
+    if (!data.title?.trim()) {
+      Swal.fire("Warning!", "Research Interest cannot be empty", "warning");
+      return;
+    }
+    addMutation.mutate({ title: data.title.trim() });
   };
 
-  // DELETE
-  const handleDelete = (value) => {
-    setItems(items.filter((item) => item.value !== value));
-  };
+  if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+  if (isError) return <p className="text-center mt-10 text-red-500">Failed to load data.</p>;
 
   return (
-    <section className="max-w-5xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-8">
-        Edit Research Interests
-      </h2>
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-xl">
+      {/* ---------- Page Header ---------- */}
+      <h1 className="text-3xl font-semibold text-indigo-700 mb-2 text-center">
+        Research Interests
+      </h1>
+      <p className="text-gray-500 mb-6 text-center">
+        Add, view, update, and delete research interests for professors.
+      </p>
 
-      {/* Add Interest */}
-      <div className="bg-white rounded-xl shadow-md p-6 mb-10">
-        <h3 className="text-lg font-semibold mb-4">
-          Add New Interest
-        </h3>
+      {/* ---------- Add Interest Form ---------- */}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 mb-6">
+        <input
+          type="text"
+          placeholder="Enter Research Interest"
+          {...register("title", { required: true })}
+          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+        />
+        <button
+          type="submit"
+          disabled={addMutation.isLoading}
+          className={`bg-indigo-600 text-white px-5 py-2 rounded-lg transition ${
+            addMutation.isLoading
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-indigo-700"
+          }`}
+        >
+          {addMutation.isLoading ? "Adding..." : "Add"}
+        </button>
+      </form>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <input
-            type="text"
-            placeholder="Interest title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border rounded-md px-4 py-2"
-          />
+      {/* ---------- Existing Interests ---------- */}
+      <div className="space-y-2">
+        {(!aboutprof?.researchInterests || aboutprof.researchInterests.length === 0) && (
+          <p className="text-gray-400">No research interests added yet.</p>
+        )}
 
-          <select
-            value={icon}
-            onChange={(e) => setIcon(e.target.value)}
-            className="border rounded-md px-4 py-2"
-          >
-            <option value="">Select icon</option>
-            {researchIcons.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex justify-end mt-6">
-          <button
-            onClick={handleAdd}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-md"
-          >
-            Add
-          </button>
-        </div>
-      </div>
-
-      {/* Existing Interests */}
-      <div className="bg-white rounded-xl shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4">
-          Existing Interests
-        </h3>
-
-        <div className="space-y-4">
-          {items.map((item) => (
+        {Array.isArray(aboutprof?.researchInterests) &&
+          aboutprof.researchInterests.map((item, idx) => (
             <div
-              key={item.value}
-              className="flex items-center justify-between border rounded-lg p-4"
+              key={item._id?.toString() || idx}
+              className="flex justify-between items-center p-3 bg-gray-50 border border-gray-200 rounded-lg"
             >
-              <div className="flex items-center gap-4">
-                <span className="text-indigo-600 text-xl">
-                  {item.icon}
-                </span>
-                <span className="font-medium">{item.label}</span>
-              </div>
+              {editingId === item._id ? (
+                <input
+                  type="text"
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                  className="flex-1 px-3 py-1 border border-gray-300 rounded"
+                />
+              ) : (
+                <span className="text-gray-800">{idx + 1}. {item.title}</span>
+              )}
 
-              <button
-                onClick={() => handleDelete(item.value)}
-                className="text-sm text-red-600 hover:underline"
-              >
-                Delete
-              </button>
+              <div className="flex gap-2">
+                {editingId === item._id ? (
+                  <button
+                    onClick={() => {
+                      if (!editingTitle.trim()) {
+                        Swal.fire("Warning!", "Title cannot be empty", "warning");
+                        return;
+                      }
+                      updateMutation.mutate({ id: item._id, title: editingTitle });
+                    }}
+                    disabled={updateMutation.isLoading}
+                    className={`bg-green-600 text-white px-3 py-1 rounded-lg transition ${
+                      updateMutation.isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
+                    }`}
+                  >
+                    {updateMutation.isLoading ? "Updating..." : "Update"}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditingId(item._id);
+                      setEditingTitle(item.title);
+                    }}
+                    className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition"
+                  >
+                    Edit
+                  </button>
+                )}
+
+                <button
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: `Delete "${item.title}"?`,
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#d33",
+                      cancelButtonColor: "#3085d6",
+                      confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                      if (result.isConfirmed) deleteMutation.mutate(item._id);
+                    });
+                  }}
+                  disabled={deleteMutation.isLoading}
+                  className={`text-red-500 font-semibold transition ${
+                    deleteMutation.isLoading ? "opacity-50 cursor-not-allowed" : "hover:text-red-700"
+                  }`}
+                >
+                  {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+                </button>
+              </div>
             </div>
           ))}
-        </div>
       </div>
-    </section>
+    </div>
   );
-}
+};
+
+export default AdminResearchInterest;

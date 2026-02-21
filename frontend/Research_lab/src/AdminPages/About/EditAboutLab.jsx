@@ -147,22 +147,6 @@ const AdminAboutLab = () => {
               ></textarea>
             </div>
           </div>
-
-          {/* Button */}
-          {/* <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={saveMutation.isPending}
-              className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60"
-            >
-              {saveMutation.isPending
-                ? "Saving..."
-                : aboutLab?._id
-                  ? "Update Information"
-                  : "Save Information"}
-            </button>
-          </div> */}
-          {/* Button */}
           <div className="flex justify-end mt-4">
             <button
               type="submit"

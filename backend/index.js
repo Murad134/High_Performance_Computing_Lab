@@ -27,6 +27,8 @@ async function run() {
         const footerCollection = db.collection('footer');  // Footer collection
         const contactCollection = db.collection('contact');  // Contact collection
         const aboutlabCollection = db.collection('aboutlab');  // About lab collection
+        const aboutprofCollection = db.collection('aboutprof');  // About professor collection
+
 
         //-----------------------------------API endpoint to get footer data--------------------------------------
         app.post("/footer", async (req, res) => {
@@ -125,7 +127,7 @@ async function run() {
 
 
         //---------------------------------------API for about section-------------------------
-        
+
         // post about lab data
         app.post('/aboutlab', async (req, res) => {
             try {
@@ -170,6 +172,167 @@ async function run() {
             }
         });
 
+
+
+        //--------------------------Api for AboutProfessor section-------------------------
+        // post about professor data
+        app.post('/aboutprof', async (req, res) => {
+            try {
+                const newAboutProf = {
+                    ...req.body,
+                    created_at: new Date(),
+                };
+                const result = await aboutprofCollection.insertOne(newAboutProf);
+                res.send(result);
+            } catch (error) {
+                res.status(500).send({ message: "Failed to submit aboutprof form" });
+            }
+        });
+
+        // get about professor data
+        app.get('/aboutprof', async (req, res) => {
+            try {
+                const aboutprof = await aboutprofCollection.findOne({});
+                res.send(aboutprof);
+            }
+            catch (error) {
+                res.status(500).send({ message: "Failed to fetch aboutprof data" });
+            }
+        });
+        // update about professor data
+        // app.put('/aboutprof', async (req, res) => {
+        //     console.log("PUT /aboutprof received:", req.body);
+        //     try {
+        //         const updatedData = {
+        //             ...req.body,
+        //             updated_at: new Date(),
+        //         };
+        //         const result = await aboutprofCollection.updateOne(
+        //             {},   // update first document
+        //             { $set: updatedData },
+        //             { upsert: true }
+        //         );
+        //         res.send({ message: "Updated successfully", result });
+        //     } catch (error) {
+        //         console.error("Update Error:", error);
+        //         res.status(500).send({ message: "Failed to update", error: error.message });
+        //     }
+        // });
+
+
+        app.put('/aboutprof', async (req, res) => {
+            console.log("PUT /aboutprof received:", req.body);
+            try {
+                const { _id, created_at, ...rest } = req.body;
+
+                const result = await aboutprofCollection.updateOne(
+                    {}, // finds the single document
+                    { $set: { ...rest, updated_at: new Date() } }
+                );
+
+                res.send({ message: "Updated successfully", result });
+            } catch (error) {
+                console.error("Update Error:", error);
+                res.status(500).send({ message: "Failed to update", error: error.message });
+            }
+        });
+        //----------------------------Research Interests API-------------------------
+        // ---------------- Add Research Interest ----------------
+        app.put('/aboutprof/add-interest', async (req, res) => {
+            try {
+                const { title } = req.body;
+
+                if (!title || !title.trim()) {
+                    return res.status(400).send({ message: "Title is required" });
+                }
+
+                const newInterest = {
+                    _id: new ObjectId(),
+                    title: title.trim(),
+                    created_at: new Date()
+                };
+
+                const result = await aboutprofCollection.updateOne(
+                    {}, // single document
+                    {
+                        $push: { researchInterests: newInterest },
+                        $set: { updated_at: new Date() }
+                    },
+                    { upsert: true }
+                );
+
+                res.send({
+                    message: "Research Interest added successfully",
+                    result
+                });
+
+            } catch (error) {
+                console.error("Add Interest Error:", error);
+                res.status(500).send({
+                    message: "Failed to add research interest",
+                    error: error.message
+                });
+            }
+        });
+        // Update Research Interest
+        app.put('/aboutprof/interest/:id', async (req, res) => {
+            try {
+                const { id } = req.params;
+                const { title } = req.body;
+
+                if (!title || !title.trim()) {
+                    return res.status(400).send({ message: "Title is required" });
+                }
+
+                const result = await aboutprofCollection.updateOne(
+                    { "researchInterests._id": new ObjectId(id) },
+                    {
+                        $set: {
+                            "researchInterests.$.title": title.trim(),
+                            updated_at: new Date()
+                        }
+                    }
+                );
+
+                res.send({
+                    message: "Research Interest updated successfully",
+                    result
+                });
+
+            } catch (error) {
+                console.error("Update Interest Error:", error);
+                res.status(500).send({
+                    message: "Failed to update research interest",
+                    error: error.message
+                });
+            }
+        });
+        // Delete Research Interest
+        app.delete('/aboutprof/interest/:id', async (req, res) => {
+            try {
+                const { id } = req.params;
+
+                const result = await aboutprofCollection.updateOne(
+                    {},
+                    {
+                        $pull: { researchInterests: { _id: new ObjectId(id) } },
+                        $set: { updated_at: new Date() }
+                    }
+                );
+
+                res.send({
+                    message: "Research Interest deleted successfully",
+                    result
+                });
+
+            } catch (error) {
+                console.error("Delete Interest Error:", error);
+                res.status(500).send({
+                    message: "Failed to delete research interest",
+                    error: error.message
+                });
+            }
+        });
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -177,7 +340,6 @@ async function run() {
 
     }
 }
-
 run().catch(console.dir);
 
 app.listen(port, () => {

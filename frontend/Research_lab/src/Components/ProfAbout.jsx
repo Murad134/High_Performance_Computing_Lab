@@ -1,28 +1,53 @@
 import React from "react";
 import profP from "../assets/Prof.png";
 import deputyP from "../assets/Murad.jpg";
+import useAxios from "../hooks/useAxios";
+import { useQuery } from "@tanstack/react-query";
 
 function ProfAbout() {
+  const axiosInstance = useAxios();
+  const { data: profabout, isLoading, isError } = useQuery({
+    queryKey: ["profabout"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/aboutprof");
+      return res.data;
+    },
+  });
+  if (isLoading) return <p>Loading profabout...</p>;
+  if (isError || !profabout) return <p>Failed to load data</p>;
+
+  const { head, deputy } = profabout;
+
   return (
-    <div className="grid grid-cols-1  gap-3">
+    <div className="grid grid-cols-1 gap-6">
+
       {/* Head of Lab */}
-      <div className="bg-white  rounded-xl p-6 text-center hover:shadow-2xl transition">
+      <div className="bg-white rounded-xl p-6 text-center hover:shadow-2xl transition">
         <img
-          src={profP}
+          src={head?.picture || profP}
           alt="Head of Lab"
           className="w-9/12 h-40 object-cover rounded-lg mx-auto border-4 border-indigo-200 shadow-md"
         />
         <div className="mt-4 space-y-1">
-          <h2 className="text-xl font-bold text-gray-800">Sk. Shalauddin Kabir</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            {head?.name}
+          </h2>
+
           <p className="text-sm text-gray-600">
-            B.Sc. (Engg.) & M.Sc. (Engg.) in CSE (JUST)
+            {head?.education?.bsc} {head?.education?.msc && `& ${head.education.msc}`}{" "}
+            {head?.education?.phd && `& ${head.education.phd}`}
           </p>
-          <p className="text-lg font-semibold text-indigo-700">Head of Lab</p>
+
+          <p className="text-lg font-semibold text-indigo-700">
+            {head?.position}
+          </p>
+
           <p className="text-sm font-bold text-gray-600">
-            Dept. of Computer Science and Engineering
+            {head?.department}
           </p>
+
           <p className="text-sm text-gray-600">
-            Jashore University of Science and Technology
+            {head?.university}
           </p>
         </div>
       </div>
@@ -30,26 +55,35 @@ function ProfAbout() {
       {/* Deputy Head of Lab */}
       <div className="bg-white rounded-xl p-6 text-center hover:shadow-2xl transition">
         <img
-          src={deputyP}
+          src={deputy?.picture || deputyP}
           alt="Deputy Head of Lab"
           className="w-9/12 h-40 object-cover rounded-lg mx-auto border-4 border-purple-200 shadow-md"
         />
         <div className="mt-4 space-y-1">
-          <h2 className="text-xl font-bold text-gray-800">[Deputy Head Name]</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            {deputy?.name}
+          </h2>
+
           <p className="text-sm text-gray-600">
-            [Degree Info, e.g. B.sc(Engg.) in CSE (JUST)]
+            {deputy?.education?.bsc} {deputy?.education?.msc && `& ${deputy.education.msc}`}{" "}
+            {deputy?.education?.phd && `& ${deputy.education.phd}`}
           </p>
-          <p className="text-lg font-semibold text-purple-700">Deputy Head of Lab</p>
+
+          <p className="text-lg font-semibold text-purple-700">
+            {deputy?.position}
+          </p>
+
           <p className="text-sm font-bold text-gray-600">
-            Dept. of Computer Science and Engineering
+            {deputy?.department}
           </p>
+
           <p className="text-sm text-gray-600">
-            Jashore University of Science and Technology
+            {deputy?.university}
           </p>
         </div>
       </div>
+
     </div>
   );
 }
-
 export default ProfAbout;
