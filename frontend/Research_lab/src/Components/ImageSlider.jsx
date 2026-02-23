@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import img1 from "../assets/sliderImage/1.jpg";
-import img2 from "../assets/sliderImage/3.jpg";
-import img3 from "../assets/sliderImage/4.jpg";
-import img4 from "../assets/sliderImage/1.jpg";
-import img5 from "../assets/sliderImage/2.jpg";
-import img6 from "../assets/sliderImage/6.jpg";
-import img7 from "../assets/sliderImage/7.jpg";
-import img8 from "../assets/sliderImage/8.jpg";
-import img10 from "../assets/sliderImage/10.JPG";
-import img12 from "../assets/sliderImage/12.JPG";
-import img13 from "../assets/sliderImage/13.png";
+import img1 from "../assets/1.JPG";
+import img2 from "../assets/2.png";
+import img3 from "../assets/3.jpg";
+import img4 from "../assets/4.jpg";
+import img5 from "../assets/5.jpg";
+import img6 from "../assets/6.png";
+import img7 from "../assets/7.jpg";
+import img8 from "../assets/3.jpg";
+import img10 from "../assets/5.jpg";
+import img12 from "../assets/6.png";
+import img13 from "../assets/7.jpg";
 
 export default function AutoScrollCarousel() {
   const images = [img1, img12, img2, img4, img6, img13, img8, img7, img10, img3, img5];
@@ -163,8 +163,8 @@ export default function AutoScrollCarousel() {
               key={idx}
               onClick={() => goToSlide(idx)}
               className={`transition-all duration-300 rounded-full ${currentIndex === idx
-                  ? "w-8 h-3 bg-blue-600"
-                  : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
+                ? "w-8 h-3 bg-blue-600"
+                : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
                 }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

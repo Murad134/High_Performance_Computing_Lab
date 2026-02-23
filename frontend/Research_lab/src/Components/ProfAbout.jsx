@@ -1,6 +1,4 @@
 import React from "react";
-import profP from "../assets/Prof.png";
-import deputyP from "../assets/Murad.jpg";
 import useAxios from "../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 
@@ -24,7 +22,7 @@ function ProfAbout() {
       {/* Head of Lab */}
       <div className="bg-white rounded-xl p-6 text-center hover:shadow-2xl transition">
         <img
-          src={head?.picture || profP}
+          src={head?.picture}
           alt="Head of Lab"
           className="w-9/12 h-40 object-cover rounded-lg mx-auto border-4 border-indigo-200 shadow-md"
         />
@@ -55,7 +53,7 @@ function ProfAbout() {
       {/* Deputy Head of Lab */}
       <div className="bg-white rounded-xl p-6 text-center hover:shadow-2xl transition">
         <img
-          src={deputy?.picture || deputyP}
+          src={deputy?.picture}
           alt="Deputy Head of Lab"
           className="w-9/12 h-40 object-cover rounded-lg mx-auto border-4 border-purple-200 shadow-md"
         />

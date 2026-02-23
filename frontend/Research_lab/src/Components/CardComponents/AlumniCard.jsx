@@ -9,7 +9,6 @@ export default function AlumniCard({ item, onUpdate }) {
         };
         onUpdate(updatedStudent);
     };
-
     return (
         <div className="card bg-base-100 hover:shadow-2xl transition-shadow duration-300">
             {/* Alumni Picture */}
