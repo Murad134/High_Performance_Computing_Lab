@@ -8,7 +8,7 @@
     "session": "21-22",
     "roll": "200111",
     "projectImage": "/images/thesis1.jpg",
-    "studentImg": "/students/nafisa.jpg",
+  "studentImg": "/students/nafisa.jpg",
     "technologies": ["Python", "TensorFlow", "Keras"],
     "details": "Applies CNN models to early disease detection using medical images.",
     "startDate": "2023-01-01",

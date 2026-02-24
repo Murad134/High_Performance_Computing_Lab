@@ -1,4 +1,4 @@
-// import React, { useState, useEffect } from "react";
+// import React, { useState } from "react";
 // import { useForm } from "react-hook-form";
 // import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 // import Swal from "sweetalert2";
@@ -21,6 +21,7 @@
 //   const queryClient = useQueryClient();
 //   const { register, handleSubmit, reset, watch, setValue } = useForm();
 //   const [editingId, setEditingId] = useState(null); // track editing record
+//   const [searchRoll, setSearchRoll] = useState(""); // for search input
 //   const type = watch("type") || "project";
 
 //   /* ================= GET ALL DATA ================= */
@@ -36,12 +37,15 @@
 //   const createMutation = useMutation({
 //     mutationFn: async (newData) => {
 //       if (editingId) {
-//         // update mode
+//         // Update mode
 //         const res = await axiosSecure.put(`/studentProject/update/${editingId}`, newData);
 //         return res.data;
 //       } else {
-//         // create mode
-//         const res = await axiosSecure.post("/studentProject/add", newData);
+//         // Create mode
+//         const res = await axiosSecure.post("/studentProject/add", {
+//           ...newData,
+//           status: 'ongoing',
+//         });
 //         return res.data;
 //       }
 //     },
@@ -49,7 +53,7 @@
 //       Swal.fire({
 //         icon: "success",
 //         title: editingId ? "Updated Successfully!" : "Created Successfully!",
-//         text: editingId ? data.message : `Inserted ID: ${data.insertedId || "N/A"}`,
+//         text: editingId ? data.message || "Record updated." : `Inserted ID: ${data.insertedId || "N/A"}`,
 //       });
 //       queryClient.invalidateQueries(["studentProjects"]);
 //       reset();
@@ -219,12 +223,12 @@
 //         </form>
 
 //         {/* ================= Display Cards ================= */}
-//         <div className="mt-10">
+//         <div className="mt-10 border-t-2 border-red-500 pt-10">
 //           <h3 className="text-4xl font-extrabold mb-6 text-center text-indigo-700 tracking-tight">
 //             All Student Records
 //           </h3>
 
-//           {/* ================= Search Bar ================= */}
+//           {/* Search Bar */}
 //           <div className="flex justify-center mb-8">
 //             <input
 //               type="text"
@@ -235,16 +239,12 @@
 //             />
 //           </div>
 
-//           {isLoading && (
-//             <p className="text-center text-gray-500 italic">Loading records...</p>
-//           )}
+//           {isLoading && <p className="text-center text-gray-500 italic">Loading records...</p>}
 
 //           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 //             {projects
 //               .filter((item) =>
-//                 searchRoll
-//                   ? item.student?.roll?.toString().includes(searchRoll)
-//                   : true
+//                 searchRoll ? item.student?.roll?.toString().includes(searchRoll) : true
 //               )
 //               .map((item) => (
 //                 <div
@@ -290,8 +290,8 @@
 //                     </button>
 //                     <span
 //                       className={`px-3 py-1 rounded-full text-sm font-semibold ${item.type === "project"
-//                           ? "bg-blue-100 text-blue-700"
-//                           : "bg-green-100 text-green-700"
+//                         ? "bg-blue-100 text-blue-700"
+//                         : "bg-green-100 text-green-700"
 //                         }`}
 //                     >
 //                       {item.type?.toUpperCase() || "N/A"}
@@ -307,7 +307,6 @@
 // };
 
 // export default AdminStudentProjectPage;
-
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -330,10 +329,20 @@ const Input = ({ label, registerProps, type = "text" }) => (
 const AdminStudentProjectPage = () => {
   const axiosSecure = useAxios();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, watch, setValue } = useForm();
-  const [editingId, setEditingId] = useState(null); // track editing record
-  const [searchRoll, setSearchRoll] = useState(""); // for search input
-  const type = watch("type") || "project";
+
+  const { register, handleSubmit, reset, watch, setValue } = useForm({
+    // ✅ FIX 1: Prevents fields from unregistering when hidden (fixes studentImage & department lost on thesis)
+    shouldUnregister: false,
+    // ✅ FIX 2: Proper default values so selects are stable from first render
+    defaultValues: {
+      type: "project",
+      studentLevel: "BSc",
+    },
+  });
+
+  const [editingId, setEditingId] = useState(null);
+  const [searchRoll, setSearchRoll] = useState("");
+  const type = watch("type");
 
   /* ================= GET ALL DATA ================= */
   const { data: projects = [], isLoading } = useQuery({
@@ -348,12 +357,13 @@ const AdminStudentProjectPage = () => {
   const createMutation = useMutation({
     mutationFn: async (newData) => {
       if (editingId) {
-        // Update mode
         const res = await axiosSecure.put(`/studentProject/update/${editingId}`, newData);
         return res.data;
       } else {
-        // Create mode
-        const res = await axiosSecure.post("/studentProject/add", newData);
+        const res = await axiosSecure.post("/studentProject/add", {
+          ...newData,
+          status: "ongoing",
+        });
         return res.data;
       }
     },
@@ -361,10 +371,32 @@ const AdminStudentProjectPage = () => {
       Swal.fire({
         icon: "success",
         title: editingId ? "Updated Successfully!" : "Created Successfully!",
-        text: editingId ? data.message || "Record updated." : `Inserted ID: ${data.insertedId || "N/A"}`,
+        text: editingId
+          ? data.message || "Record updated."
+          : `Inserted ID: ${data.insertedId || "N/A"}`,
       });
-      queryClient.invalidateQueries(["studentProjects"]);
-      reset();
+      // ✅ FIX 3: Correct invalidateQueries syntax for React Query v5
+      queryClient.invalidateQueries({ queryKey: ["studentProjects"] });
+      reset({
+        type: "project",
+        studentLevel: "BSc",
+        studentName: "",        
+        session: "",            
+        roll: "",               
+        studentImage: "",       
+        department: "",         
+        projectTitle: "",
+        projectImage: "",
+        technologies: "",
+        projectStartDate: "",
+        projectDetails: "",
+        thesisTitle: "",
+        keywords: "",
+        publicationDate: "",
+        publication: "",
+        thesisStartDate: "",
+        abstract: "",
+      });
       setEditingId(null);
     },
     onError: () => {
@@ -392,8 +424,9 @@ const AdminStudentProjectPage = () => {
         ? {
           projectTitle: formData.projectTitle,
           projectImage: formData.projectImage,
+          // ✅ FIX 4: filter(Boolean) prevents [""] when field is empty
           technologies: formData.technologies
-            ? formData.technologies.split(",").map((t) => t.trim())
+            ? formData.technologies.split(",").map((t) => t.trim()).filter(Boolean)
             : [],
           projectStartDate: formData.projectStartDate,
           projectDetails: formData.projectDetails,
@@ -401,7 +434,7 @@ const AdminStudentProjectPage = () => {
         : {
           thesisTitle: formData.thesisTitle,
           keywords: formData.keywords
-            ? formData.keywords.split(",").map((k) => k.trim())
+            ? formData.keywords.split(",").map((k) => k.trim()).filter(Boolean)
             : [],
           publicationDate: formData.publicationDate,
           publication: formData.publication,
@@ -417,7 +450,7 @@ const AdminStudentProjectPage = () => {
     setEditingId(item._id);
     setValue("type", item.type);
     setValue("studentName", item.student?.studentName || "");
-    setValue("studentLevel", item.student?.studentLevel || "");
+    setValue("studentLevel", item.student?.studentLevel || "BSc");
     setValue("session", item.student?.session || "");
     setValue("roll", item.student?.roll || "");
     setValue("studentImage", item.student?.studentImage || "");
@@ -437,6 +470,15 @@ const AdminStudentProjectPage = () => {
       setValue("thesisStartDate", item.thesisStartDate || "");
       setValue("abstract", item.abstract || "");
     }
+
+    // Scroll to top of form
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  /* ================= CANCEL EDIT ================= */
+  const handleCancel = () => {
+    reset({ type: "project", studentLevel: "BSc" });
+    setEditingId(null);
   };
 
   return (
@@ -448,6 +490,7 @@ const AdminStudentProjectPage = () => {
 
         {/* ================= FORM ================= */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
           {/* Student Section */}
           <div>
             <h3 className="text-xl font-semibold mb-4 border-b pb-2">Student Information</h3>
@@ -455,7 +498,10 @@ const AdminStudentProjectPage = () => {
               <Input label="Student Name" registerProps={register("studentName")} />
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">Student Level</label>
-                <select {...register("studentLevel")} className="border border-gray-300 rounded-lg px-3 py-2">
+                <select
+                  {...register("studentLevel")}
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                >
                   <option value="BSc">BSc</option>
                   <option value="MSc">MSc</option>
                   <option value="PhD">PhD</option>
@@ -471,21 +517,31 @@ const AdminStudentProjectPage = () => {
           {/* Type Selector */}
           <div>
             <label className="text-sm font-medium">Select Type</label>
-            <select {...register("type")} className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1">
+            <select
+              {...register("type")}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1"
+            >
               <option value="project">Project</option>
               <option value="thesis">Thesis</option>
             </select>
           </div>
 
-          {/* Project / Thesis Section */}
+          {/* Project Section */}
           {type === "project" && (
             <div>
               <h3 className="text-xl font-semibold mb-4 border-b pb-2">Project Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input label="Project Title" registerProps={register("projectTitle")} />
                 <Input label="Project Image URL" registerProps={register("projectImage")} />
-                <Input label="Technologies (comma separated)" registerProps={register("technologies")} />
-                <Input label="Start Date" type="date" registerProps={register("projectStartDate")} />
+                <Input
+                  label="Technologies (comma separated)"
+                  registerProps={register("technologies")}
+                />
+                <Input
+                  label="Start Date"
+                  type="date"
+                  registerProps={register("projectStartDate")}
+                />
                 <div className="col-span-2">
                   <h4 className="text-lg font-medium mb-1">Project Details</h4>
                   <textarea
@@ -498,15 +554,27 @@ const AdminStudentProjectPage = () => {
             </div>
           )}
 
+          {/* Thesis Section */}
           {type === "thesis" && (
             <div>
               <h3 className="text-xl font-semibold mb-4 border-b pb-2">Thesis Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input label="Thesis Title" registerProps={register("thesisTitle")} />
-                <Input label="Keywords (comma separated)" registerProps={register("keywords")} />
-                <Input label="Publication Date" type="date" registerProps={register("publicationDate")} />
+                <Input
+                  label="Keywords (comma separated)"
+                  registerProps={register("keywords")}
+                />
+                <Input
+                  label="Publication Date"
+                  type="date"
+                  registerProps={register("publicationDate")}
+                />
                 <Input label="Publication" registerProps={register("publication")} />
-                <Input label="Start Date" type="date" registerProps={register("thesisStartDate")} />
+                <Input
+                  label="Start Date"
+                  type="date"
+                  registerProps={register("thesisStartDate")}
+                />
                 <div className="col-span-2">
                   <h4 className="text-lg font-medium mb-1">Thesis Abstract</h4>
                   <textarea
@@ -519,8 +587,18 @@ const AdminStudentProjectPage = () => {
             </div>
           )}
 
-          {/* Submit Button */}
-          <div className="flex justify-end">
+          {/* Submit / Cancel Buttons */}
+          <div className="flex justify-end gap-3">
+            {/* ✅ FIX 5: Cancel button to exit edit mode */}
+            {editingId && (
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="px-6 py-3 bg-gray-400 text-white rounded-xl font-semibold hover:bg-gray-600 transition"
+              >
+                Cancel
+              </button>
+            )}
             <button
               type="submit"
               className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-900 transition"
@@ -529,7 +607,7 @@ const AdminStudentProjectPage = () => {
             </button>
           </div>
         </form>
-        
+
         {/* ================= Display Cards ================= */}
         <div className="mt-10 border-t-2 border-red-500 pt-10">
           <h3 className="text-4xl font-extrabold mb-6 text-center text-indigo-700 tracking-tight">
@@ -547,12 +625,16 @@ const AdminStudentProjectPage = () => {
             />
           </div>
 
-          {isLoading && <p className="text-center text-gray-500 italic">Loading records...</p>}
+          {isLoading && (
+            <p className="text-center text-gray-500 italic">Loading records...</p>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects
               .filter((item) =>
-                searchRoll ? item.student?.roll?.toString().includes(searchRoll) : true
+                searchRoll
+                  ? item.student?.roll?.toString().includes(searchRoll)
+                  : true
               )
               .map((item) => (
                 <div
@@ -562,7 +644,7 @@ const AdminStudentProjectPage = () => {
                   {/* Card Header */}
                   <div className="mb-4">
                     <h4 className="text-xl font-bold text-gray-800 truncate">
-                      Student Name: {item.student?.studentName || "N/A"}
+                      Name: {item.student?.studentName || "N/A"}
                     </h4>
                     <p className="text-gray-600 mt-1 font-medium">
                       Title:{" "}
