@@ -1,130 +1,149 @@
-import { useLoaderData, useNavigate, useLocation } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../hooks/useAxios";
 const ThesisDetails = () => {
-    const loaderData = useLoaderData();
+    const { id } = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
+    const axiosInstance = useAxios();
 
-    // ✅ location.state theke updated data nibo, otherwise loader data
-    const thesis = location.state?.updatedThesis || loaderData;
+    // Fetch single project or thesis
+    const { data: item, isLoading } = useQuery({
+        queryKey: ["studentproject", id],
+        queryFn: async () => {
+            const res = await axiosInstance.get(`/studentproject/${id}`);
+            return res.data;
+        },
+    });
 
-    const {
-        title,
-        publicationDate,
-        publicationPages,
-        publicationName,
-        abstract,
-        keywords,
-        thesisImage,
-        studentName,
-        studentSession,
-        studentLevel,
-        startDate,
-        endDate,
-        isCompleted,
-    } = thesis;
+    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+    if (!item) return <p className="text-center mt-10">Item not found</p>;
+
+    // Normalize fields
+    const isThesis = item.type === "thesis";
+    const nested = isThesis ? item.thesis : item.project;
+
+    const normalized = {
+        title: isThesis ? nested.thesisTitle : nested.projectTitle,
+        // image: isThesis ? nested.thesisImage : nested.projectImage,
+        startDate: isThesis ? nested.thesisStartDate : nested.projectStartDate,
+        description: isThesis ? nested.abstract : nested.projectDetails,
+        status: isThesis ? nested.thesisstatus : nested.projectstatus,
+        techs: isThesis ? nested.keywords : nested.technologies,
+        student: item.student || {},
+        type: item.type,
+    };
+
+    const formattedDate = normalized.startDate
+        ? new Date(normalized.startDate).toLocaleDateString("en-GB")
+        : "N/A";
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
-            <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="flex justify-center items-start min-h-screen p-6">
+            <div className="w-full rounded-lg overflow-hidden">
 
-                {/* Thesis Image */}
-                {thesisImage && (
-                    <img
-                        src={thesisImage}
-                        alt={title}
-                        className="w-full h-64 object-cover"
-                    />
-                )}
+                {/* Header */}
+                <div className="p-6 border-b border-gray-200">
+                    <h2 className="text-2xl font-extrabold text-gray-900 tracking-wide">
+                        Title: <span className="text-indigo-600">{normalized.title}</span>
+                    </h2>
+                </div>
 
-                <div className="p-6">
-                    {/* Title */}
-                    <h2 className="text-3xl font-bold text-gray-800 mb-4">{title}</h2>
+                {/* Body */}
+                <div className="p-6 flex flex-col gap-4">
 
                     {/* Student Info */}
-
-                    <p className="text-gray-600 mb-4">
-                        <span className="font-semibold">Member:</span> {studentName}{" "}
-                        <span className="ml-2 text-sm text-gray-500">({studentSession})</span>
-                    </p>
-
-                    <p className="text-gray-600 mb-4">
-                        <span className="font-semibold">Program:</span> {studentLevel}
-                    </p>
-
-                    {/* Timeline */}
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                        <p className="text-gray-600">
-                            <span className="font-semibold">Start Date:</span> {startDate}
+                    <div className="text-sm space-y-1 text-gray-700">
+                        <p>
+                            <span className="font-semibold text-gray-800">Student:</span>{" "}
+                            <span className="text-gray-900">{normalized.student.studentName}</span> ({normalized.student.studentLevel})
                         </p>
-
-                        {isCompleted && endDate && (
-                            <p className="text-gray-600">
-                                <span className="font-semibold">End Date:</span> {endDate}
+                        <p>
+                            <span className="font-semibold text-gray-800">Session:</span>{" "}
+                            <span className="text-gray-900">{normalized.student.session}</span>
+                        </p>
+                        {normalized.student.roll && (
+                            <p>
+                                <span className="font-semibold text-gray-800">Roll:</span>{" "}
+                                <span className="text-gray-900">{normalized.student.roll}</span>
                             </p>
                         )}
-                    </div>
-                    {/* Publication Info */}
-                    <div className="mb-6">
-                        <p className="text-gray-600 mb-2">
-                            <span className="font-semibold">Publication:</span> {publicationName}
+                        <p>
+                            <span className="font-semibold text-gray-800">Department:</span>{" "}
+                            <span className="text-gray-900">{normalized.student.department}</span>
                         </p>
-                        <p className="text-gray-600 mb-2">
-                            <span className="font-semibold">Pages:</span> {publicationPages}
-                        </p>
-                        <p className="text-gray-600 mb-2">
-                            <span className="font-semibold">Publication Date:</span> {publicationDate}
-                        </p>
-
                     </div>
 
 
+                    {/* Start Date */}
+                    <p className="text-sm text-gray-700">
+                        <span className="font-semibold text-gray-800">Start Date:</span>{" "}
+                        <span className="text-gray-900">{formattedDate}</span>
+                    </p>
 
-                    {/* Keywords */}
-                    {keywords && keywords.length > 0 && (
-                        <div className="mb-6">
-                            <span className="font-semibold text-gray-700">Keywords:</span>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {keywords.map((keyword, index) => (
+                    {/* Status */}
+                    <p className="text-sm font-semibold">
+                        Status:{" "}
+                        <span
+                            className={`px-2 py-1 rounded-lg text-xs font-medium ${normalized.status === "completed" ? "bg-green-600 text-white" : "bg-yellow-500 text-white"
+                                }`}
+                        >
+                            {normalized.status}
+                        </span>
+                    </p>
+                    {/* Technologies / Keywords */}
+                    {normalized.techs?.length > 0 && (
+                        <div className="text-sm text-gray-700">
+                            <span className="font-semibold text-gray-800">
+                                {normalized.type === "thesis" ? "Keywords:" : "Technologies:"}
+                            </span>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                                {normalized.techs.map((tech, index) => (
                                     <span
                                         key={index}
-                                        className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full"
+                                        className="px-3 py-1 bg-indigo-100 text-indigo-800 font-medium text-xs rounded-full"
                                     >
-                                        {keyword}
+                                        {tech}
                                     </span>
                                 ))}
                             </div>
                         </div>
                     )}
 
-                    {/* Abstract */}
-                    <div className="mt-6">
-                        <h3 className="font-semibold text-gray-700 mb-2">Abstract</h3>
-                        <p className="text-gray-700 leading-relaxed">{abstract}</p>
-                    </div>
+                    {/* Description / Abstract */}
+                    <p className="text-sm text-gray-700 border-t pt-3 border-gray-400">
+                        <span className="font-semibold text-gray-800">
+                            {normalized.type === "thesis" ? "Abstract:" : "Description:"}
+                        </span>{" "}
+                        <span className="text-gray-900">{normalized.description}</span>
+                    </p>
 
-                    {/* Status Badge */}
-                    {isCompleted && (
-                        <div className="mt-6">
-                            <span className="inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full font-semibold">
-                                ✓ Completed
-                            </span>
-                        </div>
-                    )}
-
-                    {/* Back Button */}
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold"
-                    >
-                        ← Back to Theses
-                    </button>
                 </div>
+
+                {/* Footer: Image + Back Button */}
+                <div className="p-6 border-t border-gray-200 flex flex-col gap-4 bg-gray-50">
+                    {/* {normalized.image && (
+                        <img
+                            src={normalized.image}
+                            alt={normalized.title}
+                            className="w-full h-64 object-cover rounded-md border border-gray-300 shadow-sm"
+                        />
+                    )} */}
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 transition duration-300 font-semibold shadow"
+                        >
+                            Back
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
-    );
-};
 
+    );
+
+};
 export default ThesisDetails;
 
 

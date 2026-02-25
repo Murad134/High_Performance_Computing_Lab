@@ -10,7 +10,7 @@ function Member() {
         <LeftSidebar />
         
         {/* Main content - Full width, separate scroll */}
-        <main className="flex-1 py-8 px-6 overflow-y-auto">
+        <main className="flex-1 py-8 px-2 overflow-y-auto">
           <Outlet />
         </main>
       </div>

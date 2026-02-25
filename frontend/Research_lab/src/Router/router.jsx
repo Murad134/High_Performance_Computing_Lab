@@ -163,32 +163,19 @@ const router = createBrowserRouter([
                     {
                         path: "thesis",
                         element: <Thesis />,
-                        loader: () =>
-                            fetch("/thesis.json").then(res => res.json()),
                     },
                     {
                         path: "thesis/:id",
                         element: <ThesisDetails />,
-                        loader: async ({ params }) => {
-                            const res = await fetch("/thesis.json");
-                            const data = await res.json();
-                            return data.find(item => item.id === Number(params.id));
-                        }
+                       
                     },
                     {
                         path: "projects",
                         element: <Project />,
-                        loader: () =>
-                            fetch("/project.json").then(res => res.json()),
                     },
                     {
                         path: "projects/:id",
-                        element: <ViewDetails />,
-                        loader: async ({ params }) => {
-                            const res = await fetch("/project.json");
-                            const data = await res.json();
-                            return data.find(item => item.id === Number(params.id));
-                        }
+                        element: <ViewDetails />
                     },
                 ]
             },

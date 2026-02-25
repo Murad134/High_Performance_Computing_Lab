@@ -105,7 +105,7 @@ function LeftSidebar() {
   };
 
   return (
-    <aside className="w-80 min-h-screen sticky top-16 overflow-y-auto">
+    <aside className="w-[300px] min-h-screen sticky top-16 overflow-y-auto">
       <div className="p-8">
         <h2 className="text-2xl font-bold text-primary mb-8">Members</h2>
 

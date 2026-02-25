@@ -9,7 +9,7 @@ function LeftAsideThesis({ activeTab, setActiveTab }) {
             : 'hover:bg-blue-100'
         }`}
       >
-        Current Theses
+        Current Thesis
       </button>
 
       <button
@@ -20,7 +20,7 @@ function LeftAsideThesis({ activeTab, setActiveTab }) {
             : 'hover:bg-purple-100'
         }`}
       >
-        Completed Theses
+        Completed Thesis
       </button>
     </div>
   );

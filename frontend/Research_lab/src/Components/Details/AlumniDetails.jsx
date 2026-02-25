@@ -1,37 +1,59 @@
-import React from 'react'
 
 function AlumniDetails({ item }) {
     return (
-        <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden">
+        <div className="card bg-base-100 hover:shadow-2xl transition-shadow duration-300 rounded-xl overflow-hidden">
 
-            {/* Student Picture */}
-            <div className="w-9/12 mx-auto ">
-                <img
-                    src={item.studentImg}
-                    alt={item.studentName}
-                    className="w-full h-56 object-cover border border-blue-100 my-2 rounded-md"
-                />
-            </div>
+            {/* ========= Header: Student Image ========= */}
+            <header>
+                <figure className="w-full h-48 overflow-hidden">
+                    <img
+                        src={item.student?.studentImage}
+                        alt={item.student?.studentName}
+                        className="w-full h-full object-cover p-2 rounded-xl"
+                    />
+                </figure>
+            </header>
 
-            {/* Card Content */}
-            <div className="p-5 flex flex-col flex-1">
+            {/* ========= Body ========= */}
+            <div className="card-body p-4 border-t border-base-900">
+
                 {/* Name */}
-                <h2 className="text-xl font-bold text-gray-800 mb-2">
-                    {item.studentName}
+                <h2 className="card-title text-lg font-semibold mb-1">
+                    Name : {item.student?.studentName}
+                    <span className="badge badge-secondary ml-2">Alumni</span>
                 </h2>
 
-                {/* Session */}
-                <p className="text-sm text-gray-600 mb-3">
-                    <span className="font-bold text-green-600">Session:</span> {item.session}
-                </p>
-
-                {/* Thesis / Project Title */}
-                <h3 className="text-md font-semibold text-gray-700 text-left mt-2 mb-4">
-                    Title: {item.name}
-                </h3>
+                {/* Student Info */}
+                <div className="text-sm space-y-1">
+                    <p>
+                        <span className="font-medium">Roll:</span>{" "}
+                        {item.student?.roll}
+                    </p>
+                    <p>
+                        <span className="font-medium">Session:</span>{" "}
+                        {item.student?.session}
+                    </p>
+                    <p>
+                        <span className="font-medium">Department:</span>{" "}
+                        {item.student?.department}
+                    </p>
+                </div>
             </div>
+
+            {/* ========= Footer ========= */}
+            <footer className="card-footer p-4 border-t border-base-700">
+                <p className="text-sm">
+                    <span className="font-semibold text-primary">Title:</span>{" "}
+                    {item.type === "thesis"
+                        ? item.thesis?.thesisTitle
+                        : item.project?.projectTitle}{" "}
+                    <span className="text-xs font-medium text-secondary">
+                        ({item.type})
+                    </span>
+                </p>
+            </footer>
         </div>
-    )
+    );
 }
 
-export default AlumniDetails
+export default AlumniDetails;
