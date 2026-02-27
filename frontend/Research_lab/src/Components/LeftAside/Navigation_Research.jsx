@@ -50,53 +50,48 @@
 
 
 
+
 import { NavLink } from "react-router-dom";
-
-function NavigationResearch({ navigation }) {
+const navigation = [
+  {
+    label: "Departments",
+    path: "/admin/research/departments",
+  },
+  {
+    label: "Teams",
+    path: "/admin/research/teams",
+  },
+  {
+    label: "Experimental Platforms",
+    path: "/admin/research/experimental-platforms",
+  },
+  {
+    label: "Other Country Projects & Funded Projects",
+    path: "/admin/research/projects",
+  },
+];
+export default function NavigationResearch() {
   return (
-    <aside className="w-80   min-h-screen sticky top-16 overflow-y-auto">
-      <div className="p-8">
-        <h2 className="text-2xl font-bold text-primary mb-8">
-          Research Navigation
-        </h2>
+    <aside className="bg-white shadow-md p-6 min-h-screen">
+      <h2 className="text-xl font-bold mb-6">Research Admin</h2>
 
-        {/* Tree Container */}
-        <div className="relative pl-4">
-          {/* Main Vertical Line */}
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-700" />
-
-          {/* Navigation Items */}
-          <div className="ml-0 space-y-6">
-            {navigation.map((item) => (
-              <div key={item.id} className="relative flex items-center">
-                
-                {/* Circle ON main vertical line */}
-                <div className="absolute -left-1.5 w-3 h-3 rounded-full bg-red-700 z-10" />
-
-                {/* Horizontal line from circle */}
-                <div className="absolute left-2 w-6 h-0.5 bg-red-700" />
-
-                <NavLink
-                  to={`/research${item.path}`}
-                  className={({ isActive }) =>
-                    `ml-10 text-lg transition-all
-                    ${
-                      isActive
-                        ? "text-secondary font-semibold scale-105"
-                        : "text-base-content hover:text-secondary"
-                    }`
-                  }
-                >
-                  {item.title}
-                </NavLink>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <nav className="space-y-3">
+        {navigation.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              `block px-4 py-2 rounded-md transition ${
+                isActive
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
     </aside>
   );
 }
-
-export default NavigationResearch;
-

@@ -32,5 +32,4 @@ async function updateFooter(req, res) {
         res.status(500).send({ message: 'Failed to update footer' });
     }
 }
-
 module.exports = { createFooter, getFooter, updateFooter };

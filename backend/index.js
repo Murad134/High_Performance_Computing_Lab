@@ -17,6 +17,8 @@ const contactRoutes = require('./routes/contactRoutes');
 const aboutLabRoutes = require('./routes/aboutLabRoutes');
 const aboutProfRoutes = require('./routes/aboutProfRoutes');
 const studentProjectRoutes = require('./routes/studentProjectRoutes');
+const departmentRoutes = require('./routes/departmentRoutes');
+const teamRoutes = require('./routes/teamRoutes');
 async function start() {
     try {
         await connectToDb();
@@ -26,6 +28,8 @@ async function start() {
         app.use('/aboutlab', aboutLabRoutes);
         app.use('/aboutprof', aboutProfRoutes);
         app.use('/studentproject', studentProjectRoutes);
+        app.use('/departments', departmentRoutes);
+        app.use('/teams', teamRoutes);
         app.listen(port, () => console.log(`My project is running on port ${port}`));
     } catch (err) {
         console.error('Failed to start server', err);

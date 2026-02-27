@@ -12,7 +12,7 @@ import React from "react";
 
 export default function AdminAddNavigationForm() {
   return (
-    <section className="max-w-4xl mx-auto p-4 sm:p-6">
+    <section className="mx-auto p-4 sm:p-6">
       <h2 className="flex items-center justify-center text-2xl font-bold text-indigo-700 mb-8">
         Add Navigation Link
       </h2>

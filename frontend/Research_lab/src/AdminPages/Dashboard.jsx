@@ -19,7 +19,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12 font-poppins">
+    <section className="mx-auto px-6 py-12 font-poppins">
       {/* Header */}
       <div className="mb-10">
         <h1 className="text-4xl font-extrabold text-indigo-700 mb-2">🛠️ Admin Dashboard</h1>

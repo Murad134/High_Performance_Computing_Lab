@@ -11,6 +11,5 @@ export default function Research() {
         <Outlet context={{ filter, setFilter, selected, setSelected }} />
       </main>
     </div>
-
   );
 }

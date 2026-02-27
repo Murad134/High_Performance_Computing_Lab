@@ -120,10 +120,6 @@ const router = createBrowserRouter([
                             }
                         ]
                     },
-                    // {
-                    //     path: "publications",
-                    //     element: <Publications />,
-                    // }
                     {
                         path: "publications",
                         element: <Publications />,
@@ -167,7 +163,7 @@ const router = createBrowserRouter([
                     {
                         path: "thesis/:id",
                         element: <ThesisDetails />,
-                       
+
                     },
                     {
                         path: "projects",
