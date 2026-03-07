@@ -53,7 +53,7 @@ const AdminEditProfessor = () => {
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
     return (
-        <div className="mx-auto bg-gradient-to-br from-indigo-50 to-purple-50 shadow-xl rounded-2xl p-10">
+        <div className="mx-auto bg-gradient-to-br rounded-2xl p-10">
             <h2 className="text-3xl font-extrabold text-indigo-700 mb-10 text-center tracking-wide">
                 Edit Professor Information
             </h2>

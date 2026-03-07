@@ -189,7 +189,7 @@ const AdminResearchInterest = () => {
   if (isError) return <p className="text-center mt-10 text-red-500">Failed to load data.</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-xl">
+    <div className=" mx-auto p-6  rounded-xl">
       {/* ---------- Page Header ---------- */}
       <h1 className="text-3xl font-semibold text-indigo-700 mb-2 text-center">
         Research Interests

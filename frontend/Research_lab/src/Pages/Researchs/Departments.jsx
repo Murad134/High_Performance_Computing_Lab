@@ -36,8 +36,9 @@ function Departments() {
             </div>
 
             {/* Page Title */}
-            <h1 className="text-4xl font-light text-gray-700 mb-8">Departments</h1>
-
+            <h1 className="text-4xl font-bold text-gray-900 mb-8 tracking-tight">
+                Departments
+            </h1>
             {/* Main Content Card */}
             <div className="rounded-lg px-2 ">
 
@@ -89,5 +90,4 @@ function Departments() {
         </div>
     );
 }
-
 export default Departments;

@@ -57,8 +57,8 @@ const AdminAboutLab = () => {
     );
 
   return (
-    <div className="min-h-screen  py-12 px-4">
-      <div className=" mx-auto  rounded-3xl p-3 border border-gray-100">
+    <div className="min-h-screen  py-12 px-2">
+      <div className=" mx-auto  rounded-3xl py-3 px-2 border border-gray-100">
 
         {/* Gradient Heading */}
         <h2 className="text-4xl font-extrabold text-center bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">

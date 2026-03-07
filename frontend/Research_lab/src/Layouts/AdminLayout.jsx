@@ -4,7 +4,6 @@ import Navbar from "../Components/Navbar.jsx";
 
 export default function AdminLayout() {
     const [openSection, setOpenSection] = useState(null);
-
     const toggleSection = (section) => {
         setOpenSection(openSection === section ? null : section);
     };
@@ -76,9 +75,9 @@ export default function AdminLayout() {
         }
     ];
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="flex flex-col">
             {/* Top Navbar */}
-            <header className="bg-indigo-600 text-white shadow-md">
+            <header>
                 <Navbar />
             </header>
 
@@ -169,10 +168,10 @@ export default function AdminLayout() {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-8">
+                <main className="flex-1 overflow-y-auto py-8">
                     <div className=" mx-auto">
                         {/* Content Card Wrapper */}
-                        <div className=" p-2">
+                        <div className=" py-2">
                             <Outlet />
                         </div>
                     </div>

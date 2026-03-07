@@ -86,16 +86,10 @@ const router = createBrowserRouter([
                             {
                                 path: "teams",
                                 element: <Teams />,
-                                loader: () => fetch("/Research/Teams.json").then(res => res.json())
                             },
                             {
-                                path: "teams/:teamName",
+                                path: "teams/:id",
                                 element: <TeamDetails />,
-                                loader: async ({ params }) => {
-                                    const res = await fetch("/Research/Teams.json");
-                                    const data = await res.json();
-                                    return data.find(item => item.name === params.teamName);
-                                }
                             },
                             {
                                 path: "platforms",

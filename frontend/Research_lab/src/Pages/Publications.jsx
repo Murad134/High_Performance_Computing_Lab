@@ -8,7 +8,7 @@ function Publications() {
         <div className="px-2 md:px-4 bg-gray-50 min-h-screen">
             <div className="flex flex-col md:flex-row gap-4">
                 {/* Left Sidebar - সব স্ক্রিনে বাম পাশে থাকবে */}
-                <div className="w-80 flex">
+                <div className="w-60 flex">
                     <LeftAsidePublication />
                 </div>
 

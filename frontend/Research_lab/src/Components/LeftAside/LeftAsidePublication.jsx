@@ -12,20 +12,20 @@ function LeftAsidePublication() {
 
       {/* Navigation List */}
       <nav>
-        <ul className="space-y-1.5">
+        <ul className="space-y-1">
           {/* Journal */}
           <li>
             <NavLink
               to="/research/publications/journal"
               className={({ isActive }) =>
-                `w-full text-left px-3 py-2.5 rounded-lg transition-all duration-300 group block
+                `w-full text-left px-3 py-2 rounded-lg transition-all duration-300 group block
                 ${isActive
                   ? 'bg-gradient-to-r from-blue-200 to-blue-50 shadow-md'
                   : 'bg-gradient-to-r from-blue-50 to-transparent hover:from-blue-200 hover:shadow-md'
                 }`
               }
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <span className="text-xl group-hover:scale-110 transition-transform">
                   📄
                 </span>
@@ -41,14 +41,14 @@ function LeftAsidePublication() {
             <NavLink
               to="/research/publications/conferences"
               className={({ isActive }) =>
-                `w-full text-left px-3 py-2.5 rounded-lg transition-all duration-300 group block
+                `w-full text-left px-3 py-2 rounded-lg transition-all duration-300 group block
                 ${isActive
                   ? 'bg-gradient-to-r from-purple-200 to-purple-50 shadow-md'
                   : 'bg-gradient-to-r from-purple-50 to-transparent hover:from-purple-200 hover:shadow-md'
                 }`
               }
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <span className="text-xl group-hover:scale-110 transition-transform">
                   🎤
                 </span>
