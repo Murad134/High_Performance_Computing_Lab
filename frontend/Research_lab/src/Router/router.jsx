@@ -70,7 +70,6 @@ const router = createBrowserRouter([
                     {
                         path: "researchs",
                         element: <Researchs />,
-                        loader: () => fetch("/Research/Navigation.json").then(res => res.json()),
                         children: [
                             {
                                 index: true,
@@ -79,20 +78,10 @@ const router = createBrowserRouter([
                             {
                                 path: "departments",
                                 element: <Departments />,
-                                loader: () => fetch("/Research/Departments.json").then(res => res.json())
                             },
                             {
-                                path: "departments/:slug",
+                                path: "departments/:id",
                                 element: <DepartmentDetails />,
-                                loader: async ({ params }) => {
-                                    const res = await fetch("/Research/Departments.json");
-                                    const data = await res.json();
-                                    const dept = data.departments.find(item => item.slug === params.slug);
-                                    if (!dept) {
-                                        throw new Response("Department not found", { status: 404 });
-                                    }
-                                    return { ...data, selectedDept: dept };
-                                }
                             },
                             {
                                 path: "teams",

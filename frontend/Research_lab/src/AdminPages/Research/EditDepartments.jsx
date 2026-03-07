@@ -1,231 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-// import Swal from "sweetalert2";
-// import useAxios from "../../hooks/useAxios";
-
-// const AdminDepartmentPage = () => {
-//   const axiosSecure = useAxios();
-//   const queryClient = useQueryClient();
-//   const [editingDepartment, setEditingDepartment] = useState(null);
-
-//   // 🔹 Fetch departments
-//   const { data: departments = [], refetch } = useQuery({
-//     queryKey: ["departments"],
-//     queryFn: async () => {
-//       const res = await axiosSecure.get("/departments");
-//       return res.data;
-//     },
-//   });
-
-//   // 🔹 Form hook
-//   const { register, handleSubmit, reset } = useForm();
-
-//   // 🔹 Mutation for add/update
-//   const mutation = useMutation({
-//     mutationFn: async (data) => {
-//       if (editingDepartment) {
-//         return await axiosSecure.put(`/departments/${editingDepartment._id}`, data);
-//       } else {
-//         return await axiosSecure.post("/departments", data);
-//       }
-//     },
-//     onSuccess: () => {
-//       Swal.fire(
-//         "Success!",
-//         editingDepartment ? "Department Updated" : "Department Added",
-//         "success"
-//       );
-//       setEditingDepartment(null);
-//       reset();
-//       queryClient.invalidateQueries(["departments"]);
-//     },
-//     onError: (error) => {
-//       Swal.fire(
-//         "Error!",
-//         error.response?.data?.message || "Something went wrong",
-//         "error"
-//       );
-//     },
-//   });
-
-//   // 🔹 Load data into form when editing
-//   useEffect(() => {
-//     if (editingDepartment) {
-//       reset(editingDepartment);
-//     }
-//   }, [editingDepartment, reset]);
-
-//   const onSubmit = (data) => {
-//     mutation.mutate(data);
-//   };
-
-//   return (
-//     <div className="p-4 space-y-10 max-w-6xl mx-auto">
-
-//       {/* ===== Form Section ===== */}
-//       <div className=" p-2 rounded-xl ">
-//         <h2 className="text-2xl font-bold mb-6 text-indigo-600 text-center">
-//           {editingDepartment ? "Update Department" : "Add New Department"}
-//         </h2>
-
-//         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
-//           {/* ===== Basic Information ===== */}
-//           <div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Basic Information</h3>
-//             <div className="grid md:grid-cols-2 gap-4">
-//               <div>
-//                 <label className="block mb-1 font-medium text-gray-700">Department No *</label>
-//                 <input
-//                   {...register("departmentNo", { required: true })}
-//                   placeholder="Department No"
-//                   className="border p-3 rounded w-full"
-//                 />
-//               </div>
-//               <div>
-//                 <label className="block mb-1 font-medium text-gray-700">Department Name *</label>
-//                 <input
-//                   {...register("name", { required: true })}
-//                   placeholder="Department Name"
-//                   className="border p-3 rounded w-full"
-//                 />
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* ===== Head Information ===== */}
-//           <div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Head Information</h3>
-//             <div className="grid md:grid-cols-2 gap-4">
-//               <div>
-//                 <label className="block mb-1 font-medium text-gray-700">Head Name</label>
-//                 <input
-//                   {...register("headName")}
-//                   placeholder="Head Name"
-//                   className="border p-3 rounded w-full"
-//                 />
-//               </div>
-//               <div>
-//                 <label className="block mb-1 font-medium text-gray-700">Head Portfolio Link</label>
-//                 <input
-//                   {...register("headPortfolio")}
-//                   placeholder="Head Portfolio Link"
-//                   className="border p-3 rounded w-full"
-//                 />
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* ===== Additional Details ===== */}
-//           <div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Additional Details</h3>
-
-//             <div className="mb-4">
-//               <label className="block mb-1 font-medium text-gray-700">Keywords (comma separated)</label>
-//               <input
-//                 {...register("keywords")}
-//                 placeholder="Keyword1, Keyword2, ..."
-//                 className="border p-3 rounded w-full"
-//               />
-//             </div>
-
-//             <div className="mb-4">
-//               <label className="block mb-1 font-medium text-gray-700">Statement / Presentation</label>
-//               <textarea
-//                 {...register("statement")}
-//                 placeholder="Write statement or presentation here"
-//                 rows={3}
-//                 className="border p-3 rounded w-full"
-//               />
-//             </div>
-
-//             <div className="grid md:grid-cols-2 gap-4">
-//               <div>
-//                 <label className="block mb-1 font-medium text-gray-700">Documents (Link or description)</label>
-//                 <textarea
-//                   {...register("documents")}
-//                   placeholder="Documents info"
-//                   rows={1}
-//                   className="border p-3 rounded w-full"
-//                 />
-//               </div>
-//               <div>
-//                 <label className="block mb-1 font-medium text-gray-700">Starting Year</label>
-//                 <input
-//                   type="number"
-//                   {...register("startingYear")}
-//                   placeholder="Starting Year"
-//                   className="border p-3 rounded w-full"
-//                 />
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* ===== Submit Button ===== */}
-//           <div className="flex justify-end pt-4">
-//             <button
-//               type="submit"
-//               className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
-//             >
-//               {editingDepartment ? "Update Department" : "Add Department"}
-//             </button>
-//           </div>
-//         </form>
-//       </div>
-
-//       {/* ===== Cards Section ===== */}
-//       <div className="grid md:grid-cols-3 gap-6">
-//         {departments.map((dept) => (
-//           <div
-//             key={dept._id}
-//             className="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition"
-//           >
-//             <h3 className="text-xl font-bold text-indigo-700">{dept.name}</h3>
-//             <p className="mt-2 text-gray-600"><strong>Head:</strong> {dept.headName || "N/A"}</p>
-//             <p className="text-gray-600"><strong>Year:</strong> {dept.startingYear || "N/A"}</p>
-//             <p className="text-gray-600"><strong>Keywords:</strong> {dept.keywords || "N/A"}</p>
-
-//             <div className="mt-4 flex space-x-2">
-//               <button
-//                 onClick={() => setEditingDepartment(dept)}
-//                 className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition"
-//               >
-//                 Edit
-//               </button>
-//               <button
-//                 onClick={async () => {
-//                   const result = await Swal.fire({
-//                     title: "Are you sure?",
-//                     text: "This will delete the department!",
-//                     icon: "warning",
-//                     showCancelButton: true,
-//                     confirmButtonColor: "#d33",
-//                     cancelButtonColor: "#3085d6",
-//                     confirmButtonText: "Yes, delete it!",
-//                   });
-//                   if (result.isConfirmed) {
-//                     await axiosSecure.delete(`/departments/${dept._id}`);
-//                     Swal.fire("Deleted!", "Department has been deleted.", "success");
-//                     refetch();
-//                   }
-//                 }}
-//                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-//               >
-//                 Delete
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminDepartmentPage;
-
-
-
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -327,7 +99,7 @@ const AdminDepartmentPage = () => {
           </div>
 
           {/* Head Info */}
-          <div>
+          {/* <div>
             <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Head Information</h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
@@ -338,6 +110,45 @@ const AdminDepartmentPage = () => {
                 <label className="block mb-1 font-medium text-gray-700">Head Portfolio Link</label>
                 <input {...register("headPortfolio")} placeholder="Portfolio Link" className="border p-3 rounded w-full" />
               </div>
+            </div>
+          </div> */}
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
+              Head Information
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-2">
+
+              <div>
+                <label className="block mb-1 font-medium text-gray-700">Head Name</label>
+                <input
+                  {...register("headName")}
+                  placeholder="Head Name"
+                  className="border p-3 rounded w-full"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 font-medium text-gray-700">
+                  Head Portfolio Link
+                </label>
+                <input
+                  {...register("headPortfolio")}
+                  placeholder="Portfolio Link"
+                  className="border p-3 rounded w-full"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 font-medium text-gray-700">Head Email</label>
+                <input
+                  type="email"
+                  {...register("headEmail")}
+                  placeholder="Head Email"
+                  className="border p-3 rounded w-full"
+                />
+              </div>
+
             </div>
           </div>
 

@@ -17,7 +17,7 @@
 //           <div className="ml-0 space-y-6">
 //             {navigation.map((item) => (
 //               <div key={item.id} className="relative flex items-center">
-                
+
 //                 {/* Circle ON main vertical line */}
 //                 <div className="absolute -left-1.5 w-3 h-3 rounded-full bg-red-700 z-10" />
 
@@ -50,30 +50,29 @@
 
 
 
-
 import { NavLink } from "react-router-dom";
 const navigation = [
   {
     label: "Departments",
-    path: "/admin/research/departments",
+    path: "departments",
   },
   {
     label: "Teams",
-    path: "/admin/research/teams",
+    path: "teams",
   },
   {
     label: "Experimental Platforms",
-    path: "/admin/research/experimental-platforms",
+    path: "platforms",
   },
   {
     label: "Other Country Projects & Funded Projects",
-    path: "/admin/research/projects",
+    path: "projects",
   },
 ];
 export default function NavigationResearch() {
   return (
-    <aside className="bg-white shadow-md p-6 min-h-screen">
-      <h2 className="text-xl font-bold mb-6">Research Admin</h2>
+    <aside className="px-4 py-6 ">
+      <h2 className="text-xl font-bold mb-6">Research</h2>
 
       <nav className="space-y-3">
         {navigation.map((item) => (
@@ -81,10 +80,9 @@ export default function NavigationResearch() {
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `block px-4 py-2 rounded-md transition ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-gray-100"
+              `block px-4 py-2 rounded-md transition ${isActive
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-gray-100"
               }`
             }
           >

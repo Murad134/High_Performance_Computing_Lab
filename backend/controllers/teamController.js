@@ -1,8 +1,6 @@
-
 const { ObjectId } = require("mongodb");
 const { getCollection } = require("../config/db");
 
-// List of fields to convert from comma-separated string to array
 const arrayFields = [
   "visionStatement",
   "mission",
@@ -15,23 +13,49 @@ const arrayFields = [
   "futureMission",
 ];
 
-// CREATE TEAM UNDER DEPARTMENT
+// ================= HELPER: match team by string OR ObjectId =================
+const findTeamQuery = (teamId) => {
+  try {
+    return { $or: [{ "teams._id": teamId }, { "teams._id": new ObjectId(teamId) }] };
+  } catch {
+    return { "teams._id": teamId };
+  }
+};
+
+const findPullFilter = (teamId) => {
+  try {
+    return { $in: [teamId, new ObjectId(teamId)] };
+  } catch {
+    return teamId;
+  }
+};
+
+// ================= CREATE TEAM =================
 exports.createTeam = async (req, res) => {
   try {
     const departments = getCollection("departments");
-
     const teamData = req.body;
 
     if (!teamData.departmentNo) {
       return res.status(400).json({ message: "Department is required" });
     }
 
-    // Convert comma-separated strings to arrays
+    if (Array.isArray(teamData.members)) {
+      teamData.members = teamData.members.map((m) => ({
+        _id: new ObjectId(),   // ✅ store as ObjectId (consistent)
+        name: m.name || "",
+        email: m.email || "",
+        portfolio: m.portfolio || "",
+      }));
+    } else {
+      teamData.members = [];
+    }
+
     arrayFields.forEach((field) => {
       if (teamData[field] && typeof teamData[field] === "string") {
         teamData[field] = teamData[field]
           .split(",")
-          .map((item) => item.trim())
+          .map((i) => i.trim())
           .filter(Boolean);
       } else {
         teamData[field] = [];
@@ -39,7 +63,7 @@ exports.createTeam = async (req, res) => {
     });
 
     const newTeam = {
-      _id: new ObjectId(), // generate separate team id
+      _id: new ObjectId(),   // ✅ store as ObjectId (consistent)
       ...teamData,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -50,7 +74,7 @@ exports.createTeam = async (req, res) => {
       { $push: { teams: newTeam } }
     );
 
-    if (result.modifiedCount === 0) {
+    if (!result.modifiedCount) {
       return res.status(404).json({ message: "Department not found" });
     }
 
@@ -60,20 +84,21 @@ exports.createTeam = async (req, res) => {
   }
 };
 
-// GET ALL TEAMS (Flattened)
+// ================= GET ALL TEAMS =================
 exports.getAllTeams = async (req, res) => {
   try {
     const departments = getCollection("departments");
-
     const allDepartments = await departments.find().toArray();
 
     const teams = [];
 
     allDepartments.forEach((dept) => {
-      if (dept.teams && dept.teams.length > 0) {
+      if (Array.isArray(dept.teams)) {
         dept.teams.forEach((team) => {
           teams.push({
             ...team,
+            // ✅ always send _id as plain string to frontend
+            _id: team._id?.toString(),
             departmentName: dept.name,
             departmentNo: dept.departmentNo,
           });
@@ -86,47 +111,54 @@ exports.getAllTeams = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// ================= UPDATE TEAM =================
 exports.updateTeam = async (req, res) => {
   try {
     const departments = getCollection("departments");
     const { teamId } = req.params;
     const updatedData = req.body;
 
-    // Convert comma-separated strings to arrays
-    const arrayFields = [
-      "visionStatement",
-      "mission",
-      "coreResearchAreas",
-      "researchMethodology",
-      "softwareTechnical",
-      "publicationEthics",
-      "fundingStrategy",
-      "impactAcademic",
-      "futureMission",
-    ];
+    if (Array.isArray(updatedData.members)) {
+      updatedData.members = updatedData.members.map((m) => ({
+        _id: m._id ? new ObjectId(m._id) : new ObjectId(),
+        name: m.name || "",
+        email: m.email || "",
+        portfolio: m.portfolio || "",
+      }));
+    }
 
     arrayFields.forEach((field) => {
       if (updatedData[field] && typeof updatedData[field] === "string") {
         updatedData[field] = updatedData[field]
           .split(",")
-          .map((item) => item.trim())
+          .map((i) => i.trim())
           .filter(Boolean);
       }
     });
 
-    // Build $set for nested team update
-    const setObject = Object.fromEntries(
-      Object.entries(updatedData).map(([key, value]) => [`teams.$.${key}`, value])
-    );
+    const setObject = {};
+    Object.keys(updatedData).forEach((key) => {
+      if (key !== "_id") {
+        setObject[`teams.$.${key}`] = updatedData[key];
+      }
+    });
     setObject["teams.$.updatedAt"] = new Date();
 
-    // Update the team inside its department
-    const result = await departments.updateOne(
-      { "teams._id": new ObjectId(teamId) },
+    // ✅ Try string match first, fallback to ObjectId
+    let result = await departments.updateOne(
+      { "teams._id": teamId },
       { $set: setObject }
     );
 
-    if (result.modifiedCount === 0) {
+    if (!result.modifiedCount) {
+      result = await departments.updateOne(
+        { "teams._id": new ObjectId(teamId) },
+        { $set: setObject }
+      );
+    }
+
+    if (!result.modifiedCount) {
       return res.status(404).json({ message: "Team not found" });
     }
 
@@ -136,18 +168,27 @@ exports.updateTeam = async (req, res) => {
   }
 };
 
-// DELETE TEAM
+// ================= DELETE TEAM =================
 exports.deleteTeam = async (req, res) => {
   try {
     const departments = getCollection("departments");
     const { teamId } = req.params;
 
-    const result = await departments.updateOne(
-      { "teams._id": new ObjectId(teamId) },
-      { $pull: { teams: { _id: new ObjectId(teamId) } } }
+    // ✅ Try string match first, fallback to ObjectId
+    let result = await departments.updateOne(
+      { "teams._id": teamId },
+      { $pull: { teams: { _id: teamId } } }
     );
 
-    if (result.modifiedCount === 0) {
+    if (!result.modifiedCount) {
+      const oid = new ObjectId(teamId);
+      result = await departments.updateOne(
+        { "teams._id": oid },
+        { $pull: { teams: { _id: oid } } }
+      );
+    }
+
+    if (!result.modifiedCount) {
       return res.status(404).json({ message: "Team not found" });
     }
 
