@@ -103,14 +103,6 @@ const AdminAddUpdateTeamForm = () => {
     mutation.mutate(data);
   };
 
-  /* ================= EDIT HANDLER ================= */
-  // const handleEdit = (team) => {
-  //   setEditingTeam(team);
-
-  //   Object.keys(team).forEach((key) => {
-  //     setValue(key, team[key]);
-  //   });
-  // };
 
   const handleEdit = (team) => {
     setEditingTeam(team);

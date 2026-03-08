@@ -4,17 +4,13 @@ import { FaGoogle } from "react-icons/fa";
 
 export default function Login() {
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex items-center justify-center p-4 pt-24">
+    <div className="min-h-screen  flex items-center justify-center p-4 pt-24">
       {/* Outer container */}
       <div className="w-full max-w-md">
         {/* App title */}
-        <h1 className="text-center text-4xl font-extrabold drop-shadow-lg mb-8 tracking-wide">
-          Welcome Back
-        </h1>
-
         {/* Glass card */}
         <div className="backdrop-blur-2xl bg-white/20 border border-white/30 shadow-2xl rounded-2xl p-8 transition-transform hover:scale-[1.02]">
-          <h2 className="text-2xl font-semibold text-center mb-6">
+          <h2 className="text-4xl font-semibold text-center mb-6">
             Login to Your Account
           </h2>
 
