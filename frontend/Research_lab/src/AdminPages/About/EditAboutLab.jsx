@@ -1,16 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const AdminAboutLab = () => {
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
   const { data: aboutLab, isLoading } = useQuery({
     queryKey: ["aboutlab"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/aboutlab");
+      const res = await axiosSecure.get("/aboutlab");
       return res.data;
     },
   });
@@ -22,9 +22,9 @@ const AdminAboutLab = () => {
   const saveMutation = useMutation({
     mutationFn: async (formData) => {
       if (aboutLab?._id) {
-        return await axiosInstance.put("/aboutlab", formData);
+        return await axiosSecure.put("/aboutlab", formData);
       } else {
-        return await axiosInstance.post("/aboutlab", formData);
+        return await axiosSecure.post("/aboutlab", formData);
       }
     },
     onSuccess: () => {

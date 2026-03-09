@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useFieldArray } from "react-hook-form";
 const AdminAddUpdateTeamForm = () => {
-  const axiosSecure = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   // ✅ Define defaultValues once outside the component
   const emptyValues = {

@@ -1,23 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "../hooks/useAxios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const AdminFooter = () => {
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
   // 🔹 GET Footer
   const { data: footer, isLoading } = useQuery({
     queryKey: ["footer"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/footer");
+      const res = await axiosSecure.get("/footer");
       return res.data;
     },
   });
 
   // 🔹 CREATE Footer
   const createMutation = useMutation({
-    mutationFn: async (data) => await axiosInstance.post("/footer", data),
+    mutationFn: async (data) => await axiosSecure.post("/footer", data),
     onSuccess: () => {
       queryClient.invalidateQueries(["footer"]);
       Swal.fire({
@@ -38,7 +38,7 @@ const AdminFooter = () => {
 
   // 🔹 UPDATE Footer
   const updateMutation = useMutation({
-    mutationFn: async (data) => await axiosInstance.put("/footer", data),
+    mutationFn: async (data) => await axiosSecure.put("/footer", data),
     onSuccess: () => {
       queryClient.invalidateQueries(["footer"]);
       Swal.fire({

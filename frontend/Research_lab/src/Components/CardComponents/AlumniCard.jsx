@@ -4,12 +4,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
 export default function AlumniCard({ item }) {
-  const axiosSecure = useAxios();
+  const axiosInstance = useAxios();
   const queryClient = useQueryClient();
 
   const backMutation = useMutation({
     mutationFn: async (id) => {
-      return axiosSecure.patch(`/studentproject/${id}/status`, {
+      return axiosInstance.patch(`/studentproject/${id}/status`, {
         stdntstatus: "ongoing",
       });
     },

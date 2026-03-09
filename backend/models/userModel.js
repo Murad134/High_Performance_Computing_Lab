@@ -28,5 +28,13 @@ async function getUserById(id) {
     const usersCollection = getCollection(collectionName);
     return await usersCollection.findOne({ _id: new ObjectId(id) });
 }
-
-module.exports = { createUser, getAllUsers, getUserByEmail, getUserById };
+async function updateUserByEmail(email, updateData) {
+    const usersCollection = getCollection('users');
+    const result = await usersCollection.updateOne(
+        { email },
+        { $set: updateData },
+        { upsert: true }
+    );
+    return result;
+}
+module.exports = { createUser, getAllUsers, getUserByEmail, getUserById, updateUserByEmail };

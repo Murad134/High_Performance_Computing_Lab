@@ -14,6 +14,7 @@ async function createFooter(req, res) {
 
 async function getFooter(req, res) {
     try {
+        console.log('Bearer', req.headers.authorization);
         const footer = await footerModel.getFooter();
         res.send(footer);
     } catch (error) {

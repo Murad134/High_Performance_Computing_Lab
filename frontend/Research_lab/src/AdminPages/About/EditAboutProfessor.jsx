@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const AdminEditProfessor = () => {
-    const axiosInstance = useAxios();
+    const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
 
     const { register, handleSubmit, reset } = useForm({
@@ -19,7 +19,7 @@ const AdminEditProfessor = () => {
     const { data: professorData, isLoading } = useQuery({
         queryKey: ["professor"],
         queryFn: async () => {
-            const res = await axiosInstance.get("/aboutprof");
+            const res = await axiosSecure.get("/aboutprof");
             return res.data;
         },
     });
@@ -34,7 +34,7 @@ const AdminEditProfessor = () => {
     /* ================= UPDATE ================= */
     const mutation = useMutation({
         mutationFn: async (updatedData) => {
-            const res = await axiosInstance.put("/aboutprof", updatedData);
+            const res = await axiosSecure.put("/aboutprof", updatedData);
             return res.data;
         },
     });

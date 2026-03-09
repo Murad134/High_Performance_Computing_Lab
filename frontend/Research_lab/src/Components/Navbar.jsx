@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { NavLink, Link } from 'react-router-dom'
+
+import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+
+
 function Header() {
+
+
+    const { user, signout } = useAuth();
+    const navigate = useNavigate();
+
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSupervisionsOpen, setIsSupervisionsOpen] = useState(false);
     const [isResearchOpen, setIsResearchOpen] = useState(false);
@@ -265,13 +275,26 @@ function Header() {
 
                     {/* Right Side - Login Button */}
                     <div className="navbar-end">
-                        <Link
-                            to="/auth/login"
-                            onClick={closeAllDropdowns}
-                            className="btn btn-sm md:btn-md bg-yellow-400 hover:bg-yellow-500 text-black font-semibold shadow-md transition border-none"
-                        >
-                            Login
-                        </Link>
+                        {user ? (
+                            <button
+                                onClick={async () => {
+                                    await signout(); // log the user out
+                                    closeAllDropdowns();
+                                    navigate('/auth/login'); // redirect to login after logout
+                                }}
+                                className="btn btn-sm md:btn-md bg-red-500 hover:bg-red-600 text-white font-semibold shadow-md transition border-none px-2"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <Link
+                                to="/auth/login"
+                                onClick={closeAllDropdowns}
+                                className="btn btn-sm md:btn-md bg-yellow-400 hover:bg-yellow-500 text-black font-semibold shadow-md transition border-none px-2"
+                            >
+                                Login
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
@@ -467,5 +490,4 @@ function Header() {
         </>
     )
 }
-
 export default Header

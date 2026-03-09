@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import useAxios from "../hooks/useAxios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 /* ================= Reusable Input ================= */
 const Input = ({ label, registerProps, type = "text" }) => (
@@ -18,7 +18,7 @@ const Input = ({ label, registerProps, type = "text" }) => (
 );
 
 const AdminStudentProjectPage = () => {
-  const axiosSecure = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const formRef = useRef(null);
 

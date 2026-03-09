@@ -91,6 +91,9 @@ const router = createBrowserRouter([
                                 path: "teams/:id",
                                 element: <TeamDetails />,
                             },
+
+
+                            
                             {
                                 path: "platforms",
                                 element: <ExperimentalPlatforms />,
@@ -114,22 +117,18 @@ const router = createBrowserRouter([
                             {
                                 path: "journal",
                                 element: <Journal />,
-                                loader: () => fetch("/Publication/Journal.json").then(res => res.json())
                             },
                             {
                                 path: "conferences",
                                 element: <Conferences />,
-                                loader: () => fetch("/Publication/Conference.json").then(res => res.json())
                             },
                             {
                                 path: "seminar",
                                 element: <Seminar />,
-                                // loader: () => fetch("/Publications/Seminar.json").then(res => res.json())
                             },
                             {
                                 path: "books",
                                 element: <Books />,
-                                // loader: () => fetch("/Publications/Books.json").then(res => res.json())
                             }
                         ]
                     }
@@ -169,7 +168,6 @@ const router = createBrowserRouter([
                     {
                         path: ":level/:type",
                         element: <Student />,
-                        loader: () => fetch("/member.json").then(res => res.json())
                     }
                 ]
             },

@@ -1,12 +1,12 @@
 import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useState } from "react";
 const AdminArticleFormSections = () => {
 
-  const axiosSecure = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [editingId, setEditingId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AdminDepartmentPage = () => {
-  const axiosSecure = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [editingDepartment, setEditingDepartment] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");

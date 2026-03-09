@@ -1,5 +1,5 @@
 // controllers/userController.js
-const { createUser, getAllUsers, getUserByEmail, getUserById } = require('../models/userModel');
+const { createUser, getAllUsers, getUserByEmail, getUserById, updateUserByEmail } = require('../models/userModel');
 
 // POST /users
 async function addUser(req, res) {
@@ -50,4 +50,22 @@ async function fetchUserById(req, res) {
     }
 }
 
-module.exports = { addUser, fetchAllUsers, fetchUserById };
+
+async function updateUser(req, res) {
+    try {
+        const { email, ...updateData } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required to update user' });
+        }
+        const result = await updateUserByEmail(email, updateData);
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: 'User not found or nothing to update' });
+        }
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+module.exports = { addUser, fetchAllUsers, fetchUserById, updateUser };

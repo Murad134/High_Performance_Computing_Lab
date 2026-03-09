@@ -114,13 +114,13 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 const Journal = () => {
 
-    const axiosSecure = useAxios();
+    const axiosInstance = useAxios();
 
     // GET Journals
     const { data: journals = [], isLoading, isError } = useQuery({
         queryKey: ["journals"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/journals");
+            const res = await axiosInstance.get("/journals");
             return res.data;
         }
     });

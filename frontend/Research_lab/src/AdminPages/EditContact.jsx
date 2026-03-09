@@ -1,23 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "../hooks/useAxios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const AdminContact = () => {
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
   // 🔹 GET Contact (findOne from backend)
   const { data: contact, isLoading } = useQuery({
     queryKey: ["contact"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/contact");
+      const res = await axiosSecure.get("/contact");
       return res.data; // backend uses findOne()
     },
   });
 
   // 🔹 UPDATE Contact
   const updateMutation = useMutation({
-    mutationFn: async (data) => await axiosInstance.put("/contact", data),
+    mutationFn: async (data) => await axiosSecure.put("/contact", data),
     onSuccess: () => {
       queryClient.invalidateQueries(["contact"]);
       Swal.fire({

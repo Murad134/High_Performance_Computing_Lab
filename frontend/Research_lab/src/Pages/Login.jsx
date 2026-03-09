@@ -1,30 +1,65 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import SocialLogin from "./Authentication/SocialLogin";
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
 
 export default function Login() {
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const from = location.state?.from || "/";
+  const axiosInstance = useAxios();
+
+  const onSubmit = async (data) => {
+    try {
+      const result = await signIn(data.email, data.password);
+      const user = result.user;
+
+      const userInfo = {
+        email: user.email,
+        last_log_in: new Date().toISOString(),
+      };
+
+      await axiosInstance.patch("/users", userInfo);
+
+      reset();
+      navigate(from, { replace: true });
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+  };
+
   return (
-    <div className="min-h-screen  flex items-center justify-center p-4 pt-24">
-      {/* Outer container */}
+    <div className="min-h-screen flex items-center justify-center p-4 pt-24">
       <div className="w-full max-w-md">
-        {/* App title */}
-        {/* Glass card */}
         <div className="backdrop-blur-2xl bg-white/20 border border-white/30 shadow-2xl rounded-2xl p-8 transition-transform hover:scale-[1.02]">
           <h2 className="text-4xl font-semibold text-center mb-6">
             Login to Your Account
           </h2>
 
-          <form className="space-y-5">
+          {errorMessage && (
+            <p className="text-red-600 mb-3 text-center">{errorMessage}</p>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Email */}
             <div>
               <label className="block font-medium mb-1">Email Address</label>
               <input
                 type="email"
-                name="email"
                 placeholder="Enter your email"
                 className="border border-blue-400 input input-bordered w-full text-black placeholder-gray-600 focus:ring-2 focus:ring-sky-400 pl-3"
-                required
+                {...register("email", { required: "Email is required" })}
               />
+              {errors.email && (
+                <span className="text-red-500 text-sm">{errors.email.message}</span>
+              )}
             </div>
 
             {/* Password */}
@@ -32,11 +67,13 @@ export default function Login() {
               <label className="block font-medium mb-1">Password</label>
               <input
                 type="password"
-                name="password"
                 placeholder="Enter your password"
                 className="border border-blue-400 input input-bordered w-full text-black placeholder-gray-600 focus:ring-2 focus:ring-sky-400 pl-3"
-                required
+                {...register("password", { required: "Password is required" })}
               />
+              {errors.password && (
+                <span className="text-red-500 text-sm">{errors.password.message}</span>
+              )}
             </div>
 
             {/* Forgot password */}
@@ -51,15 +88,8 @@ export default function Login() {
               Login
             </button>
 
-            {/* Divider */}
-            <div className="flex items-center justify-center my-4">
-              <span className="text-sm text-pink-600 font-medium">OR</span>
-            </div>
-
             {/* Social login */}
-            <button className="btn w-full text-gray-800 font-semibold shadow bg-gray-200">
-              <FaGoogle /> Login with Google
-            </button>
+            <SocialLogin />
 
             {/* Register link */}
             <p className="text-center mt-3">
