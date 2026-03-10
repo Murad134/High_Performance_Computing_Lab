@@ -3,10 +3,10 @@ import { NavLink, Link } from 'react-router-dom'
 
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-
-
+import useUserRole from '../hooks/useUserRole';
 function Header() {
 
+    const { role, isLoading } = useUserRole();
 
     const { user, signout } = useAuth();
     const navigate = useNavigate();
@@ -21,14 +21,12 @@ function Header() {
     // Auto-close timer refs
     const researchTimerRef = useRef(null);
     const supervisionsTimerRef = useRef(null);
-
     // Drawer close করার function (Mobile)
     const closeDrawer = () => {
         setIsDrawerOpen(false);
         setIsSupervisionsOpen(false);
         setIsResearchOpen(false);
     };
-
     // Desktop dropdown close করার function
     const closeAllDropdowns = () => {
         const allDetails = document.querySelectorAll('details[open]');
@@ -38,20 +36,16 @@ function Header() {
         if (researchTimerRef.current) clearTimeout(researchTimerRef.current);
         if (supervisionsTimerRef.current) clearTimeout(supervisionsTimerRef.current);
     };
-
     // Start auto-close timer
     const startAutoCloseTimer = (dropdownType) => {
         const timerRef = dropdownType === 'research' ? researchTimerRef : supervisionsTimerRef;
-
         // Clear existing timer
         if (timerRef.current) clearTimeout(timerRef.current);
-
         // Set new 30-second timer
         timerRef.current = setTimeout(() => {
             closeAllDropdowns();
         }, 30000); // 30 seconds
     };
-
     // Handle click outside navbar to close dropdowns
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -60,7 +54,6 @@ function Header() {
                 closeAllDropdowns();
             }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -69,7 +62,6 @@ function Header() {
             if (supervisionsTimerRef.current) clearTimeout(supervisionsTimerRef.current);
         };
     }, []);
-
     // Handle dropdown open/close with timer
     const handleDropdownToggle = (dropdownType, event) => {
         const currentDetail = event.currentTarget;
@@ -98,7 +90,6 @@ function Header() {
                     onClick={closeDrawer}
                 />
             )}
-
             {/* Main Navbar */}
             <div className="fixed top-0 left-0 w-full z-50">
                 <div className="navbar bg-gradient-to-r bg-blue-600 shadow-md text-white px-4">
@@ -119,7 +110,6 @@ function Header() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
                             </svg>
                         </button>
-
                         {/* Logo */}
                         <Link
                             to="/"
@@ -129,7 +119,6 @@ function Header() {
                             HPC LAB
                         </Link>
                     </div>
-
                     {/* Center - Desktop Menu */}
                     <div className="navbar-center hidden lg:flex">
                         <ul className="menu menu-horizontal px-1 text-white font-medium">
@@ -257,19 +246,26 @@ function Header() {
                                     Contact
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink
-                                    to="/admin"
-                                    onClick={closeAllDropdowns}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "text-red-500 underline font-semibold"
-                                            : "hover:text-red-400 transition"
-                                    }
-                                >
-                                    Admin Panel
-                                </NavLink>
-                            </li>
+
+
+                            {/* Admin Panel Link */}
+                            {!isLoading && role === 'admin' &&
+                                <>
+                                    <li>
+                                        <NavLink
+                                            to="/admin"
+                                            onClick={closeAllDropdowns}
+                                            className={({ isActive }) =>
+                                                isActive
+                                                    ? "text-red-500 underline font-semibold"
+                                                    : "hover:text-red-400 transition"
+                                            }
+                                        >
+                                            Admin Panel
+                                        </NavLink>
+                                    </li>
+                                </>
+                            }
                         </ul>
                     </div>
 
@@ -297,15 +293,16 @@ function Header() {
                         )}
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* Side Drawer (Mobile/Tablet) - Slides from LEFT */}
-            <div
+            < div
                 className={`fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
-                    }`}
+                    }`
+                }
             >
                 {/* Drawer Header */}
-                <div className="flex items-center justify-between p-4 bg-blue-600 text-white">
+                < div className="flex items-center justify-between p-4 bg-blue-600 text-white" >
                     <h2 className="text-xl font-bold">Menu</h2>
                     <button
                         onClick={closeDrawer}
@@ -321,10 +318,10 @@ function Header() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
-                </div>
+                </div >
 
                 {/* Drawer Menu Items */}
-                <ul className="menu p-4 text-gray-800 space-y-2">
+                < ul className="menu p-4 text-gray-800 space-y-2" >
                     <li>
                         <NavLink
                             to="/"
@@ -471,22 +468,29 @@ function Header() {
                         >
                             📞 Contact
                         </NavLink>
+                        {/* Admin Panel Link */}
                     </li>
-                    <li>
-                        <NavLink
-                            to="/admin"
-                            onClick={closeDrawer}
-                            className={({ isActive }) =>
-                                isActive
-                                    ? "bg-red-100 text-red-600 font-semibold rounded-lg"
-                                    : "hover:bg-gray-100 transition rounded-lg"
-                            }
-                        >
-                            ⚙️ Admin Panel
-                        </NavLink>
-                    </li>
-                </ul>
-            </div>
+                    {
+                        !isLoading && role === 'admin' &&
+                        <>
+                            <li>
+                                <NavLink
+                                    to="/admin"
+                                    onClick={closeDrawer}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "bg-red-100 text-red-600 font-semibold rounded-lg"
+                                            : "hover:bg-gray-100 transition rounded-lg"
+                                    }
+                                >
+                                    ⚙️ Admin Panel
+                                </NavLink>
+                            </li>
+                        </>
+                    }
+
+                </ul >
+            </div >
         </>
     )
 }

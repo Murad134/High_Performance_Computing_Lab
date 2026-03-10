@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-// import useaxiosInstance from ;
+import { sendEmailVerification } from "firebase/auth";
 import useAxios from '../hooks/useAxios'
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
     const { register: formRegister, handleSubmit, reset, formState: { errors } } = useForm();
@@ -14,11 +15,12 @@ export default function Register() {
     const [photoURL, setPhotoURL] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const axiosInstance = useAxios();
+    const [showPassword, setShowPassword] = useState(false);
+
 
     // Image upload handler
     const handleImageUpload = async (e) => {
         const image = e.target.files[0];
-
 
         const formData = new FormData();
         formData.append("image", image);
@@ -37,7 +39,6 @@ export default function Register() {
 
     const onSubmit = async (data) => {
         try {
-            // ✅ Check if photo is uploaded
             if (!photoURL) {
                 Swal.fire({
                     title: "Photo Required",
@@ -48,12 +49,31 @@ export default function Register() {
                 return;
             }
 
-            // 1️⃣ Create Firebase user
+            // Check if user already exists in backend
+            const res = await axiosInstance.get(`/users/check?email=${data.email}`);
+            if (res.data.exists) {
+                Swal.fire({
+                    title: "Already Registered",
+                    text: "This email is already registered. Please login.",
+                    icon: "warning"
+                });
+                return;
+            }
+
+
+
+            // 2 Create Firebase user
             const result = await createUser(data.email, data.password);
             const loggedUser = result.user;
+
             console.log('Firebase user:', loggedUser);
 
-            // 2️⃣ Send user info to backend
+
+            // 3 Send email verification (always send)
+            await sendEmailVerification(loggedUser);
+
+
+            // 4 Send user info to backend
             const userInfo = {
                 email: data.email,
                 role: "user",
@@ -66,7 +86,7 @@ export default function Register() {
             const userRes = await axiosInstance.post("/users", userInfo);
             console.log("Backend response:", userRes.data);
 
-            // 3️⃣ Update Firebase profile
+            // 5 Update Firebase profile
             await updateUserProfile({
                 displayName: data.name,
                 photoURL: photoURL || ""
@@ -147,14 +167,22 @@ export default function Register() {
                         </div>
 
                         {/* Password */}
-                        <div>
+                        <div className='relative'>
                             <label className="block font-medium mb-1">Password</label>
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 placeholder="Enter your password"
                                 className="border border-blue-400 input input-bordered w-full text-black placeholder-gray-600 focus:ring-2 focus:ring-sky-400 pl-3"
                                 {...formRegister("password", { required: "Password is required" })}
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute top-2/3 right-3 -translate-y-1/2"
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
                             {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
                         </div>
 

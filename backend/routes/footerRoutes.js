@@ -4,7 +4,7 @@ const { createFooter, getFooter, updateFooter } = require('../controllers/footer
 const verifyFBToken = require('../middleware/verifyFBToken');
 
 router.post('/', verifyFBToken, createFooter);
-router.get('/',verifyFBToken, getFooter);
+router.get('/', getFooter);
 router.put('/', verifyFBToken, updateFooter);
 
 module.exports = router;

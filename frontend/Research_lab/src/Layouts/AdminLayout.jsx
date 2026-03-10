@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../Components/Navbar.jsx";
-
+import useUserRole from "../hooks/useUserRole.jsx";
 export default function AdminLayout() {
+
+
+    const { role } = useUserRole();
+
+    console.log("AdminLayout Role:", role);
+    // Debugging line to check the role value
     const [openSection, setOpenSection] = useState(null);
     const toggleSection = (section) => {
         setOpenSection(openSection === section ? null : section);
@@ -72,6 +78,10 @@ export default function AdminLayout() {
             title: "Footer",
             path: "/admin/footer",
             icon: "⚙️"
+        }, {
+            title: 'Make Admin',
+            path: '/admin/make-admin',
+            icon: '👑'
         }
     ];
     return (
@@ -158,13 +168,7 @@ export default function AdminLayout() {
                         ))}
                     </nav>
 
-                    {/* Logout Button */}
-                    <div className="p-4 border-t border-slate-200 bg-gradient-to-br from-slate-50 to-slate-100">
-                        <button className="w-full py-3 px-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2">
-                            <span>🚪</span>
-                            <span>Logout</span>
-                        </button>
-                    </div>
+
                 </aside>
 
                 {/* Main Content */}

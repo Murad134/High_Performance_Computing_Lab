@@ -54,7 +54,7 @@ import EditMembers from "../AdminPages/EditMembers.jsx";
 import EditContacts from "../AdminPages/EditContact.jsx";
 import EditFooter from "../AdminPages/Footer.jsx";
 import Dashboard from "../AdminPages/Dashboard.jsx";
-
+import MakeAdmin from "../AdminPages/MakeAdmin/MakeAdmin.jsx";
 
 const router = createBrowserRouter([
     {
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
                             },
 
 
-                            
+
                             {
                                 path: "platforms",
                                 element: <ExperimentalPlatforms />,
@@ -297,6 +297,9 @@ const router = createBrowserRouter([
             {
                 path: "footer",
                 element: <EditFooter />
+            }, {
+                path: 'make-admin',
+                element: <MakeAdmin />
             }
         ]
     },
