@@ -14,7 +14,7 @@ function Contact() {
       return res.data;
     },
   });
-  
+
   if (isLoading) {
     return (
       <div className="text-center mt-20 text-lg font-semibold">
@@ -32,7 +32,7 @@ function Contact() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start rounded-xl p-8 pt-16">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-start rounded-xl p-8 pt-16">
 
       {/* Left Sidebar */}
       <aside className="md:col-span-4 p-4 rounded-lg">
@@ -43,7 +43,7 @@ function Contact() {
       <aside className="md:col-span-8 space-y-6">
 
         {/* ================= General Information ================= */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl
          border border-blue-100 hover:shadow-xl transition-shadow duration-300">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-300">
             <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">

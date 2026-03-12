@@ -92,17 +92,9 @@ const router = createBrowserRouter([
                                 element: <TeamDetails />,
                             },
 
-
-
-                            {
-                                path: "platforms",
-                                element: <ExperimentalPlatforms />,
-                                loader: () => fetch("/Research/ExperimentalPlatforms.json").then(res => res.json())
-                            },
                             {
                                 path: "projects",
                                 element: <OtherCountryProjects />,
-                                loader: () => fetch("/Research/OtherCountryProject.json").then(res => res.json())
                             }
                         ]
                     },

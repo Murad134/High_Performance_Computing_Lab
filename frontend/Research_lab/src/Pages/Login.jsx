@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import SocialLogin from "./Authentication/SocialLogin";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { sendPasswordResetEmail } from "firebase/auth";
 import auth from '../Firebase/firebase.init'
@@ -15,8 +14,6 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [errorMessage, setErrorMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
   const from = location.state?.from || "/";
   const axiosInstance = useAxios();
 
@@ -72,7 +69,7 @@ export default function Login() {
       await axiosInstance.patch("/users", userInfo);
 
       reset();
-      
+
       // 6️⃣ Show success message and navigate
       Swal.fire({
         icon: "success",
@@ -149,23 +146,15 @@ export default function Login() {
                 <span className="text-red-500 text-sm">{errors.email.message}</span>
               )}
             </div>
-            <div className="relative">
+            <div>
               <label htmlFor="password" className="block font-medium mb-1">Password</label>
               <input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type="password"
                 placeholder="Enter your password"
-                className="border border-gray-300 rounded-md w-full text-black placeholder-gray-400 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 pl-3 pr-10 py-2"
+                className="border border-gray-300 rounded-md w-full text-black placeholder-gray-400 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 pl-3 pr-2 py-2"
                 {...register("password", { required: "Password is required" })}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-2/3 right-3 -translate-y-1/2"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
               {errors.password && (
                 <span className="text-red-500 text-sm mt-1 block">{errors.password.message}</span>
               )}

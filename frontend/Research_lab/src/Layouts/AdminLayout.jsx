@@ -42,7 +42,6 @@ export default function AdminLayout() {
             children: [
                 { label: "Departments", path: "/admin/research/departments" },
                 { label: "Teams", path: "/admin/research/teams" },
-                { label: "Experimental Platforms", path: "/admin/research/experimental-platforms" },
                 { label: "Other Country Projects", path: "/admin/research/other-country-projects" }
             ]
         },

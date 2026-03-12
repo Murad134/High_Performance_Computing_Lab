@@ -9,10 +9,6 @@ const navigation = [
     path: "teams",
   },
   {
-    label: "Experimental Platforms",
-    path: "platforms",
-  },
-  {
     label: "Other Country Projects & Funded Projects",
     path: "projects",
   },
