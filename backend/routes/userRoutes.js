@@ -1,27 +1,3 @@
-// // routes/userRoutes.js
-// const express = require('express');
-// const router = express.Router();
-// const { addUser, fetchAllUsers, fetchUserById,updateUser,searchUsers,changeUserRole,getUserRole } = require('../controllers/userController');
-
-// router.post('/', addUser);
-// router.get('/', fetchAllUsers);
-
-// router.get("/search", searchUsers);
-
-// router.get('/:id', fetchUserById);
-// router.patch('/', updateUser);
-
-
-// router.get("/role",  getUserRole);
-
-
-// router.patch("/:id/role",changeUserRole);
-
-
-
-// module.exports = router;
-
-
 const express = require('express');
 const router = express.Router();
 

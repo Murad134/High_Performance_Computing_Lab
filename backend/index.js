@@ -24,6 +24,11 @@ const conferenceRoutes = require('./routes/conferenceRoutes');
 const userRoutes = require('./routes/userRoutes');
 const otherCountryProjectRoutes = require('./routes/otherCountryProjectRoutes');
 
+
+const dashboardRoutes = require('./routes/dashboardRoutes');
+
+
+
 async function start() {
     try {
         await connectToDb();
@@ -39,6 +44,11 @@ async function start() {
         app.use('/conferences', conferenceRoutes);
         app.use('/users', userRoutes);
         app.use('/other-country-projects', otherCountryProjectRoutes);
+
+
+
+        app.use('/dashboard', dashboardRoutes);
+
         app.listen(port, () => console.log(`My project is running on port ${port}`));
     } catch (err) {
         console.error('Failed to start server', err);
