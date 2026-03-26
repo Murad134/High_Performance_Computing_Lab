@@ -10,8 +10,8 @@ const AdminEditProfessor = () => {
 
     const { register, handleSubmit, reset } = useForm({
         defaultValues: {
-            head: { picture: "", name: "", position: "", education: { bsc: "", msc: "", phd: "" }, department: "", university: "" },
-            deputy: { picture: "", name: "", position: "", education: { bsc: "", msc: "", phd: "" }, department: "", university: "" },
+            head: { picture: "", name: "", position: "", education: { bsc: "", msc: "", phd: "" }, teachingStartYear: "", department: "", university: "" },
+            deputy: { picture: "", name: "", position: "", education: { bsc: "", msc: "", phd: "" }, teachingStartYear: "", department: "", university: "" },
         },
     });
 
@@ -108,6 +108,14 @@ const AdminEditProfessor = () => {
                                 <input
                                     {...register("head.education.phd")}
                                     placeholder="PhD"
+                                    className="input input-bordered w-full border border-blue-300 px-2 focus:ring-2 focus:ring-indigo-400"
+                                />
+                                <label className="font-semibold text-gray-800 text-lg">Teaching Start Year</label>
+
+                            </div>
+                            <div>
+                                <input
+                                    {...register("head.teachingStartYear")}
                                     className="input input-bordered w-full border border-blue-300 px-2 focus:ring-2 focus:ring-indigo-400"
                                 />
                             </div>

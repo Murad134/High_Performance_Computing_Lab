@@ -1,110 +1,145 @@
-// import React from 'react'
-
-// function EditImage() {
-//     return (
-//         <div>EditImage</div>
-//     )
-// }
-
-// export default EditImage
 import React, { useState } from "react";
 
 export default function EditImageSlider() {
-  const [images, setImages] = useState([
-    {
-      id: 1,
-      title: "Best Research Award 2023",
-      imageUrl: "/images/award1.jpg",
-    },
-    {
-      id: 2,
-      title: "Conference Achievement",
-      imageUrl: "/images/award2.jpg",
-    },
-  ]);
+  const [images, setImages] = useState([]);
 
   const [formData, setFormData] = useState({
     title: "",
-    imageUrl: "",
+    files: [],
+    previews: [],
   });
 
-  // handle input change
+  const [editId, setEditId] = useState(null);
+
+  // TITLE
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, title: e.target.value });
   };
 
-  // add new image
-  const handleAddImage = (e) => {
+  // MULTIPLE FILE SELECT
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+
+    setFormData({
+      ...formData,
+      files,
+      previews,
+    });
+  };
+
+  // ADD or UPDATE
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.imageUrl) return;
+    if (!formData.title || formData.previews.length === 0) return;
 
-    setImages([
-      ...images,
-      {
-        id: Date.now(),
+    // EDIT MODE
+    if (editId) {
+      setImages(
+        images.map((img) =>
+          img.id === editId
+            ? {
+                ...img,
+                title: formData.title,
+                imageUrl: formData.previews[0], // update first image
+              }
+            : img
+        )
+      );
+      setEditId(null);
+    } else {
+      // ADD MULTIPLE IMAGES
+      const newImages = formData.previews.map((preview, index) => ({
+        id: Date.now() + index,
         title: formData.title,
-        imageUrl: formData.imageUrl,
-      },
-    ]);
+        imageUrl: preview,
+      }));
 
-    setFormData({ title: "", imageUrl: "" });
+      setImages([...images, ...newImages]);
+    }
+
+    // RESET
+    setFormData({
+      title: "",
+      files: [],
+      previews: [],
+    });
   };
 
-  // delete image
+  // DELETE
   const handleDelete = (id) => {
     setImages(images.filter((img) => img.id !== id));
   };
 
+  // EDIT
+  const handleEdit = (img) => {
+    setFormData({
+      title: img.title,
+      files: [],
+      previews: [img.imageUrl],
+    });
+    setEditId(img.id);
+  };
+
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="mx-auto p-6">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Edit Image Slider (Awards & Achievements)
+        Awards & Achievements Image Management
       </h2>
 
-      {/* Add Image Form */}
+      {/* FORM */}
       <form
-        onSubmit={handleAddImage}
-        className="bg-white shadow-md rounded-lg p-6 mb-10 space-y-4"
+        onSubmit={handleSubmit}
+        className=" rounded-lg p-6 mb-10 space-y-4"
       >
+        {/* TITLE */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Image Title / Caption
+            Image Title
           </label>
           <input
             type="text"
-            name="title"
             value={formData.title}
             onChange={handleChange}
-            placeholder="e.g. Best Paper Award 2024"
-            className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="mt-1 w-full border px-4 py-2 rounded-md"
           />
         </div>
 
+        {/* MULTIPLE FILE */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Image URL
+            Select Images
           </label>
           <input
-            type="text"
-            name="imageUrl"
-            value={formData.imageUrl}
-            onChange={handleChange}
-            placeholder="/images/award.jpg or https://..."
-            className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+            className="mt-1 w-full"
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md"
-        >
-          Add Image
+        {/* PREVIEW */}
+        <div className="flex gap-3 flex-wrap">
+          {formData.previews.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt="preview"
+              className="h-24 w-24 object-cover rounded-md"
+            />
+          ))}
+        </div>
+
+        <button className="bg-indigo-600 text-white px-6 py-2 rounded-md">
+          {editId ? "Update Image" : "Upload Images"}
         </button>
       </form>
 
-      {/* Existing Images */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* IMAGE LIST */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6  border-t border-red-700 pt-6">
         {images.map((img) => (
           <div
             key={img.id}
@@ -115,16 +150,27 @@ export default function EditImageSlider() {
               alt={img.title}
               className="h-48 w-full object-cover"
             />
-            <div className="p-4 flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-700">
+
+            <div className="p-4">
+              <p className="text-sm font-medium text-gray-700 mb-3">
                 {img.title}
               </p>
-              <button
-                onClick={() => handleDelete(img.id)}
-                className="text-red-600 text-sm hover:underline"
-              >
-                Delete
-              </button>
+
+              <div className="flex justify-between">
+                <button
+                  onClick={() => handleEdit(img)}
+                  className="text-blue-600 text-sm hover:underline"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => handleDelete(img.id)}
+                  className="text-red-600 text-sm hover:underline"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}

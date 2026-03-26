@@ -24,6 +24,7 @@ const AdminArticleFormSections = () => {
       volume: "",
       issue: "",
       pages: "",
+      month: "",
       year: "",
       doi: "",
       articleUrl: "",
@@ -238,6 +239,13 @@ const AdminArticleFormSections = () => {
               <label className="block text-gray-700 mb-1 font-medium">Pages</label>
               <input
                 {...register("pages")}
+                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 mb-1 font-medium">Month</label>
+              <input
+                {...register("month")}
                 className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>

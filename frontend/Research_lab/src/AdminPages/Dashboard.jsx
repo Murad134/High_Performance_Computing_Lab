@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "../hooks/useAxios"; // or useAxiosSecure if you use auth
+import useAxios from "../hooks/useAxios";
 
 export default function Dashboard() {
 
@@ -31,11 +31,11 @@ export default function Dashboard() {
 
     { label: "About Lab", path: "/admin/about/lab", icon: "🏫" },
     { label: "Professor", path: "/admin/about/professor", icon: "👨‍🏫" },
-    { label: "Research Interest", path: "/admin/about/research-interest", icon: "🧠"},
+    { label: "Research Interest", path: "/admin/about/research-interest", icon: "🧠" },
 
     { label: "Departments", path: "/admin/research/departments", icon: "🏢" },
     { label: "Teams", path: "/admin/research/teams", icon: "👥" },
-    { label: "Projects", path: "/admin/research/other-country-projects", icon: "💻"  },
+    { label: "Projects", path: "/admin/research/other-country-projects", icon: "💻" },
 
     { label: "Journal", path: "/admin/publication/journal", icon: "📘" },
     { label: "Conference", path: "/admin/publication/conferences", icon: "🎤" },
@@ -50,6 +50,7 @@ export default function Dashboard() {
   const stats = [
     { label: "Total Members", value: statsData.members || 0, color: "from-blue-500 to-blue-600", icon: "👥" },
     { label: "Publications", value: statsData.publications || 0, color: "from-green-500 to-green-600", icon: "📘" },
+    { label: "Professor Experience", value: statsData.totalProfExperience || 0, color: "from-orange-500 to-orange-600", icon: "⏳" },
     { label: "Projects", value: statsData.projects || 0, color: "from-purple-500 to-purple-600", icon: "🌍" },
     { label: "Thesis", value: statsData.thesis || 0, color: "from-yellow-500 to-yellow-600", icon: "🎓" },
     { label: "Teams", value: statsData.teams || 0, color: "from-pink-500 to-pink-600", icon: "🏢" },
@@ -127,7 +128,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-
       {/* RECENT ACTIVITY */}
       <div>
         <h2 className="text-xl font-semibold text-gray-800 mb-5">
@@ -156,7 +156,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }
