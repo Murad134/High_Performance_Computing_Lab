@@ -1,3 +1,39 @@
+import React from 'react'
+import WelcomeSection from '../Components/HomeComponents/WelcomeSection'
+import Stat from '../Components/HomeComponents/Stat'
+import Aboutsection from '../Components/HomeComponents/Aboutsection'
+import Picture_Awards from '../Components/HomeComponents/Picture_Awards'
+import Publications from '../Components/HomeComponents/PublicationsSection'
+import ResearchInterest from '../Components/ResearchInterest'
+function Home() {
+  return (
+    <div className='pt-16'>
+      <WelcomeSection />
+      <Stat />
+      <Aboutsection />
+      <div>
+        <h3>Awards Picture</h3>
+        <Picture_Awards />
+      </div>
+      <div>
+        <h3 className='pt-2 '>Research Interests</h3>
+        <ResearchInterest />
+      </div>
+      <Publications />
+    </div>
+  )
+}
+export default Home
+
+
+
+
+
+
+
+
+
+
 // import React from "react";
 // import ImageSlider from "../Components/ImageSlider"
 // import ReaserchInterest from "../Components/ResearchInterest";
@@ -178,32 +214,3 @@
 // }
 
 // export default Home;
-
-
-
-
-
-
-
-
-
-import React from 'react'
-import WelcomeSection from '../Components/HomeComponents/WelcomeSection'
-import Stat from '../Components/HomeComponents/Stat'
-import Aboutsection from '../Components/HomeComponents/Aboutsection'
-import Picture_Awards from '../Components/HomeComponents/Picture_Awards'
-import Publications from '../Components/HomeComponents/PublicationsSection'
-import ResearchInterest from '../Components/ResearchInterest'
-function Home() {
-  return (
-    <div className='pt-16'>
-      <WelcomeSection />
-      <Stat />
-      <Aboutsection />
-      <Picture_Awards />
-      <ResearchInterest />
-      <Publications />
-    </div>
-  )
-}
-export default Home

@@ -37,7 +37,6 @@ export default function SimpleStats() {
             color: "from-blue-500 to-blue-600",
         },
     ];
-
     if (isLoading) {
         return (
             <div className="text-center py-10 text-gray-500">
@@ -45,7 +44,6 @@ export default function SimpleStats() {
             </div>
         );
     }
-
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {stats.map((stat) => (

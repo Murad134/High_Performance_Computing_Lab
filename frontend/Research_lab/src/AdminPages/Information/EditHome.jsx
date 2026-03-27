@@ -1,50 +1,427 @@
-// import React from 'react'
+// import React, { useState } from "react";
+// import { useMutation, useQuery, useQueryClient, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import useAxios from "../../hooks/useAxios"; // ✅ use your axios instance
 
-// function EditHome() {
+// const queryClient = new QueryClient();
+
+// export default function AppWrapper() {
 //   return (
-//     <div>EditHome</div>
-//   )
+//     <QueryClientProvider client={queryClient}>
+//       <EditHome />
+//     </QueryClientProvider>
+//   );
 // }
 
-// export default EditHome
+// function EditHome() {
+//   const axios = useAxios(); // ✅ use custom axios
+//   const queryClient = useQueryClient();
 
-import React, { useState } from "react";
+//   const [formData, setFormData] = useState({
+//     welcomeTitle: "",
+//     welcomeSubtitle: "",
+//     aboutTitle: "",
+//     aboutDescription: "",
+//     aboutButtonName: "",
+//     aboutButtonLink: "",
+//   });
 
-export default function EditHome() {
+//   const [existingImages, setExistingImages] = useState([]);
+//   const [newImages, setNewImages] = useState([]);
+//   const [successMessage, setSuccessMessage] = useState("");
 
+//   // ✅ Fetch home data
+//   const { isLoading } = useQuery({
+//     queryKey: ["homeData"],
+//     queryFn: async () => {
+//       const res = await axios.get("/api/home"); // ✅ auto uses baseURL
+//       return res.data;
+//     },
+//     onSuccess: (data) => {
+//       if (data) {
+//         setFormData({
+//           welcomeTitle: data.welcomeTitle || "",
+//           welcomeSubtitle: data.welcomeSubtitle || "",
+//           aboutTitle: data.aboutTitle || "",
+//           aboutDescription: data.aboutDescription || "",
+//           aboutButtonName: data.aboutButtonName || "",
+//           aboutButtonLink: data.aboutButtonLink || "",
+//         });
+//         setExistingImages(data.welcomeImages || []);
+//       }
+//     },
+//   });
+
+//   // ✅ Update mutation
+//   const updateMutation = useMutation({
+//     mutationFn: async (form) => {
+//       const payload = new FormData();
+
+//       // form fields
+//       Object.entries(form).forEach(([key, value]) => {
+//         payload.append(key, value);
+//       });
+
+//       // new images
+//       newImages.forEach((file) => {
+//         payload.append("welcomeImages", file);
+//       });
+
+//       // existing images (IMPORTANT FIX)
+//       existingImages.forEach((filename) => {
+//         payload.append("existingImages", filename);
+//       });
+
+//       const res = await axios.post("/api/home", payload);
+//       return res.data;
+//     },
+
+//     onSuccess: () => {
+//       setSuccessMessage("✅ Home page updated successfully!");
+//       queryClient.invalidateQueries({ queryKey: ["homeData"] });
+//       setTimeout(() => setSuccessMessage(""), 3000);
+//       setNewImages([]);
+//     },
+
+//     onError: () => {
+//       setSuccessMessage("❌ Failed to update data");
+//       setTimeout(() => setSuccessMessage(""), 3000);
+//     },
+//   });
+
+//   const handleChange = (e) =>
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+//   const handleAddImages = (e) => {
+//     const files = Array.from(e.target.files);
+//     setNewImages([...newImages, ...files]);
+//   };
+
+//   const handleRemoveNewImage = (index) => {
+//     const arr = [...newImages];
+//     arr.splice(index, 1);
+//     setNewImages(arr);
+//   };
+
+//   const handleRemoveExistingImage = (index) => {
+//     const arr = [...existingImages];
+//     arr.splice(index, 1);
+//     setExistingImages(arr);
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     console.log("Submitting form with data:", formData);
+//     updateMutation.mutate(formData);
+//   };
+
+//   if (isLoading) return <div>Loading form...</div>;
+
+//   return (
+//     <div className="mx-auto p-2">
+//       <h1 className="text-3xl font-bold text-slate-800 mb-4">
+//         🏠 Edit Home Page
+//       </h1>
+
+//       {successMessage && (
+//         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
+//           {successMessage}
+//         </div>
+//       )}
+
+//       <form onSubmit={handleSubmit} className="space-y-8">
+//         {/* Welcome Section */}
+//         <div className="bg-white rounded-xl shadow-sm border p-6">
+//           <h2 className="text-2xl font-bold mb-4">👋 Welcome Section</h2>
+
+//           <input
+//             type="text"
+//             name="welcomeTitle"
+//             value={formData.welcomeTitle}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 border rounded-lg mb-3"
+//             placeholder="Enter welcome title"
+//             required
+//           />
+
+//           <input
+//             type="text"
+//             name="welcomeSubtitle"
+//             value={formData.welcomeSubtitle}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 border rounded-lg mb-3"
+//             placeholder="Enter subtitle"
+//             required
+//           />
+
+//           {/* Existing images */}
+//           {existingImages.length > 0 && (
+//             <div className="mb-3">
+//               <label className="block mb-2 font-semibold">
+//                 Existing Images
+//               </label>
+
+//               {existingImages.map((img, idx) => (
+//                 <div
+//                   key={idx}
+//                   className="flex items-center justify-between bg-gray-100 p-2 rounded mb-2"
+//                 >
+//                   <img
+//                     src={`http://localhost:2500/uploads/${img}`} // ✅ FIXED
+//                     alt=""
+//                     className="h-16 w-16 object-cover rounded"
+//                   />
+
+//                   <button
+//                     type="button"
+//                     className="text-red-500"
+//                     onClick={() => handleRemoveExistingImage(idx)}
+//                   >
+//                     Remove
+//                   </button>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+
+//           {/* New images */}
+//           <input
+//             type="file"
+//             multiple
+//             onChange={handleAddImages}
+//             className="mb-2"
+//           />
+
+//           {newImages.map((file, idx) => (
+//             <div key={idx} className="flex justify-between bg-gray-100 p-2 mb-1">
+//               <span>{file.name}</span>
+//               <button
+//                 type="button"
+//                 onClick={() => handleRemoveNewImage(idx)}
+//               >
+//                 ❌
+//               </button>
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* About Section */}
+//         <div className="bg-white rounded-xl shadow-sm border p-6">
+//           <h2 className="text-2xl font-bold mb-4">👨‍🏫 About Section</h2>
+
+//           <input
+//             type="text"
+//             name="aboutTitle"
+//             value={formData.aboutTitle}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 border rounded-lg mb-3"
+//             required
+//           />
+
+//           <textarea
+//             name="aboutDescription"
+//             value={formData.aboutDescription}
+//             onChange={handleChange}
+//             rows="5"
+//             className="w-full px-4 py-3 border rounded-lg mb-3"
+//             required
+//           />
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//             <input
+//               type="text"
+//               name="aboutButtonName"
+//               value={formData.aboutButtonName}
+//               onChange={handleChange}
+//               className="w-full px-4 py-3 border rounded-lg mb-3"
+//               required
+//             />
+
+//             <input
+//               type="text"
+//               name="aboutButtonLink"
+//               value={formData.aboutButtonLink}
+//               onChange={handleChange}
+//               className="w-full px-4 py-3 border rounded-lg"
+//               required
+//             />
+//           </div>
+//         </div>
+
+//         <button className="w-full bg-indigo-600 text-white py-3 rounded-lg">
+//           💾 Update
+//         </button>
+//       </form>
+//     </div>
+//   );
+// }
+
+
+
+import React, { useState, useEffect } from "react";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import useAxios from "../../hooks/useAxios";
+
+const queryClient = new QueryClient();
+
+export default function AppWrapper() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <EditHome />
+    </QueryClientProvider>
+  );
+}
+
+function EditHome() {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+
+  // -------------------------------
+  // State: Form Data + Images
+  // -------------------------------
+  const [formData, setFormData] = useState({
+    welcomeTitle: "",
+    welcomeSubtitle: "",
+    aboutTitle: "",
+    aboutDescription: "",
+    aboutButtonName: "",
+    aboutButtonLink: "",
+  });
+
+  const [existingImages, setExistingImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
+  // -------------------------------
+  // Load saved data from localStorage on mount
+  // -------------------------------
+  useEffect(() => {
+    const savedForm = localStorage.getItem("homeFormData");
+    const savedImages = localStorage.getItem("homeExistingImages");
+
+    if (savedForm) setFormData(JSON.parse(savedForm));
+    if (savedImages) setExistingImages(JSON.parse(savedImages));
+  }, []);
+
+  // -------------------------------
+  // Fetch data from backend
+  // -------------------------------
+  const { isLoading } = useQuery({
+    queryKey: ["homeData"],
+    queryFn: async () => {
+      const res = await axios.get("/api/home");
+      return res.data;
+    },
+    onSuccess: (data) => {
+      if (data) {
+        // Only update state if not already typed by user (keep unsaved edits)
+        setFormData((prev) => ({
+          welcomeTitle: prev.welcomeTitle || data.welcomeTitle || "",
+          welcomeSubtitle: prev.welcomeSubtitle || data.welcomeSubtitle || "",
+          aboutTitle: prev.aboutTitle || data.aboutTitle || "",
+          aboutDescription: prev.aboutDescription || data.aboutDescription || "",
+          aboutButtonName: prev.aboutButtonName || data.aboutButtonName || "",
+          aboutButtonLink: prev.aboutButtonLink || data.aboutButtonLink || "",
+        }));
+
+        setExistingImages((prev) =>
+          prev.length > 0 ? prev : data.welcomeImages || []
+        );
+      }
+    },
+  });
+
+  // -------------------------------
+  // Save unsaved data to localStorage
+  // -------------------------------
+  useEffect(() => {
+    localStorage.setItem("homeFormData", JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem("homeExistingImages", JSON.stringify(existingImages));
+  }, [existingImages]);
+
+  // -------------------------------
+  // Mutation to update backend
+  // -------------------------------
+  const updateMutation = useMutation({
+    mutationFn: async (form) => {
+      const payload = new FormData();
+
+      // Append form fields
+      Object.entries(form).forEach(([key, value]) => payload.append(key, value));
+
+      // Append new images
+      newImages.forEach((file) => payload.append("welcomeImages", file));
+
+      // Append existing images to keep
+      existingImages.forEach((filename) =>
+        payload.append("existingImages", filename)
+      );
+
+      const res = await axios.post("/api/home", payload);
+      return res.data;
+    },
+    onSuccess: () => {
+      setSuccessMessage("✅ Home page updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["homeData"] });
+
+      // Clear new images and localStorage after successful update
+      setNewImages([]);
+      localStorage.removeItem("homeFormData");
+      localStorage.removeItem("homeExistingImages");
+
+      setTimeout(() => setSuccessMessage(""), 3000);
+    },
+    onError: () => {
+      setSuccessMessage("❌ Failed to update data");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    },
+  });
+
+  // -------------------------------
+  // Handlers
+  // -------------------------------
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleAddImages = (e) => {
+    const files = Array.from(e.target.files);
+    setNewImages([...newImages, ...files]);
+  };
+
+  const handleRemoveNewImage = (index) => {
+    const arr = [...newImages];
+    arr.splice(index, 1);
+    setNewImages(arr);
+  };
+
+  const handleRemoveExistingImage = (index) => {
+    const arr = [...existingImages];
+    arr.splice(index, 1);
+    setExistingImages(arr);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("Form Data:", formData);
-
-    // Show success message
-    setSuccessMessage("✅ Data saved successfully!");
-    setTimeout(() => setSuccessMessage(""), 3000);
+    updateMutation.mutate(formData);
   };
 
+  if (isLoading) return <div>Loading form...</div>;
 
+  // -------------------------------
+  // Render
+  // -------------------------------
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">
-          🏠 Edit Home Page Content
-        </h1>
-        <p className="text-slate-600">
-          Update welcome section and about section content
-        </p>
-      </div>
+    <div className="mx-auto p-2">
+      <h1 className="text-3xl font-bold text-slate-800 mb-4">🏠 Edit Home Page</h1>
 
-      {/* Success Message */}
       {successMessage && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
           {successMessage}
@@ -53,160 +430,110 @@ export default function EditHome() {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Welcome Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-            <span className="text-3xl">👋</span>
-            <h2 className="text-2xl font-bold text-slate-800">Welcome Section</h2>
-          </div>
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h2 className="text-2xl font-bold mb-4">👋 Welcome Section</h2>
 
-          <div className="space-y-5">
-            {/* Welcome Title */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Welcome Title
-              </label>
-              <input
-                type="text"
-                name="welcomeTitle"
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                placeholder="Enter welcome title"
-                required
-              />
-            </div>
+          <input
+            type="text"
+            name="welcomeTitle"
+            value={formData.welcomeTitle}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border rounded-lg mb-3"
+            placeholder="Enter welcome title"
+            required
+          />
 
-            {/* Welcome Subtitle */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Welcome Subtitle
-              </label>
-              <input
-                type="text"
-                name="welcomeSubtitle"
-                // value={formData.welcomeSubtitle}
-                // onChange={handleChange}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                placeholder="Enter subtitle"
-                required
-              />
-            </div>
+          <input
+            type="text"
+            name="welcomeSubtitle"
+            value={formData.welcomeSubtitle}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border rounded-lg mb-3"
+            placeholder="Enter subtitle"
+            required
+          />
 
-            {/* Button Name & Link */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Button Name
-                </label>
-                <input
-                  type="text"
-                  name="welcomeButtonName"
-                  // value={formData.welcomeButtonName}
-                  // onChange={handleChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                  placeholder="e.g., Learn More"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Button Link
-                </label>
-                <input
-                  type="text"
-                  name="welcomeButtonLink"
-                  // value={formData.welcomeButtonLink}
-                  // onChange={handleChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                  placeholder="e.g., /about"
-                  required
-                />
-              </div>
+          {/* Existing images */}
+          {existingImages.length > 0 && (
+            <div className="mb-3">
+              <label className="block mb-2 font-semibold">Existing Images</label>
+              {existingImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between bg-gray-100 p-2 rounded mb-2"
+                >
+                  <img
+                    src={`http://localhost:2500/uploads/${img}`}
+                    alt=""
+                    className="h-16 w-16 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    className="text-red-500"
+                    onClick={() => handleRemoveExistingImage(idx)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
             </div>
-          </div>
+          )}
+
+          {/* New images */}
+          <input type="file" multiple onChange={handleAddImages} className="mb-2" />
+          {newImages.map((file, idx) => (
+            <div key={idx} className="flex justify-between bg-gray-100 p-2 mb-1">
+              <span>{file.name}</span>
+              <button type="button" onClick={() => handleRemoveNewImage(idx)}>
+                ❌
+              </button>
+            </div>
+          ))}
         </div>
 
         {/* About Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-            <span className="text-3xl">👨‍🏫</span>
-            <h2 className="text-2xl font-bold text-slate-800">About Section</h2>
-          </div>
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h2 className="text-2xl font-bold mb-4">👨‍🏫 About Section</h2>
 
-          <div className="space-y-5">
-            {/* About Title */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                About Title
-              </label>
-              <input
-                type="text"
-                name="aboutTitle"
-                // value={formData.aboutTitle}
-                // onChange={handleChange}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                placeholder="Enter about title"
-                required
-              />
-            </div>
+          <input
+            type="text"
+            name="aboutTitle"
+            value={formData.aboutTitle}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border rounded-lg mb-3"
+            required
+          />
 
-            {/* About Description */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                About Description
-              </label>
-              <textarea
-                name="aboutDescription"
-                // value={formData.aboutDescription}
-                // onChange={handleChange}
-                rows="5"
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
-                placeholder="Enter description"
-                required
-              />
-            </div>
+          <textarea
+            name="aboutDescription"
+            value={formData.aboutDescription}
+            onChange={handleChange}
+            rows="5"
+            className="w-full px-4 py-3 border rounded-lg mb-3"
+            required
+          />
 
-            {/* Button Name & Link */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Button Name
-                </label>
-                <input
-                  type="text"
-                  name="aboutButtonName"
-                  // value={formData.aboutButtonName}
-                  // onChange={handleChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                  placeholder="e.g., Read More"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Button Link
-                </label>
-                <input
-                  type="text"
-                  name="aboutButtonLink"
-                  // value={formData.aboutButtonLink}
-                  // onChange={handleChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                  placeholder="e.g., /about"
-                  required
-                />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              name="aboutButtonName"
+              value={formData.aboutButtonName}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-lg mb-3"
+              required
+            />
+            <input
+              type="text"
+              name="aboutButtonLink"
+              value={formData.aboutButtonLink}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-lg"
+              required
+            />
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button
-            type="submit"
-            className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-          >
-            💾 Update
-          </button>
-        </div>
+        <button className="w-full bg-indigo-600 text-white py-3 rounded-lg">💾 Update</button>
       </form>
     </div>
   );
