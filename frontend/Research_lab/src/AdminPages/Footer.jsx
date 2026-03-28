@@ -88,14 +88,14 @@ const AdminFooter = () => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <section className="max-w-6xl mx-auto p-6">
+    <section className="mx-auto p-2">
       <h2 className="text-2xl font-bold mb-8 text-indigo-700">
         Admin Panel – Edit Footer
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-lg p-8 space-y-10"
+        className=" rounded-xl  p-8 space-y-10"
       >
         {/* ================= Lab Info ================= */}
         <div>

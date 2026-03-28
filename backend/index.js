@@ -49,7 +49,7 @@ app.use('/dashboard', dashboardRoutes);
 
 // ✅ Image routes
 app.use('/images', imageRoutes);
-app.use('/api/home', homeRoutes);
+app.use('/welcomehome', homeRoutes);
 // ✅ Start server after DB connection
 async function start() {
     try {

@@ -56,14 +56,6 @@ export default function AdminLayout() {
             ]
         },
         {
-            title: "Supervisors",
-            icon: "👨‍💻",
-            children: [
-                { label: "Academic Thesis", path: "/admin/supervisors/academic-thesis" },
-                { label: "Academic Projects", path: "/admin/supervisors/academic-projects" }
-            ]
-        },
-        {
             title: "Members",
             path: "/admin/members",
             icon: "👨‍🔬"

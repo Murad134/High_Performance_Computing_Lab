@@ -113,7 +113,7 @@ const Journal = () => {
         {/* VIEW ALL */}
         <div className="mt-12 text-center">
           <a
-            href="/publication/research"
+            href="/research/publications/journal"
             className="inline-block border border-indigo-300 text-indigo-600 py-3 px-8 rounded-lg hover:bg-indigo-50 transition"
           >
             View All Publications

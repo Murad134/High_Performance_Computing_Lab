@@ -11,11 +11,9 @@ const AdminContact = () => {
     queryKey: ["contact"],
     queryFn: async () => {
       const res = await axiosSecure.get("/contact");
-      return res.data; // backend uses findOne()
+      return res.data;
     },
   });
-
-  // 🔹 UPDATE Contact
   const updateMutation = useMutation({
     mutationFn: async (data) => await axiosSecure.put("/contact", data),
     onSuccess: () => {
@@ -55,14 +53,13 @@ const AdminContact = () => {
       deputyHeadLinkedin: form.deputyHeadLinkedin.value,
       deputyHeadFacebook: form.deputyHeadFacebook.value,
     };
-
     updateMutation.mutate(formData);
   };
 
   if (isLoading) return <p className="text-center mt-10">Loading contact data...</p>;
-
+  
   return (
-    <section className="max-w-6xl mx-auto p-6">
+    <section className="mx-auto p-2">
       <h2 className="text-2xl font-bold mb-8 text-indigo-700">
         Admin Panel – Edit Contact
       </h2>
@@ -208,5 +205,4 @@ const AdminContact = () => {
     </section>
   );
 };
-
 export default AdminContact;
