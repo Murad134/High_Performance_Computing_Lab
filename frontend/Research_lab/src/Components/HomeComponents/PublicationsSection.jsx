@@ -51,8 +51,8 @@ const Journal = () => {
   };
 
   return (
-    <section className="py-20 px-6 md:px-20 bg-gray-100">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-20 px-6 md:px-20">
+      <div className="mx-auto">
 
         <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">
           Featured Publications

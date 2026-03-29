@@ -4,10 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import StudentCard from './CardComponents/StudentCard';
 import AlumniCard from './CardComponents/AlumniCard';
+import useUserRole from '../hooks/useUserRole';
 
 function StudentList() {
   const { level, type } = useParams();
   const axiosSecure = useAxios();
+  const { role } = useUserRole();
+  console.log(role);
   const [searchRoll, setSearchRoll] = useState('');
 
   const { data = [], isLoading } = useQuery({
@@ -43,7 +46,7 @@ function StudentList() {
         </h1>
       </header>
 
-      <div className="flex justify-center mb-6">
+      {/* <div className="flex justify-center mb-6">
         <input
           type="text"
           placeholder="Search by Roll Number..."
@@ -51,7 +54,21 @@ function StudentList() {
           onChange={(e) => setSearchRoll(e.target.value)}
           className="w-full max-w-md border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-      </div>
+      </div> */}
+
+      {
+        role === 'admin' && (
+          <div className="flex justify-center mb-6">
+            <input
+              type="text"
+              placeholder="Search by Roll Number..."
+              value={searchRoll}
+              onChange={(e) => setSearchRoll(e.target.value)}
+              className="w-full max-w-md border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+        )
+      }
 
       {isLoading ? (
         <p className="text-center text-gray-500 italic">

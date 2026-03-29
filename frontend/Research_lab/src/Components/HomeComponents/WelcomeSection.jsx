@@ -31,8 +31,9 @@ function WelcomeSection() {
       <Carousel
         autoPlay
         infiniteLoop
-        interval={2000}
+        interval={3000}
         showThumbs={false}
+        stopOnHover={false}
         showStatus={false}
         showIndicators={false}
       >

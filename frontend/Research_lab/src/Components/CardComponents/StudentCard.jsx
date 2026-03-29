@@ -2,11 +2,12 @@ import React from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import useUserRole from "../../hooks/useUserRole";
 
 export default function StudentCard({ item }) {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-
+  const { role } = useUserRole();
   const statusMutation = useMutation({
     mutationFn: async (id) => {
       return axiosSecure.patch(`/studentproject/${id}/status`, {
@@ -30,9 +31,6 @@ export default function StudentCard({ item }) {
     },
   });
 
-  /* =========================
-     ✅ Delete Student
-  ========================== */
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       return axiosSecure.delete(`/studentProject/${id}`);
@@ -57,83 +55,6 @@ export default function StudentCard({ item }) {
   });
 
   return (
-    // <div className="card bg-base-100 hover:shadow-xl transition duration-300 rounded-xl overflow-hidden">
-
-    //   {/* ========= Image ========= */}
-    //   <figure className="w-full h-48 overflow-hidden">
-    //     <img
-    //       src={item.student?.studentImage}
-    //       alt={item.student?.studentName}
-    //       className="w-full h-full object-cover"
-    //     />
-    //   </figure>
-
-    //   {/* ========= Body ========= */}
-    //   <div className="card-body p-4">
-
-    //     <h2 className="card-title text-lg flex justify-between items-center">
-    //       {item.student?.studentName}
-
-    //       {item.stdntstatus === "completed" && (
-    //         <span className="badge badge-secondary ml-2">
-    //           Alumni
-    //         </span>
-    //       )}
-    //     </h2>
-
-    //     <div className="text-sm text-base-content/80 space-y-1 mt-2">
-    //       <p><strong>Roll:</strong> {item.student?.roll}</p>
-    //       <p><strong>Session:</strong> {item.student?.session}</p>
-    //       <p><strong>Department:</strong> {item.student?.department}</p>
-    //     </div>
-
-    //     {/* ========= Title ========= */}
-    //     <p className="text-sm mt-3">
-    //       <span className="font-semibold text-primary">Title:</span>{" "}
-    //       {item.type === "thesis"
-    //         ? item.thesis?.thesisTitle
-    //         : item.project?.projectTitle}
-    //     </p>
-
-    //     <p className="text-xs text-secondary">
-    //       ({item.type})
-    //     </p>
-
-    //     {/* ========= Buttons ========= */}
-    //     <div className="flex gap-2 justify-end mt-4 flex-wrap">
-
-    //       {item.stdntstatus === "ongoing" && (
-    //         <button
-    //           onClick={() => statusMutation.mutate(item._id)}
-    //           className="btn btn-sm bg-green-500 hover:bg-green-600 text-white border-none"
-    //         >
-    //           Move to Alumni
-    //         </button>
-    //       )}
-
-    //       <button
-    //         onClick={() => {
-    //           Swal.fire({
-    //             title: `Delete ${item.student?.studentName}?`,
-    //             icon: "warning",
-    //             showCancelButton: true,
-    //             confirmButtonColor: "#d33",
-    //             cancelButtonColor: "#3085d6",
-    //             confirmButtonText: "Yes, Delete",
-    //           }).then((result) => {
-    //             if (result.isConfirmed) {
-    //               deleteMutation.mutate(item._id);
-    //             }
-    //           });
-    //         }}
-    //         className="btn btn-sm bg-red-500 hover:bg-red-600 text-white border-none"
-    //       >
-    //         Delete
-    //       </button>
-
-    //     </div>
-    //   </div>
-    // </div>
 
     <div className="card bg-base-100 hover:shadow-2xl transition-shadow duration-300 rounded-xl overflow-hidden">
 
@@ -173,41 +94,45 @@ export default function StudentCard({ item }) {
           {item.type === "thesis" ? item.thesis?.thesisTitle : item.project?.projectTitle}{" "}
           <span className="text-xs font-medium text-secondary">({item.type})</span>
         </p>
+        {
+          role === 'admin' && (
+            <div className="flex gap-2 justify-end flex-wrap">
+              {item.stdntstatus !== "completed" && (
+                <button
+                  onClick={() => statusMutation.mutate(item._id)}
+                  className="btn btn-sm bg-green-400 hover:bg-green-600 text-white border-none flex items-center gap-2 p-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Completed
+                </button>
+              )}
 
-        <div className="flex gap-2 justify-end flex-wrap">
-          {item.stdntstatus !== "completed" && (
-            <button
-              onClick={() => statusMutation.mutate(item._id)}
-              className="btn btn-sm bg-green-400 hover:bg-green-600 text-white border-none flex items-center gap-2 p-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              Completed
-            </button>
-          )}
+              <button
+                onClick={() => {
+                  Swal.fire({
+                    title: `Are you sure to delete ${item.student?.studentName}?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                  }).then((result) => {
+                    if (result.isConfirmed) deleteMutation.mutate(item._id);
+                  });
+                }}
+                className="btn btn-sm bg-red-400 hover:bg-red-600 text-white border-none flex items-center gap-2 p-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7v10m6-10v10M4 7h16l-1 14H5L4 7z" />
+                </svg>
+                Delete
+              </button>
+            </div>
+          )
+        }
 
-          <button
-            onClick={() => {
-              Swal.fire({
-                title: `Are you sure to delete ${item.student?.studentName}?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!"
-              }).then((result) => {
-                if (result.isConfirmed) deleteMutation.mutate(item._id);
-              });
-            }}
-            className="btn btn-sm bg-red-400 hover:bg-red-600 text-white border-none flex items-center gap-2 p-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7v10m6-10v10M4 7h16l-1 14H5L4 7z" />
-            </svg>
-            Delete
-          </button>
-        </div>
       </footer>
     </div>
   );

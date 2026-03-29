@@ -2,11 +2,12 @@ import React from "react";
 import useAxios from "../../hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import useUserRole from "../../hooks/useUserRole";
 
 export default function AlumniCard({ item }) {
   const axiosInstance = useAxios();
   const queryClient = useQueryClient();
-
+  const { role } = useUserRole();
   const backMutation = useMutation({
     mutationFn: async (id) => {
       return axiosInstance.patch(`/studentproject/${id}/status`, {
@@ -88,12 +89,14 @@ export default function AlumniCard({ item }) {
           </span>
 
           {/* Back Button */}
-          <button
-            onClick={() => backMutation.mutate(item._id)}
-            className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white border-none p-2 rounded-lg"
-          >
-            Back to Current
-          </button>
+          {role === 'admin' && (
+            <button
+              onClick={() => backMutation.mutate(item._id)}
+              className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white border-none p-2 rounded-lg"
+            >
+              Back to Current
+            </button>
+          )}
 
         </div>
       </footer>

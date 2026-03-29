@@ -30,7 +30,7 @@ const userRoutes = require('./routes/userRoutes');
 const otherCountryProjectRoutes = require('./routes/otherCountryProjectRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const imageRoutes = require('./routes/imageRoutes');
-const homeRoutes = require('./routes/homeRoutes'); 
+const homeRoutes = require('./routes/homeRoutes');
 
 
 // ✅ Use routers

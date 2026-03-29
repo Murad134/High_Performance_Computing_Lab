@@ -2,8 +2,10 @@
 // CardProject.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import useUserRole from "../../hooks/useUserRole";
 
 const CardProject = ({ item, onMarkComplete, onMarkIncomplete }) => {
+  const { role } = useUserRole();
   // const id = item._id; // backend document id
   const nestedId = item.type === "project" ? item.project?._id : item.thesis?._id;
 
@@ -70,23 +72,30 @@ const CardProject = ({ item, onMarkComplete, onMarkIncomplete }) => {
         </Link>
 
         {/* Complete / Not Complete Buttons */}
-        {isCurrent && (
-          <button
-            onClick={() => onMarkComplete(nestedId, item.type)}
-            className="ml-auto bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-3 py-1.5 rounded transition-colors"
-          >
-            Complete
-          </button>
-        )}
+        {
+          role === 'admin' &&
+          isCurrent && (
+            <button
+              onClick={() => onMarkComplete(nestedId, item.type)}
+              className="ml-auto bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-3 py-1.5 rounded transition-colors"
+            >
 
-        {isCompleted && (
-          <button
-            onClick={() => onMarkIncomplete(nestedId, item.type)}
-            className="ml-auto bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1.5 rounded transition-colors"
-          >
-            Not Complete
-          </button>
-        )}
+              Complete
+            </button>
+          )
+        }
+
+        {
+          role === 'admin' &&
+          isCompleted && (
+            <button
+              onClick={() => onMarkIncomplete(nestedId, item.type)}
+              className="ml-auto bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1.5 rounded transition-colors"
+            >
+              Not Complete
+            </button>
+          )
+        }
       </div>
     </div>
   );
