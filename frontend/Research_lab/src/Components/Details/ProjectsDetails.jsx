@@ -122,12 +122,12 @@ const ViewDetails = () => {
         </div>
 
         {/* Footer: Image + Back Button */}
-        <div className="p-6 border-t border-gray-200 flex flex-col gap-4 bg-gray-50">
+        <div className=" p-6 border-t border-gray-200 flex flex-col gap-4 bg-gray-50">
           {normalized.image && (
             <img
               src={normalized.image}
               alt={normalized.title}
-              className="w-full h-64 object-cover rounded-md border border-gray-300 shadow-sm"
+              className="min-h-screen w-full h-64 object-cover rounded-md border border-gray-300 shadow-sm"
             />
           )}
           <div className="flex justify-end">

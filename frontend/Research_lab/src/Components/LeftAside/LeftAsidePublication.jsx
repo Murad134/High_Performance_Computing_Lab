@@ -60,7 +60,7 @@ function LeftAsidePublication() {
           </li>
 
           {/* Seminar */}
-          <li>
+          {/* <li>
             <NavLink
               to="/research/publications/seminar"
               className={({ isActive }) =>
@@ -80,7 +80,7 @@ function LeftAsidePublication() {
                 </span>
               </div>
             </NavLink>
-          </li>
+          </li> */}
 
           {/* Book/Book Chapter */}
           <li>

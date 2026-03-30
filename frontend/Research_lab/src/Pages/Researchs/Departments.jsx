@@ -62,7 +62,7 @@ function Departments() {
                             <div className="text-gray-700 text-sm space-y-1 pt-2 border-t border-gray-100">
 
                                 <p>
-                                    <span className="font-medium">Head Name:</span> {dept.headName}
+                                    <span className="font-medium">Head of Department:</span> {dept.headName}
                                 </p>
 
                                 <p>

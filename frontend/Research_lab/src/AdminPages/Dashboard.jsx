@@ -14,6 +14,7 @@ export default function Dashboard() {
       const res = await axiosInstance.get("/dashboard/stats");
       return res.data;
     },
+    refetchInterval: 5000,
   });
   const formatDate = (date) => {
     if (!date) return "No updates yet";

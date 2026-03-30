@@ -256,7 +256,7 @@ const AdminStudentProjectPage = () => {
                   registerProps={register("projectTitle")}
                 />
                 <Input
-                  label="Project Image"
+                  label="Project Image Url"
                   registerProps={register("projectImage")}
                 />
                 <Input

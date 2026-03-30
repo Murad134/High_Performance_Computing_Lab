@@ -4,26 +4,40 @@ const { getCollection } = require('../config/db');
 
 router.get('/stats', async (req, res) => {
     try {
-        // collections
+        // Collections
         const usersCol = getCollection('users');
         const journalsCol = getCollection('journals');
         const studentCol = getCollection('studentProject');
         const deptCol = getCollection('departments');
         const profCol = getCollection('aboutprof');
 
-        // ===== COUNTS (PARALLEL for performance) =====
+        // 👤 Members (users) unique by roll
+        const memberAgg = await usersCol.aggregate([
+            { $match: { roll: { $exists: true, $ne: null } } }, // only valid rolls
+            { $group: { _id: "$roll" } },                       // group by roll
+            { $count: "totalMembers" }
+        ]).toArray();
+        const totalMembers = memberAgg[0]?.totalMembers || 0;
+
+        // 🎓 Students unique by student.roll
+        const studentAgg = await studentCol.aggregate([
+            { $match: { "student.roll": { $exists: true, $ne: null } } },
+            { $group: { _id: "$student.roll" } },
+            { $count: "totalStudents" }
+        ]).toArray();
+        const totalStudents = studentAgg[0]?.totalStudents || 0;
+
+        // ===== OTHER COUNTS (parallel for performance) =====
         const [
-            memberCount,
             publicationCount,
             projectCount,
             thesisCount,
             departmentCount
         ] = await Promise.all([
-            usersCol.countDocuments(),
             journalsCol.countDocuments(),
             studentCol.countDocuments({ type: "project" }),
             studentCol.countDocuments({ type: "thesis" }),
-            deptCol.countDocuments()
+            deptCol.countDocuments(),
         ]);
 
         // 👥 Teams (nested inside departments)
@@ -40,28 +54,12 @@ router.get('/stats', async (req, res) => {
                 }
             }
         ]).toArray();
-
         const teamCount = teamAgg[0]?.total || 0;
 
         // ===== 🔥 LAST UPDATED DATE =====
-
-        const [latestJournal] = await journalsCol
-            .find({})
-            .sort({ updated_at: -1 })
-            .limit(1)
-            .toArray();
-
-        const [latestUser] = await usersCol
-            .find({})
-            .sort({ last_log_in: -1 })
-            .limit(1)
-            .toArray();
-
-        const [latestProject] = await studentCol
-            .find({})
-            .sort({ _id: -1 }) // fallback
-            .limit(1)
-            .toArray();
+        const [latestJournal] = await journalsCol.find({}).sort({ updated_at: -1 }).limit(1).toArray();
+        const [latestUser] = await usersCol.find({}).sort({ last_log_in: -1 }).limit(1).toArray();
+        const [latestProject] = await studentCol.find({}).sort({ _id: -1 }).limit(1).toArray();
 
         const latestDates = [
             latestJournal?.updated_at,
@@ -73,10 +71,12 @@ router.get('/stats', async (req, res) => {
             latestDates.length > 0
                 ? new Date(Math.max(...latestDates.map(d => new Date(d))))
                 : null;
+
+        // ===== ABOUT PROFESSOR & EXPERIENCE =====
         const aboutProf = await profCol.findOne({});
-        // 🔥 Calculate experience for head & deputy
         const currentYear = new Date().getFullYear();
         let totalProfExperience = 0;
+
         if (aboutProf) {
             if (aboutProf.head?.teachingStartYear) {
                 const startYear = Number(aboutProf.head.teachingStartYear);
@@ -92,16 +92,15 @@ router.get('/stats', async (req, res) => {
 
         // ===== RESPONSE =====
         res.send({
-            members: memberCount,
+            members: totalStudents,       // ✅ roll-wise members
             publications: publicationCount,
             projects: projectCount,
             thesis: thesisCount,
             departments: departmentCount,
             teams: teamCount,
             aboutProf,
-            lastUpdated, // 🔥 NEW FIELD
+            lastUpdated,
             totalProfExperience,
-
         });
 
     } catch (error) {
