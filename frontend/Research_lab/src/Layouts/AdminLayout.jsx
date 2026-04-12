@@ -42,7 +42,6 @@ export default function AdminLayout() {
             children: [
                 { label: "Departments", path: "/admin/research/departments" },
                 { label: "Teams", path: "/admin/research/teams" },
-                { label: "Other Country Projects", path: "/admin/research/other-country-projects" }
             ]
         },
         {
@@ -51,7 +50,6 @@ export default function AdminLayout() {
             children: [
                 { label: "Journal", path: "/admin/publication/journal" },
                 { label: "Conferences", path: "/admin/publication/conferences" },
-                { label: "Seminar", path: "/admin/publication/seminar" },
                 { label: "Book Chapter", path: "/admin/publication/book-chapter" }
             ]
         },

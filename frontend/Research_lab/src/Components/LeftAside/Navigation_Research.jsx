@@ -8,10 +8,6 @@ const navigation = [
     label: "Teams",
     path: "teams",
   },
-  {
-    label: "Other Country Projects & Funded Projects",
-    path: "projects",
-  },
 ];
 export default function NavigationResearch() {
   return (
