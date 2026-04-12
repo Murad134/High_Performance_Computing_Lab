@@ -47,7 +47,7 @@ function LabAbout() {
                 </div>
 
                 {/* 🔸 Mission & Vision */}
-                <div className="relative">
+                {/* <div className="relative">
                     <div className="absolute -left-3 top-1 w-6 h-6 bg-purple-500 rounded-full border-4 border-white"></div>
 
                     <h3 className="flex items-center gap-2 text-xl font-semibold text-purple-700">
@@ -58,6 +58,52 @@ function LabAbout() {
                         <li>{lababout.mission}</li>
                         <li>{lababout.vision}</li>
                     </ul>
+                </div> */}
+
+
+                {/* 🔸 Mission & Vision */}
+                <div className="relative">
+                    <div className="absolute -left-3 top-1 w-6 h-6 bg-purple-500 rounded-full border-4 border-white"></div>
+
+                    <div className="text-gray-700 leading-relaxed mt-2 space-y-4">
+
+                        {/* 🔹 Mission */}
+                        <div>
+                            <h4 className="flex items-center gap-2 text-xl font-semibold text-purple-700"><FaBullseye />Mission:</h4>
+                            <ul className="space-y-2">
+                                {lababout.mission
+                                    ?.split(".")
+                                    .map((item, index) =>
+                                        item.trim() && (
+                                            <li key={index} className="flex items-start gap-2">
+                                                <span className="text-purple-600">🎯</span>
+                                                <span>{item.trim()}.</span>
+                                            </li>
+                                        )
+                                    )}
+                            </ul>
+
+                        </div>
+
+                        {/* 🔹 Vision */}
+                        <div>
+                            <h4 className="flex items-center gap-2 text-xl font-semibold text-indigo-700"><FaEye />Vision:</h4>
+                            <ul className="space-y-2">
+                                {lababout.vision
+                                    ?.split(".")
+                                    .map((item, index) =>
+                                        item.trim() && (
+                                            <li key={index} className="flex items-start gap-2">
+                                                <span className="text-indigo-600">🌟</span>
+                                                <span>{item.trim()}.</span>
+                                            </li>
+                                        )
+                                    )}
+                            </ul>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

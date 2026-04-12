@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
 function WelcomeSection() {
-  const axios = useAxios();
+  const axios = useAxios(); 
 
   const { data: images, isLoading, isError } = useQuery({
     queryKey: ["welcomeImages"],
