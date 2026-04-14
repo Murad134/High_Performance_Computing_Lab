@@ -31,7 +31,7 @@ const otherCountryProjectRoutes = require('./routes/otherCountryProjectRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const homeRoutes = require('./routes/homeRoutes');
-
+const bookRoutes = require('./routes/bookRoutes');
 
 // ✅ Use routers
 app.use('/footer', footerRoutes);
@@ -46,6 +46,7 @@ app.use('/conferences', conferenceRoutes);
 app.use('/users', userRoutes);
 app.use('/other-country-projects', otherCountryProjectRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/books', bookRoutes);
 
 // ✅ Image routes
 app.use('/images', imageRoutes);

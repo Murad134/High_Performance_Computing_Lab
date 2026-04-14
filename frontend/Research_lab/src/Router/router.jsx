@@ -115,10 +115,6 @@ const router = createBrowserRouter([
                                 element: <Conferences />,
                             },
                             {
-                                path: "seminar",
-                                element: <Seminar />,
-                            },
-                            {
                                 path: "books",
                                 element: <Books />,
                             }
