@@ -30,8 +30,6 @@ import Departments from "../Pages/Researchs/Departments.jsx";
 import DepartmentDetails from "../Components/Details/DepartmentDetails.jsx";
 import Teams from "../Pages/Researchs/Teams.jsx";
 import TeamDetails from "../Components/Details/TeamDetails.jsx";
-import ExperimentalPlatforms from "../Pages/Researchs/ExperimentalPlatforms.jsx";
-import OtherCountryProjects from "../Pages/Researchs/OtherCountryProjects.jsx";
 import ThesisDetails from "../Components/Details/ThesisDetails.jsx";
 
 import EditHome from "../AdminPages/Information/EditHome.jsx";
@@ -42,8 +40,6 @@ import EditResearchInterest from "../AdminPages/About/EditResearch_Interest.jsx"
 import EditDepartments from "../AdminPages/Research/EditDepartments.jsx";
 import EditTeams from "../AdminPages/Research/EditTeams.jsx";
 import EditNavigation from "../AdminPages/Research/EditNavigation.jsx";
-import EditExperimentalPlatforms from "../AdminPages/Research/EditExperimentalPlatforms.jsx";
-import EditOtherCountryProjects from "../AdminPages/Research/EditOtherCountryProjects.jsx";
 import EditJournal from "../AdminPages/Publication/EditJournal.jsx";
 import EditConferences from "../AdminPages/Publication/EditConferences.jsx";
 import EditSeminar from "../AdminPages/Publication/EditSeminar.jsx";
@@ -55,6 +51,7 @@ import EditContacts from "../AdminPages/EditContact.jsx";
 import EditFooter from "../AdminPages/Footer.jsx";
 import Dashboard from "../AdminPages/Dashboard.jsx";
 import MakeAdmin from "../AdminPages/MakeAdmin/MakeAdmin.jsx";
+import MemberProfile from "../Pages/Researchs/MemberProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -90,11 +87,9 @@ const router = createBrowserRouter([
                             {
                                 path: "teams/:id",
                                 element: <TeamDetails />,
-                            },
-
-                            {
-                                path: "projects",
-                                element: <OtherCountryProjects />,
+                            },{
+                                path:"member/:id",
+                                element:<MemberProfile />
                             }
                         ]
                     },
@@ -221,14 +216,6 @@ const router = createBrowserRouter([
             {
                 path: "research/navigation",
                 element: <EditNavigation />
-            },
-            {
-                path: "research/experimental-platforms",
-                element: <EditExperimentalPlatforms />
-            },
-            {
-                path: "research/other-country-projects",
-                element: <EditOtherCountryProjects />
             },
 
             // ==========================================
