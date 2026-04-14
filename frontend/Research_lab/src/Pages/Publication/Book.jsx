@@ -102,14 +102,14 @@ export default function Books() {
 
                   {/* Link */}
                   {book.link && (
-                    <a
+                    <button
                       href={book.link}
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition flex items-center gap-1"
                     >
                       View →
-                    </a>
+                    </button>
                   )}
                 </div>
               </div>
