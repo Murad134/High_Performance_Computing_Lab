@@ -779,7 +779,7 @@ function Header() {
 
 
                             {/* Admin Panel Link */}
-                            {!isLoading && role === 'admin' &&
+                            {!isLoading && (role === 'admin'|| role =='superadmin') &&
                                 <>
                                     <li>
                                         <NavLink
@@ -1075,7 +1075,7 @@ function Header() {
                         {/* Admin Panel Link */}
                     </li>
                     {
-                        !isLoading && role === 'admin' &&
+                        !isLoading && (role === 'admin'|| role =='superadmin') &&
                         <>
                             <li>
                                 <NavLink

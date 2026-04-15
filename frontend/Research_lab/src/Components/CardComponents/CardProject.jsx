@@ -73,7 +73,7 @@ const CardProject = ({ item, onMarkComplete, onMarkIncomplete }) => {
 
         {/* Complete / Not Complete Buttons */}
         {
-          role === 'admin' &&
+          (role === 'admin' || role === 'superadmin') &&
           isCurrent && (
             <button
               onClick={() => onMarkComplete(nestedId, item.type)}
@@ -86,7 +86,7 @@ const CardProject = ({ item, onMarkComplete, onMarkIncomplete }) => {
         }
 
         {
-          role === 'admin' &&
+          (role === 'admin' || role === 'superadmin') &&
           isCompleted && (
             <button
               onClick={() => onMarkIncomplete(nestedId, item.type)}

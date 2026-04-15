@@ -78,7 +78,7 @@ const CardThesis = ({ item, onMarkComplete, onMarkIncomplete }) => {
 
         {/* Complete / Not Complete Buttons */}
         {
-          role === 'admin' &&
+          (role === 'admin' || role === 'superadmin') &&
           isCurrent && (
             <button
               onClick={() => onMarkComplete(nestedId, item.type)}
@@ -88,9 +88,8 @@ const CardThesis = ({ item, onMarkComplete, onMarkIncomplete }) => {
             </button>
           )
         }
-
         {
-          role === 'admin' &&
+          (role === 'admin' || role === 'superadmin') &&
           isCompleted && (
             <button
               onClick={() => onMarkIncomplete(nestedId, item.type)}

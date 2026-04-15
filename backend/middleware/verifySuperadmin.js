@@ -1,7 +1,7 @@
-// middlewares/verifyAdmin.js
+// middlewares/verifySuperadmin.js
 const { getUserByEmail } = require("../models/userModel");
 
-const verifyAdmin = async (req, res, next) => {
+const verifySuperadmin = async (req, res, next) => {
     try {
         const email = req.decoded?.email;
 
@@ -11,19 +11,19 @@ const verifyAdmin = async (req, res, next) => {
 
         const user = await getUserByEmail(email);
 
-        if (!user || (user.role !== "admin" && user.role !== "superadmin")) {
+        if (!user || user.role !== "superadmin") {
             return res.status(403).send({
-                message: "Admin access required"
+                message: "Superadmin access required"
             });
         }
 
-        req.user = user; // optional (use later)
+        req.user = user;
         next();
 
     } catch (error) {
-        console.error("verifyAdmin error:", error);
+        console.error("verifySuperadmin error:", error);
         res.status(500).send({ message: "Authorization failed" });
     }
 };
 
-module.exports = verifyAdmin;
+module.exports = verifySuperadmin;

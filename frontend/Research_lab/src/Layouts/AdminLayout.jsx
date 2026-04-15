@@ -67,11 +67,15 @@ export default function AdminLayout() {
             title: "Footer",
             path: "/admin/footer",
             icon: "⚙️"
-        }, {
-            title: 'Make Admin',
-            path: '/admin/make-admin',
-            icon: '👑'
-        }
+        },
+        ...(role === 'superadmin' ? [
+            {
+                title: 'Make Admin',
+                path: '/admin/make-admin',
+                icon: '👑'
+            }
+        ] : [])
+
     ];
     return (
         <div className="flex flex-col">

@@ -95,7 +95,7 @@ export default function StudentCard({ item }) {
           <span className="text-xs font-medium text-secondary">({item.type})</span>
         </p>
         {
-          role === 'admin' && (
+          (role === 'admin' || role === 'superadmin') && (
             <div className="flex gap-2 justify-end flex-wrap">
               {item.stdntstatus !== "completed" && (
                 <button

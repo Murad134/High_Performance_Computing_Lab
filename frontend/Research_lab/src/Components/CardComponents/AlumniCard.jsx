@@ -89,7 +89,7 @@ export default function AlumniCard({ item }) {
           </span>
 
           {/* Back Button */}
-          {role === 'admin' && (
+          {(role === 'admin' || role === 'superadmin') && (
             <button
               onClick={() => backMutation.mutate(item._id)}
               className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white border-none p-2 rounded-lg"
