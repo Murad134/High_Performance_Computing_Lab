@@ -8,8 +8,14 @@ const {
     getJournalByIdController
 } = require('../controllers/journalController');
 
+
+const verifyToken = require('../middleware/verifyFBToken');
+const verifyAdmin = require('../middleware/verifyAdmin');
+const verifyFBToken = require('../middleware/verifyFBToken');
+
+
 // ---------------- CREATE ----------------
-router.post('/', createJournalController);
+router.post('/',verifyToken,verifyAdmin, createJournalController);
 
 // ---------------- READ ALL ----------------
 router.get('/', getAllJournalsController);
@@ -18,9 +24,9 @@ router.get('/', getAllJournalsController);
 router.get('/:id', getJournalByIdController);
 
 // ---------------- UPDATE ----------------
-router.put('/:id', updateJournalController);
+router.put('/:id',verifyFBToken,verifyAdmin, updateJournalController);
 
 // ---------------- DELETE ----------------
-router.delete('/:id', deleteJournalController);
+router.delete('/:id',verifyToken,verifyAdmin, deleteJournalController);
 
 module.exports = router;

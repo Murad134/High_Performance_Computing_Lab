@@ -11,14 +11,19 @@ const {
 
 } = require('../controllers/imageController');
 
+
+
+const verifyToken = require('../middleware/verifyFBToken');
+const verifyAdmin = require('../middleware/verifyAdmin');
+
 // Award images
 router.get('/', getAllImages);
-router.post('/', addNewImages);
-router.put('/:id', updateExistingImage);
-router.delete('/:id', deleteExistingImage);
+router.post('/', verifyToken, verifyAdmin, addNewImages);
+router.put('/:id', verifyToken, verifyAdmin, updateExistingImage);
+router.delete('/:id', verifyToken, verifyAdmin, deleteExistingImage);
 
 // Welcome images
 router.get('/welcome', getWelcomeImages);
-router.post('/welcome', addNewWelcomeImages);
-router.delete('/welcome/:id', deleteWelcomeImage);
+router.post('/welcome', verifyToken, verifyAdmin, addNewWelcomeImages);
+router.delete('/welcome/:id', verifyToken, verifyAdmin, deleteWelcomeImage);
 module.exports = router;

@@ -8,10 +8,16 @@ const {
     deleteBook,
 } = require('../controllers/bookController');
 
+
+
+
+const verifyToken = require('../middleware/verifyFBToken');
+const verifyAdmin = require('../middleware/verifyAdmin');
+
 router.get('/', getAllBooks);
 router.get('/:id', getBookById);
-router.post('/', addBook);
-router.put('/:id', updateBook);
-router.delete('/:id', deleteBook);
+router.post('/', verifyToken, verifyAdmin, addBook);
+router.put('/:id', verifyToken, verifyAdmin, updateBook);
+router.delete('/:id', verifyToken, verifyAdmin, deleteBook);
 
 module.exports = router;
