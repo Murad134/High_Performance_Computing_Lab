@@ -49,7 +49,7 @@ app.get('/health', async (req, res) => {
         await connectToDb();
         checks.db = true;
     } catch (error) {
-        console.error('Health DB check failed:', error.message);
+        // DB check failed
     }
 
     const ok = checks.db && checks.firebase;
@@ -75,5 +75,16 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/books', bookRoutes);
 app.use('/images', imageRoutes);
 app.use('/welcomehome', homeRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ error: 'File too large' });
+  }
+  if (err.name === 'MulterError') {
+    return res.status(400).json({ error: err.message });
+  }
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 module.exports = app;
