@@ -97,10 +97,22 @@ const { ObjectId } = require('mongodb');
 const getPublicIdFromUrl = (url) => {
   const parts = url.split('/');
   const uploadIndex = parts.indexOf('upload');
-  if (uploadIndex !== -1 && uploadIndex < parts.length - 1) {
-    const filename = parts[uploadIndex + 1];
-    // Remove version if present (v1234567890-)
-    return filename.replace(/^v\d+-/, '').replace(/\.[^/.]+$/, '');
+  if (uploadIndex !== -1) {
+    // Skip 'upload' and version (v123...)
+    let publicIdParts = [];
+    for (let i = uploadIndex + 1; i < parts.length; i++) {
+      if (parts[i].startsWith('v') && /^\d+$/.test(parts[i].slice(1))) {
+        // Skip version
+        continue;
+      }
+      publicIdParts.push(parts[i]);
+    }
+    // Remove extension from last part
+    if (publicIdParts.length > 0) {
+      const lastPart = publicIdParts[publicIdParts.length - 1];
+      publicIdParts[publicIdParts.length - 1] = lastPart.replace(/\.[^/.]+$/, '');
+    }
+    return publicIdParts.join('/');
   }
   return null;
 };

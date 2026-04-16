@@ -55,6 +55,10 @@ export default function EditImageSlider() {
       refetchAward();
       resetAward();
       Swal.fire("Success!", "Image uploaded successfully", "success");
+    },
+    onError: (error) => {
+      console.error("Upload error:", error);
+      Swal.fire("Error!", "Failed to upload image: " + (error.response?.data?.error || error.message), "error");
     }
   });
 
@@ -67,6 +71,10 @@ export default function EditImageSlider() {
       refetchAward();
       resetAward();
       Swal.fire("Updated!", "Image updated successfully", "success");
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+      Swal.fire("Error!", "Failed to update image: " + (error.response?.data?.error || error.message), "error");
     }
   });
 
@@ -75,6 +83,10 @@ export default function EditImageSlider() {
     onSuccess: () => {
       refetchAward();
       Swal.fire("Deleted!", "Image has been deleted", "success");
+    },
+    onError: (error) => {
+      console.error("Delete error:", error);
+      Swal.fire("Error!", "Failed to delete image: " + (error.response?.data?.error || error.message), "error");
     }
   });
 
@@ -87,6 +99,10 @@ export default function EditImageSlider() {
       refetchWelcome();
       resetWelcome();
       Swal.fire("Success!", "Welcome images uploaded", "success");
+    },
+    onError: (error) => {
+      console.error("Welcome upload error:", error);
+      Swal.fire("Error!", "Failed to upload welcome images: " + (error.response?.data?.error || error.message), "error");
     }
   });
 
@@ -95,6 +111,10 @@ export default function EditImageSlider() {
     onSuccess: () => {
       refetchWelcome();
       Swal.fire("Deleted!", "Image removed", "success");
+    },
+    onError: (error) => {
+      console.error("Welcome delete error:", error);
+      Swal.fire("Error!", "Failed to delete welcome image: " + (error.response?.data?.error || error.message), "error");
     }
   });
 
