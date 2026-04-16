@@ -1,5 +1,5 @@
 import React from "react";
-import ProfAbout from "../Components/profAbout";
+import ProfAbout from "../Components/ProfAbout";
 import Lababout from "../Components/Lababout";
 import ResearchInterest from "../Components/ResearchInterest";
 function About() {
