@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const admin = require('firebase-admin');
+const { connectToDb } = require('./config/db');
 
 const verifyToken = require('./middleware/verifyFBToken');
 
@@ -34,6 +36,28 @@ app.use('/uploads', express.static('uploads'));
 // Test route
 app.get('/', (req, res) => {
     res.send('Project Backend is running');
+});
+
+// Health route for deployment checks
+app.get('/health', async (req, res) => {
+    const checks = {
+        db: false,
+        firebase: admin.apps.length > 0,
+    };
+
+    try {
+        await connectToDb();
+        checks.db = true;
+    } catch (error) {
+        console.error('Health DB check failed:', error.message);
+    }
+
+    const ok = checks.db && checks.firebase;
+    return res.status(ok ? 200 : 503).json({
+        status: ok ? 'ok' : 'degraded',
+        checks,
+        uptime: process.uptime(),
+    });
 });
 
 // Routes
