@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
 import {
   useMutation,
@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { resolveBackendAssetUrl } from "../../utils";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,10 @@ function EditHome() {
   const axios = useAxios();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const [welcomeImageFile, setWelcomeImageFile] = useState(null);
+  const [aboutImageFile, setAboutImageFile] = useState(null);
+  const [welcomeImagePreview, setWelcomeImagePreview] = useState("");
+  const [aboutImagePreview, setAboutImagePreview] = useState("");
 
   // ============================
   // ✅ GET DATA (like AdminContact)
@@ -40,10 +45,15 @@ function EditHome() {
   // ✅ UPDATE (POST = UPSERT)
   // ============================
   const updateMutation = useMutation({
-    mutationFn: async (data) => await axiosSecure.post("/welcomehome", data),
+    mutationFn: async (data) =>
+      await axiosSecure.post("/welcomehome", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      }),
 
     onSuccess: () => {
-      queryClient.invalidateQueries(["homeData"]);
+      queryClient.invalidateQueries({ queryKey: ["homeData"] });
+      setWelcomeImageFile(null);
+      setAboutImageFile(null);
 
       Swal.fire({
         icon: "success",
@@ -69,14 +79,21 @@ function EditHome() {
     e.preventDefault();
     const form = e.target;
 
-    const formData = {
-      welcomeTitle: form.welcomeTitle.value,
-      welcomeSubtitle: form.welcomeSubtitle.value,
-      aboutTitle: form.aboutTitle.value,
-      aboutDescription: form.aboutDescription.value,
-      aboutButtonName: form.aboutButtonName.value,
-      aboutButtonLink: form.aboutButtonLink.value,
-    };
+    const formData = new FormData();
+    formData.append("welcomeTitle", form.welcomeTitle.value || "");
+    formData.append("welcomeSubtitle", form.welcomeSubtitle.value || "");
+    formData.append("aboutTitle", form.aboutTitle.value || "");
+    formData.append("aboutDescription", form.aboutDescription.value || "");
+    formData.append("aboutButtonName", form.aboutButtonName.value || "");
+    formData.append("aboutButtonLink", form.aboutButtonLink.value || "");
+
+    if (welcomeImageFile) {
+      formData.append("welcomeImage", welcomeImageFile);
+    }
+
+    if (aboutImageFile) {
+      formData.append("aboutImage", aboutImageFile);
+    }
 
     updateMutation.mutate(formData);
   };
@@ -117,6 +134,27 @@ function EditHome() {
             placeholder="Enter subtitle"
             className="w-full border px-4 py-2 rounded"
           />
+
+          <div className="mt-3">
+            <label className="block text-sm font-medium mb-2">Welcome Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setWelcomeImageFile(file);
+                setWelcomeImagePreview(file ? URL.createObjectURL(file) : "");
+              }}
+              className="w-full border px-4 py-2 rounded"
+            />
+            {(welcomeImagePreview || home?.welcomeImage) && (
+              <img
+                src={welcomeImagePreview || resolveBackendAssetUrl(home?.welcomeImage)}
+                alt="Welcome preview"
+                className="mt-3 h-28 w-44 rounded object-cover border"
+              />
+            )}
+          </div>
         </div>
 
         {/* ================= About Section ================= */}
@@ -153,6 +191,27 @@ function EditHome() {
               type="text"
               className="w-full border px-4 py-2 rounded"
             />
+          </div>
+
+          <div className="mt-3">
+            <label className="block text-sm font-medium mb-2">About Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setAboutImageFile(file);
+                setAboutImagePreview(file ? URL.createObjectURL(file) : "");
+              }}
+              className="w-full border px-4 py-2 rounded"
+            />
+            {(aboutImagePreview || home?.aboutImage) && (
+              <img
+                src={aboutImagePreview || resolveBackendAssetUrl(home?.aboutImage)}
+                alt="About preview"
+                className="mt-3 h-28 w-44 rounded object-cover border"
+              />
+            )}
           </div>
         </div>
 

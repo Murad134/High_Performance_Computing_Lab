@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
+import { resolveBackendAssetUrl } from "../../utils";
 
 function Aboutsection() {
     const axios = useAxios();
@@ -21,11 +22,15 @@ function Aboutsection() {
         return <p className="text-center text-red-500">Failed to load data</p>;
     }
 
+    const aboutBackground = home?.aboutImage
+        ? resolveBackendAssetUrl(home.aboutImage)
+        : "/assetss/11.avif";
+
     return (
         <section
             className="min-h-screen mx-auto flex items-center justify-center  bg-cover bg-center"
             style={{
-                backgroundImage: `url('/assetss/11.avif')`, // ✅ public folder path
+                backgroundImage: `url('${aboutBackground}')`,
             }}
         >
             <div className="text-center  rounded-lg bg-white p-3">

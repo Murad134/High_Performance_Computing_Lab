@@ -27,6 +27,12 @@ function WelcomeSection() {
   if (isLoading) return <p className="text-center py-10">Loading...</p>;
   if (isError) return <p className="text-center text-red-500">Failed to load data</p>;
 
+  const welcomeSlides = images?.length
+    ? images
+    : homeData?.welcomeImage
+      ? [{ _id: "home-welcome", imageUrl: homeData.welcomeImage }]
+      : [];
+
   return (
     <section className="relative w-full">
       <Carousel
@@ -38,7 +44,7 @@ function WelcomeSection() {
         showStatus={false}
         showIndicators={false}
       >
-        {images.map((img) => (
+        {welcomeSlides.map((img) => (
           <div key={img._id} className="relative h-[90vh] w-full">
             {/* Background Image */}
             <img
