@@ -15,7 +15,7 @@ function StudentList() {
 
   const { data = [], isLoading } = useQuery({
     queryKey: ['studentProjects'],
-    queryFn: async () => (await axiosSecure.get('/studentProject')).data,
+    queryFn: async () => (await axiosSecure.get('/studentproject')).data,
   });
 
   const isAlumni = type === 'alumni';

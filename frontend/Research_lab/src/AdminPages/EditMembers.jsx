@@ -530,7 +530,7 @@ const AdminStudentProjectPage = () => {
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ["studentProjects"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/studentProject");
+      const res = await axiosSecure.get("/studentproject");
       return res.data;
     },
   });
@@ -540,12 +540,12 @@ const AdminStudentProjectPage = () => {
     mutationFn: async (payload) => {
       if (editingId) {
         const res = await axiosSecure.put(
-          `/studentProject/update/${editingId}`,
+          `/studentproject/update/${editingId}`,
           payload
         );
         return res.data;
       } else {
-        const res = await axiosSecure.post("/studentProject/add", payload);
+        const res = await axiosSecure.post("/studentproject/add", payload);
         return res.data;
       }
     },

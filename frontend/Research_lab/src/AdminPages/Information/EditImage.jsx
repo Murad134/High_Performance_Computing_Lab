@@ -2,10 +2,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 export default function EditImageSlider() {
   const axios = useAxios();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register: registerAward,
@@ -45,7 +47,7 @@ export default function EditImageSlider() {
   // ================= MUTATIONS =================
   const addAwardMutation = useMutation({
     mutationFn: async (formData) =>
-      axios.post("/images", formData, {
+      axiosSecure.post("/images", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       }),
     onSuccess: () => {
@@ -57,7 +59,7 @@ export default function EditImageSlider() {
 
   const updateAwardMutation = useMutation({
     mutationFn: async ({ id, formData }) =>
-      axios.put(`/images/${id}`, formData, {
+      axiosSecure.put(`/images/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       }),
     onSuccess: () => {
@@ -68,7 +70,7 @@ export default function EditImageSlider() {
   });
 
   const deleteAwardMutation = useMutation({
-    mutationFn: async (id) => axios.delete(`/images/${id}`),
+    mutationFn: async (id) => axiosSecure.delete(`/images/${id}`),
     onSuccess: () => {
       refetchAward();
       Swal.fire("Deleted!", "Image has been deleted", "success");
@@ -77,7 +79,7 @@ export default function EditImageSlider() {
 
   const addWelcomeMutation = useMutation({
     mutationFn: async (formData) =>
-      axios.post("/images/welcome", formData, {
+      axiosSecure.post("/images/welcome", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       }),
     onSuccess: () => {
@@ -88,7 +90,7 @@ export default function EditImageSlider() {
   });
 
   const deleteWelcomeMutation = useMutation({
-    mutationFn: async (id) => axios.delete(`/images/welcome/${id}`),
+    mutationFn: async (id) => axiosSecure.delete(`/images/welcome/${id}`),
     onSuccess: () => {
       refetchWelcome();
       Swal.fire("Deleted!", "Image removed", "success");

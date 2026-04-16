@@ -273,7 +273,12 @@ const SUPER_ADMIN_EMAIL = "murad25.cse@gmail.com";
 // POST /users
 async function addUser(req, res) {
     try {
-        const { email, role, created_at, last_log_in } = req.body;
+        const email = req.decoded?.email || req.body.email;
+        const { role, created_at, last_log_in } = req.body;
+
+        if (!email) {
+            return res.status(401).json({ message: 'Unauthorized access' });
+        }
 
         // Check if user exists
         const existingUser = await getUserByEmail(email);
@@ -323,10 +328,13 @@ async function fetchUserById(req, res) {
 
 async function updateUser(req, res) {
     try {
-        const { email, ...updateData } = req.body;
+        const email = req.decoded?.email || req.body.email;
+        const { ...updateData } = req.body;
+
         if (!email) {
-            return res.status(400).json({ message: 'Email is required to update user' });
+            return res.status(401).json({ message: 'Unauthorized access' });
         }
+
         const result = await updateUserByEmail(email, updateData);
 
         if (result.modifiedCount === 0) {

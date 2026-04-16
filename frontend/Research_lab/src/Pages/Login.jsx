@@ -60,13 +60,21 @@ export default function Login() {
       }
 
 
-      // 5️⃣ Update last login time in backend
-      const userInfo = {
-        email: user.email,
-        last_log_in: new Date().toISOString(),
-      };
+      // 5️⃣ Update last login time in backend, but do not fail login if this step fails
+      try {
+        const token = await user.getIdToken();
+        const userInfo = {
+          last_log_in: new Date().toISOString(),
+        };
 
-      await axiosInstance.patch("/users", userInfo);
+        await axiosInstance.patch("/users", userInfo, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (updateError) {
+        console.error("Failed to update last login:", updateError);
+      }
 
       reset();
 

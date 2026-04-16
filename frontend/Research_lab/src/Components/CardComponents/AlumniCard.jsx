@@ -1,16 +1,16 @@
 import React from "react";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useUserRole from "../../hooks/useUserRole";
 
 export default function AlumniCard({ item }) {
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const { role } = useUserRole();
   const backMutation = useMutation({
     mutationFn: async (id) => {
-      return axiosInstance.patch(`/studentproject/${id}/status`, {
+      return axiosSecure.patch(`/studentproject/${id}/status`, {
         stdntstatus: "ongoing",
       });
     },

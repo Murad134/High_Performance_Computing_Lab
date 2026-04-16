@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxios from "../hooks/useAxios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import LeftAside from "../Components/LeftAside/LeftAsideProject";
 import CardProject from "../Components/CardComponents/CardProject";
 import useUserRole from "../hooks/useUserRole";
 const Project = () => {
   const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("current");
   const [searchRoll, setSearchRoll] = useState("");
@@ -28,7 +30,7 @@ const Project = () => {
   // Mutation to update nested status
   const updateMutation = useMutation({
     mutationFn: async ({ id, status, type }) => {
-      return await axiosInstance.patch(`/studentproject/nested-status/${id}`, { status, type });
+      return await axiosSecure.patch(`/studentproject/nested-status/${id}`, { status, type });
     },
     onSuccess: () => queryClient.invalidateQueries(["studentproject"]),
   });
@@ -63,7 +65,7 @@ const Project = () => {
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosInstance.delete(`/studentproject/${id}`).then(() => {
+        axiosSecure.delete(`/studentproject/${id}`).then(() => {
           queryClient.invalidateQueries(["studentproject"]);
         });
       }

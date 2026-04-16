@@ -33,7 +33,7 @@ export default function StudentCard({ item }) {
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      return axiosSecure.delete(`/studentProject/${id}`);
+      return axiosSecure.delete(`/studentproject/${id}`);
     },
 
     onSuccess: () => {

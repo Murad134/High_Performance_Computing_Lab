@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { sendEmailVerification } from "firebase/auth";
 import useAxios from '../hooks/useAxios'
+import useAxiosSecure from '../hooks/useAxiosSecure';
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 
@@ -14,6 +15,7 @@ export default function Register() {
     const [photoURL, setPhotoURL] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const axiosInstance = useAxios();
+    const axiosSecure = useAxiosSecure();
 
 
     // Image upload handler
@@ -73,15 +75,13 @@ export default function Register() {
 
             // 4 Send user info to backend
             const userInfo = {
-                email: data.email,
-                role: "user",
                 created_at: new Date().toISOString(),
                 last_log_in: new Date().toISOString(),
                 displayName: data.name,
                 photoURL: photoURL || ""
             };
 
-            const userRes = await axiosInstance.post("/users", userInfo);
+            const userRes = await axiosSecure.post("/users", userInfo);
             console.log("Backend response:", userRes.data);
 
             // 5 Update Firebase profile

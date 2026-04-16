@@ -8,6 +8,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ export default function AppWrapper() {
 
 function EditHome() {
   const axios = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
   // ============================
@@ -38,7 +40,7 @@ function EditHome() {
   // ✅ UPDATE (POST = UPSERT)
   // ============================
   const updateMutation = useMutation({
-    mutationFn: async (data) => await axios.post("/welcomehome", data),
+    mutationFn: async (data) => await axiosSecure.post("/welcomehome", data),
 
     onSuccess: () => {
       queryClient.invalidateQueries(["homeData"]);

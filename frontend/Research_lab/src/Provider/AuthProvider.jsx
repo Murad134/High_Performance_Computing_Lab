@@ -45,7 +45,7 @@ function AuthProvider({ children }) {
     const updateUserProfile = async (profileInfo) => {
         await updateProfile(auth.currentUser, profileInfo);
         await auth.currentUser.reload(); // Refresh user data
-        setUser({ ...auth.currentUser }); // Update user state with new data
+        setUser(auth.currentUser); // Keep the Firebase user object intact
     };
 
     const signout = () => {

@@ -18,8 +18,6 @@ function SocialLogin() {
 
                 const user = result.user;
                 const userInfo = {
-                    email: user.email,
-                    role: 'user',
                     created_at: new Date().toISOString(),
                     last_log_in: new Date().toISOString(),
                 }

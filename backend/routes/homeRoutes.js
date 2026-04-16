@@ -11,6 +11,6 @@ const verifyAdmin = require('../middleware/verifyAdmin');
 router.get('/', getHome);
 
 // POST or update (upsert)
-router.post('/',verifyAdmin,verifyToken, postOrUpdateHome);
+router.post('/', verifyToken, verifyAdmin, postOrUpdateHome);
 
 module.exports = router;
