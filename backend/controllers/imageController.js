@@ -117,6 +117,22 @@ const getPublicIdFromUrl = (url) => {
   return null;
 };
 
+const getImageUrlsFromBody = (body) => {
+  if (Array.isArray(body?.imageUrls)) {
+    return body.imageUrls.filter((url) => typeof url === 'string' && url.trim());
+  }
+
+  if (typeof body?.imageUrls === 'string' && body.imageUrls.trim()) {
+    return [body.imageUrls.trim()];
+  }
+
+  if (typeof body?.imageUrl === 'string' && body.imageUrl.trim()) {
+    return [body.imageUrl.trim()];
+  }
+
+  return [];
+};
+
 // ================== AWARD IMAGES ==================
 
 // GET ALL AWARD IMAGES
@@ -137,12 +153,16 @@ const addNewImages = [
       const { title } = req.body;
       const files = req.files;
 
-      if (!files || files.length === 0) return res.status(400).json({ error: 'No images uploaded' });
+      const uploadedUrls = files?.length
+        ? files.map((file) => file.path)
+        : getImageUrlsFromBody(req.body);
 
-      const imagesArray = files.map(file => ({
+      if (!uploadedUrls.length) return res.status(400).json({ error: 'No images uploaded' });
+
+      const imagesArray = uploadedUrls.map((imageUrl) => ({
         title,
-        type: 'award', // mark as award
-        imageUrl: file.path // Cloudinary URL
+        type: 'award',
+        imageUrl
       }));
 
       await addImages(imagesArray);
@@ -164,6 +184,11 @@ const updateExistingImage = [
 
       if (req.files && req.files.length > 0) {
         data.imageUrl = req.files[0].path; // Cloudinary URL
+      } else {
+        const uploadedUrls = getImageUrlsFromBody(req.body);
+        if (uploadedUrls[0]) {
+          data.imageUrl = uploadedUrls[0];
+        }
       }
 
       await updateImage(id, data);
@@ -210,11 +235,16 @@ const addNewWelcomeImages = [
   async (req, res) => {
     try {
       const files = req.files;
-      if (!files || files.length === 0) return res.status(400).json({ error: 'No images uploaded' });
 
-      const imagesArray = files.map(file => ({
+      const uploadedUrls = files?.length
+        ? files.map((file) => file.path)
+        : getImageUrlsFromBody(req.body);
+
+      if (!uploadedUrls.length) return res.status(400).json({ error: 'No images uploaded' });
+
+      const imagesArray = uploadedUrls.map((imageUrl) => ({
         type: 'welcome',
-        imageUrl: file.path // Cloudinary URL
+        imageUrl
       }));
 
       await addImages(imagesArray);
@@ -224,6 +254,32 @@ const addNewWelcomeImages = [
     }
   }
 ];
+
+// UPDATE WELCOME IMAGE
+const updateWelcomeImage = [
+  upload.array('images'),
+  async (req, res) => {
+    try {
+      const id = req.params.id;
+      const data = {};
+
+      if (req.files && req.files.length > 0) {
+        data.imageUrl = req.files[0].path;
+      } else {
+        const uploadedUrls = getImageUrlsFromBody(req.body);
+        if (uploadedUrls[0]) {
+          data.imageUrl = uploadedUrls[0];
+        }
+      }
+
+      await updateImage(id, data);
+      res.json({ message: 'Welcome image updated successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+];
+
 const deleteWelcomeImage = async (req, res) => {
   try {
     const id = req.params.id;
@@ -247,5 +303,6 @@ module.exports = {
   deleteExistingImage,
   getWelcomeImages,
   addNewWelcomeImages,
+  updateWelcomeImage,
   deleteWelcomeImage
 };

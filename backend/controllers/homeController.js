@@ -86,6 +86,28 @@ const postOrUpdateHome = [
         aboutImage: currentHome.aboutImage || '',
       };
 
+      if (typeof req.body?.welcomeImage === 'string' && req.body.welcomeImage.trim()) {
+        const nextWelcomeImage = req.body.welcomeImage.trim();
+        if (currentHome.welcomeImage && currentHome.welcomeImage !== nextWelcomeImage) {
+          const oldWelcomePublicId = getPublicIdFromUrl(currentHome.welcomeImage);
+          if (oldWelcomePublicId) {
+            await cloudinary.uploader.destroy(oldWelcomePublicId);
+          }
+        }
+        homeData.welcomeImage = nextWelcomeImage;
+      }
+
+      if (typeof req.body?.aboutImage === 'string' && req.body.aboutImage.trim()) {
+        const nextAboutImage = req.body.aboutImage.trim();
+        if (currentHome.aboutImage && currentHome.aboutImage !== nextAboutImage) {
+          const oldAboutPublicId = getPublicIdFromUrl(currentHome.aboutImage);
+          if (oldAboutPublicId) {
+            await cloudinary.uploader.destroy(oldAboutPublicId);
+          }
+        }
+        homeData.aboutImage = nextAboutImage;
+      }
+
       if (files.welcomeImage?.[0]?.path) {
         if (currentHome.welcomeImage) {
           const oldWelcomePublicId = getPublicIdFromUrl(currentHome.welcomeImage);

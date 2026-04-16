@@ -7,6 +7,7 @@ const {
   deleteExistingImage,
   getWelcomeImages,
   addNewWelcomeImages,
+  updateWelcomeImage,
   deleteWelcomeImage
 
 } = require('../controllers/imageController');
@@ -25,5 +26,6 @@ router.delete('/:id', verifyToken, verifyAdmin, deleteExistingImage);
 // Welcome images
 router.get('/welcome', getWelcomeImages);
 router.post('/welcome', verifyToken, verifyAdmin, addNewWelcomeImages);
+router.put('/welcome/:id', verifyToken, verifyAdmin, updateWelcomeImage);
 router.delete('/welcome/:id', verifyToken, verifyAdmin, deleteWelcomeImage);
 module.exports = router;

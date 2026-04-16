@@ -6,6 +6,24 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { resolveBackendAssetUrl } from "../../utils";
 import Swal from "sweetalert2";
 
+const IMGBB_KEY = import.meta.env.VITE_image_upload_key;
+
+const uploadToImgbb = async (file) => {
+  if (!file || typeof file === "string") return file;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  if (!data.success) throw new Error("Image upload failed");
+  return data.data.url;
+};
+
 export default function EditImageSlider() {
   const axios = useAxios();
   const axiosSecure = useAxiosSecure();
@@ -22,6 +40,7 @@ export default function EditImageSlider() {
     register: registerWelcome,
     handleSubmit: handleSubmitWelcome,
     reset: resetWelcome,
+    setValue: setWelcomeValue,
     watch: watchWelcome
   } = useForm();
 
@@ -47,10 +66,7 @@ export default function EditImageSlider() {
 
   // ================= MUTATIONS =================
   const addAwardMutation = useMutation({
-    mutationFn: async (formData) =>
-      axiosSecure.post("/images", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      }),
+    mutationFn: async (payload) => axiosSecure.post("/images", payload),
     onSuccess: () => {
       refetchAward();
       resetAward();
@@ -63,10 +79,8 @@ export default function EditImageSlider() {
   });
 
   const updateAwardMutation = useMutation({
-    mutationFn: async ({ id, formData }) =>
-      axiosSecure.put(`/images/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      }),
+    mutationFn: async ({ id, payload }) =>
+      axiosSecure.put(`/images/${id}`, payload),
     onSuccess: () => {
       refetchAward();
       resetAward();
@@ -91,10 +105,7 @@ export default function EditImageSlider() {
   });
 
   const addWelcomeMutation = useMutation({
-    mutationFn: async (formData) =>
-      axiosSecure.post("/images/welcome", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      }),
+    mutationFn: async (payload) => axiosSecure.post("/images/welcome", payload),
     onSuccess: () => {
       refetchWelcome();
       resetWelcome();
@@ -103,6 +114,20 @@ export default function EditImageSlider() {
     onError: (error) => {
       console.error("Welcome upload error:", error);
       Swal.fire("Error!", "Failed to upload welcome images: " + (error.response?.data?.error || error.message), "error");
+    }
+  });
+
+  const updateWelcomeMutation = useMutation({
+    mutationFn: async ({ id, payload }) =>
+      axiosSecure.put(`/images/welcome/${id}`, payload),
+    onSuccess: () => {
+      refetchWelcome();
+      resetWelcome();
+      Swal.fire("Updated!", "Welcome image updated successfully", "success");
+    },
+    onError: (error) => {
+      console.error("Welcome update error:", error);
+      Swal.fire("Error!", "Failed to update welcome image: " + (error.response?.data?.error || error.message), "error");
     }
   });
 
@@ -119,7 +144,7 @@ export default function EditImageSlider() {
   });
 
   // ================= SUBMIT =================
-  const onSubmitAward = (data) => {
+  const onSubmitAward = async (data) => {
     if (!data.title) {
       return Swal.fire("Error", "Title is required", "warning");
     }
@@ -128,33 +153,51 @@ export default function EditImageSlider() {
       return Swal.fire("Error", "Please select image(s)", "warning");
     }
 
-    const formData = new FormData();
-    formData.append("title", data.title);
+    try {
+      const files = data.files ? Array.from(data.files) : [];
+      const uploadedUrls = await Promise.all(files.map((file) => uploadToImgbb(file)));
 
-    if (data.files) {
-      Array.from(data.files).forEach((file) =>
-        formData.append("images", file)
-      );
-    }
-
-    if (data.id) {
-      updateAwardMutation.mutate({ id: data.id, formData });
-    } else {
-      addAwardMutation.mutate(formData);
+      if (data.id) {
+        const payload = {
+          title: data.title,
+          ...(uploadedUrls[0] ? { imageUrl: uploadedUrls[0] } : {})
+        };
+        updateAwardMutation.mutate({ id: data.id, payload });
+      } else {
+        const payload = {
+          title: data.title,
+          imageUrls: uploadedUrls
+        };
+        addAwardMutation.mutate(payload);
+      }
+    } catch {
+      Swal.fire("Error", "Image upload failed. Try again.", "error");
     }
   };
 
-  const onSubmitWelcome = (data) => {
+  const onSubmitWelcome = async (data) => {
     if (!data.files?.length) {
       return Swal.fire("Error", "Please select image(s)", "warning");
     }
 
-    const formData = new FormData();
-    Array.from(data.files).forEach((file) =>
-      formData.append("images", file)
-    );
+    try {
+      const files = Array.from(data.files);
+      const uploadedUrls = await Promise.all(files.map((file) => uploadToImgbb(file)));
 
-    addWelcomeMutation.mutate(formData);
+      if (data.id) {
+        const payload = {
+          ...(uploadedUrls[0] ? { imageUrl: uploadedUrls[0] } : {})
+        };
+        updateWelcomeMutation.mutate({ id: data.id, payload });
+      } else {
+        const payload = {
+          imageUrls: uploadedUrls
+        };
+        addWelcomeMutation.mutate(payload);
+      }
+    } catch {
+      Swal.fire("Error", "Image upload failed. Try again.", "error");
+    }
   };
 
   // ================= ACTIONS =================
@@ -191,6 +234,14 @@ export default function EditImageSlider() {
     });
   };
 
+  const handleEditWelcome = (img) => {
+    setWelcomeValue("id", img._id);
+  };
+
+  const handleCancelWelcomeEdit = () => {
+    resetWelcome();
+  };
+
 
 
 
@@ -203,6 +254,7 @@ export default function EditImageSlider() {
         <h2 className="text-2xl font-bold mb-4">Welcome Images</h2>
 
         <form onSubmit={handleSubmitWelcome(onSubmitWelcome)}>
+          <input type="hidden" {...registerWelcome("id")} />
           <input type="file" multiple {...registerWelcome("files")} />
 
           <div className="flex gap-2 mt-2">
@@ -212,15 +264,29 @@ export default function EditImageSlider() {
           </div>
 
           <button className="bg-green-600 text-white px-6 py-2 mt-3 rounded">
-            Upload
-            
+            {watchWelcome("id") ? "Update" : "Upload"}
           </button>
+          {watchWelcome("id") && (
+            <button
+              type="button"
+              onClick={handleCancelWelcomeEdit}
+              className="ml-2 bg-gray-500 text-white px-6 py-2 mt-3 rounded"
+            >
+              Cancel
+            </button>
+          )}
         </form>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           {welcomeImages.map((img) => (
             <div key={img._id} className="relative">
               <img src={resolveBackendAssetUrl(img.imageUrl)} className="h-32 w-full object-cover rounded" />
+              <button
+                onClick={() => handleEditWelcome(img)}
+                className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 text-xs rounded"
+              >
+                Edit
+              </button>
               <button
                 onClick={() => handleDeleteWelcome(img._id)}
                 className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded"

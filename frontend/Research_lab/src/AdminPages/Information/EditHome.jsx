@@ -11,6 +11,24 @@ import useAxios from "../../hooks/useAxios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { resolveBackendAssetUrl } from "../../utils";
 
+const IMGBB_KEY = import.meta.env.VITE_image_upload_key;
+
+const uploadToImgbb = async (file) => {
+  if (!file || typeof file === "string") return file;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  if (!data.success) throw new Error("Image upload failed");
+  return data.data.url;
+};
+
 const queryClient = new QueryClient();
 
 export default function AppWrapper() {
@@ -45,10 +63,7 @@ function EditHome() {
   // ✅ UPDATE (POST = UPSERT)
   // ============================
   const updateMutation = useMutation({
-    mutationFn: async (data) =>
-      await axiosSecure.post("/welcomehome", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      }),
+    mutationFn: async (data) => await axiosSecure.post("/welcomehome", data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["homeData"] });
@@ -75,27 +90,38 @@ function EditHome() {
   // ============================
   // ✅ HANDLE SUBMIT (LIKE YOUR CONTACT FORM)
   // ============================
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    const formData = new FormData();
-    formData.append("welcomeTitle", form.welcomeTitle.value || "");
-    formData.append("welcomeSubtitle", form.welcomeSubtitle.value || "");
-    formData.append("aboutTitle", form.aboutTitle.value || "");
-    formData.append("aboutDescription", form.aboutDescription.value || "");
-    formData.append("aboutButtonName", form.aboutButtonName.value || "");
-    formData.append("aboutButtonLink", form.aboutButtonLink.value || "");
+    try {
+      const welcomeImageUrl = welcomeImageFile
+        ? await uploadToImgbb(welcomeImageFile)
+        : home?.welcomeImage || "";
 
-    if (welcomeImageFile) {
-      formData.append("welcomeImage", welcomeImageFile);
+      const aboutImageUrl = aboutImageFile
+        ? await uploadToImgbb(aboutImageFile)
+        : home?.aboutImage || "";
+
+      const payload = {
+        welcomeTitle: form.welcomeTitle.value || "",
+        welcomeSubtitle: form.welcomeSubtitle.value || "",
+        aboutTitle: form.aboutTitle.value || "",
+        aboutDescription: form.aboutDescription.value || "",
+        aboutButtonName: form.aboutButtonName.value || "",
+        aboutButtonLink: form.aboutButtonLink.value || "",
+        welcomeImage: welcomeImageUrl,
+        aboutImage: aboutImageUrl,
+      };
+
+      updateMutation.mutate(payload);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Image Upload Failed!",
+        text: error.message || "Failed to upload image",
+      });
     }
-
-    if (aboutImageFile) {
-      formData.append("aboutImage", aboutImageFile);
-    }
-
-    updateMutation.mutate(formData);
   };
 
   if (isLoading) return <p className="text-center mt-10">Loading...</p>;
