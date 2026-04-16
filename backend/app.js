@@ -78,13 +78,14 @@ app.use('/welcomehome', homeRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+  console.error("Global Error Handler:", err);
   if (err.code === 'LIMIT_FILE_SIZE') {
     return res.status(400).json({ error: 'File too large' });
   }
   if (err.name === 'MulterError') {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message, stack: err.stack });
   }
-  res.status(500).json({ error: 'Internal server error' });
+  res.status(500).json({ error: err.message || 'Internal server error', details: err.stack });
 });
 
 module.exports = app;
