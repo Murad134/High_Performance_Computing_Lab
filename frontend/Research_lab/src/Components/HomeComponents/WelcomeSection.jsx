@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
+import { resolveBackendAssetUrl } from "../../utils";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
@@ -41,7 +42,7 @@ function WelcomeSection() {
           <div key={img._id} className="relative h-[90vh] w-full">
             {/* Background Image */}
             <img
-              src={`http://localhost:2500${img.imageUrl}`}
+              src={resolveBackendAssetUrl(img.imageUrl)}
               alt="Welcome"
               className="h-[90vh] w-full object-cover"
             />

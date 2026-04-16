@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { resolveBackendAssetUrl } from "../../utils";
 import Swal from "sweetalert2";
 
 export default function EditImageSlider() {
@@ -199,7 +200,7 @@ export default function EditImageSlider() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           {welcomeImages.map((img) => (
             <div key={img._id} className="relative">
-              <img src={`http://localhost:2500${img.imageUrl}`} className="h-32 w-full object-cover rounded" />
+              <img src={resolveBackendAssetUrl(img.imageUrl)} className="h-32 w-full object-cover rounded" />
               <button
                 onClick={() => handleDeleteWelcome(img._id)}
                 className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded"
@@ -234,7 +235,7 @@ export default function EditImageSlider() {
         <div className="grid md:grid-cols-3 gap-4 mt-6">
           {awardImages.map((img) => (
             <div key={img._id} className="border rounded">
-              <img src={`http://localhost:2500${img.imageUrl}`} className="h-40 w-full object-cover" />
+              <img src={resolveBackendAssetUrl(img.imageUrl)} className="h-40 w-full object-cover" />
               <div className="p-3">
                 <p>{img.title}</p>
                 <div className="flex justify-between mt-2">

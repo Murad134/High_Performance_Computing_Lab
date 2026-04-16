@@ -69,6 +69,7 @@
 
 import React from "react";
 import useAxios from "../../hooks/useAxios";
+import { resolveBackendAssetUrl } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -124,7 +125,7 @@ export default function Picture_Awards() {
         {images.map((img) => (
           <div key={img._id} className="relative text-center">
             <img
-              src={`http://localhost:2500${img.imageUrl}`}
+              src={resolveBackendAssetUrl(img.imageUrl)}
               alt={img.title}
               className="w-full h-64 md:h-80 lg:h-96 object-cover rounded-lg"
             />
