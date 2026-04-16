@@ -5,9 +5,13 @@ const { connectToDb } = require('./config/db');
 
 const app = express();
 const port = process.env.PORT || 2500;
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 // ✅ Middleware
-app.use(cors());
+app.use(cors({
+    origin: frontendUrl,
+    credentials: true,
+}));
 app.use(express.json());
 
 // ✅ Serve uploaded images statically
