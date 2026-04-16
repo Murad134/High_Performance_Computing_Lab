@@ -155,14 +155,16 @@ const addNewImages = [
 
 // UPDATE AWARD IMAGE
 const updateExistingImage = [
-  upload.single('image'),
+  upload.array('images'), // accept images
   async (req, res) => {
     try {
       const id = req.params.id;
       const { title } = req.body;
       const data = { title };
 
-      if (req.file) data.imageUrl = req.file.path; // Cloudinary URL
+      if (req.files && req.files.length > 0) {
+        data.imageUrl = req.files[0].path; // Cloudinary URL
+      }
 
       await updateImage(id, data);
       res.json({ message: 'Image updated successfully' });
