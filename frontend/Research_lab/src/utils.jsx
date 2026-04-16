@@ -1,7 +1,10 @@
-const fallbackBackendUrl = "http://localhost:2500";
+const envBackendUrl = import.meta.env.VITE_backend_url?.replace(/\/$/, "");
 
-export const backendUrl =
-	import.meta.env.VITE_backend_url?.replace(/\/$/, "") || fallbackBackendUrl;
+if (!envBackendUrl) {
+	throw new Error("Missing VITE_backend_url. Set it in your frontend .env file.");
+}
+
+export const backendUrl = envBackendUrl;
 
 export const getBackendUrl = () => backendUrl;
 

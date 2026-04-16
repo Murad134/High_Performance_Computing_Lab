@@ -30,7 +30,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Static folder
+// Static folder - keep for backward compatibility with old images
 app.use('/uploads', express.static('uploads'));
 
 // Test route

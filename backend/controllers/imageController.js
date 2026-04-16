@@ -90,19 +90,20 @@
 const multer = require('multer');
 const fs = require('fs');
 const { addImages, getImages, updateImage, deleteImage } = require('../models/imageModel');
+const { upload, cloudinary } = require('../config/cloudinary');
+const { ObjectId } = require('mongodb');
 
-// ================= MULTER SETUP =================
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+// Helper function to extract public_id from Cloudinary URL
+const getPublicIdFromUrl = (url) => {
+  const parts = url.split('/');
+  const uploadIndex = parts.indexOf('upload');
+  if (uploadIndex !== -1 && uploadIndex < parts.length - 1) {
+    const filename = parts[uploadIndex + 1];
+    // Remove version if present (v1234567890-)
+    return filename.replace(/^v\d+-/, '').replace(/\.[^/.]+$/, '');
   }
-});
-
-const upload = multer({ storage });
+  return null;
+};
 
 // ================== AWARD IMAGES ==================
 
@@ -129,7 +130,7 @@ const addNewImages = [
       const imagesArray = files.map(file => ({
         title,
         type: 'award', // mark as award
-        imageUrl: '/uploads/' + file.filename
+        imageUrl: file.path // Cloudinary URL
       }));
 
       await addImages(imagesArray);
@@ -149,7 +150,7 @@ const updateExistingImage = [
       const { title } = req.body;
       const data = { title };
 
-      if (req.file) data.imageUrl = '/uploads/' + req.file.filename;
+      if (req.file) data.imageUrl = req.file.path; // Cloudinary URL
 
       await updateImage(id, data);
       res.json({ message: 'Image updated successfully' });
@@ -163,6 +164,13 @@ const updateExistingImage = [
 const deleteExistingImage = async (req, res) => {
   try {
     const id = req.params.id;
+    const images = await getImages({ _id: new ObjectId(id) }); // Get image to get URL
+    if (images && images.length > 0) {
+      const publicId = getPublicIdFromUrl(images[0].imageUrl);
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
     await deleteImage(id);
     res.json({ message: 'Image deleted successfully' });
   } catch (err) {
@@ -192,7 +200,7 @@ const addNewWelcomeImages = [
 
       const imagesArray = files.map(file => ({
         type: 'welcome',
-        imageUrl: '/uploads/' + file.filename
+        imageUrl: file.path // Cloudinary URL
       }));
 
       await addImages(imagesArray);
@@ -205,6 +213,13 @@ const addNewWelcomeImages = [
 const deleteWelcomeImage = async (req, res) => {
   try {
     const id = req.params.id;
+    const images = await getImages({ _id: new ObjectId(id) }); // Get image to get URL
+    if (images && images.length > 0) {
+      const publicId = getPublicIdFromUrl(images[0].imageUrl);
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
     await deleteImage(id);
     res.json({ message: 'Welcome image deleted successfully' });
   } catch (err) {
