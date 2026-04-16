@@ -85,8 +85,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import auth from "../Firebase/firebase.init";
 
+const url = import.meta.env.VITE_backend_url || "http://localhost:2500";
+
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:2500",
+  baseURL: url,
 });
 
 function useAxiosSecure() {
