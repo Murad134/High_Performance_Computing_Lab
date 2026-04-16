@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../hooks/useAxios";
-import ProfAbout from "../Components/profAbout";
+import ProfAbout from "../Components/ProfAbout";
 import { FaLinkedin, FaFacebook } from "react-icons/fa";
 
 function Contact() {
