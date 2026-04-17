@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import Swal from "sweetalert2";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import auth from '../Firebase/firebase.init'
 export default function Login() {
 
@@ -14,6 +15,7 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const from = location.state?.from || "/";
   const axiosInstance = useAxios();
 
@@ -156,13 +158,24 @@ export default function Login() {
             </div>
             <div>
               <label htmlFor="password" className="block font-medium mb-1">Password</label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className="border border-gray-300 rounded-md w-full text-black placeholder-gray-400 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 pl-3 pr-2 py-2"
-                {...register("password", { required: "Password is required" })}
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  className="border border-gray-300 rounded-md w-full text-black placeholder-gray-400 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 pl-3 pr-16 py-2"
+                  {...register("password", { required: "Password is required" })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-lg text-sky-700 hover:text-sky-900"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
               {errors.password && (
                 <span className="text-red-500 text-sm mt-1 block">{errors.password.message}</span>
               )}
