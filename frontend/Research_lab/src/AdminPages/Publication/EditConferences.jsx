@@ -87,6 +87,7 @@ export default function AdminAddConferenceForm() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  
   // ---------------- DELETE ----------------
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
