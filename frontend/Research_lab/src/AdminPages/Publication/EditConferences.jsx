@@ -58,7 +58,21 @@ export default function AdminAddConferenceForm() {
     onError: (err) => Swal.fire("Error", err.message, "error"),
   });
 
-  const onSubmit = (data) => mutation.mutate(data);
+  const onSubmit = (data) => {
+    const payload = {
+      ...data,
+      keywords: Array.isArray(data.keywords)
+        ? data.keywords.map((k) => String(k || "").trim()).filter(Boolean)
+        : [],
+      authors: Array.isArray(data.authors)
+        ? data.authors
+            .map((a) => ({ name: String(a?.name || "").trim() }))
+            .filter((a) => a.name)
+        : [],
+    };
+
+    mutation.mutate(payload);
+  };
 
   // ---------------- EDIT ----------------
   const handleEdit = (conf) => {
