@@ -26,10 +26,7 @@ const Conference = () => {
 
     // GROUP BY YEAR
     const grouped = conferences.reduce((acc, item) => {
-
-        const year = item?.dates?.start_date
-            ? new Date(item.dates.start_date).getFullYear()
-            : "Unknown";
+        const year = item?.yearOfPublication || item?.year || "Unknown";
 
         if (!acc[year]) acc[year] = [];
 
@@ -99,59 +96,71 @@ const Conference = () => {
                                                     {conference.title}
                                                 </h3>
 
-                                                {/* THEME */}
                                                 <p className="text-gray-600 italic mb-2">
-                                                    {conference.theme}
+                                                    {conference.conferenceName || conference.publicationName || "-"}
                                                 </p>
 
-                                                {/* VENUE */}
                                                 <p className="text-gray-600 mb-2">
-                                                    📍 {conference.venue?.building}, {conference.venue?.city},{" "}
-                                                    {conference.venue?.country}
+                                                    <span className="font-semibold">Publication:</span> {conference.publicationName || "-"}
                                                 </p>
 
-                                                {/* DATE */}
+                                                <p className="text-gray-600 mb-2">
+                                                    <span className="font-semibold">Publisher:</span> {conference.publisher || "-"}
+                                                </p>
+
                                                 <p className="text-gray-500 text-sm mb-3">
-                                                    {conference.dates?.start_date} → {conference.dates?.end_date}
+                                                    <span className="font-semibold">Year:</span> {conference.yearOfPublication || conference.year || "-"}
                                                 </p>
 
-                                                {/* KEYNOTE GUEST */}
-                                                {conference.guests?.length > 0 && (
+                                                {conference.authors?.length > 0 && (
                                                     <p className="text-sm text-gray-700 mb-3">
-                                                        <span className="font-semibold">Speaker:</span>{" "}
-                                                        {conference.guests.map(g => g.name).join(", ")}
+                                                        <span className="font-semibold">Authors:</span>{" "}
+                                                        {conference.authors
+                                                            .map((a) => (typeof a === "string" ? a : a?.name))
+                                                            .filter(Boolean)
+                                                            .join(", ")}
+                                                    </p>
+                                                )}
+
+                                                {conference.keywords?.length > 0 && (
+                                                    <p className="text-sm text-gray-700 mb-3">
+                                                        <span className="font-semibold">Keywords:</span>{" "}
+                                                        {conference.keywords.join(", ")}
                                                     </p>
                                                 )}
 
                                                 {/* META */}
                                                 <div className="flex flex-wrap gap-3 mb-3">
+                                                    {conference.conferenceVolume && (
+                                                        <span className="px-3 py-1 bg-gray-100 text-sm rounded-lg">
+                                                            Volume: {conference.conferenceVolume}
+                                                        </span>
+                                                    )}
 
-                                                    <span className="px-3 py-1 bg-gray-100 text-sm rounded-lg">
-                                                        {conference.conference_type}
-                                                    </span>
+                                                    {conference.issue && (
+                                                        <span className="px-3 py-1 bg-gray-100 text-sm rounded-lg">
+                                                            Issue: {conference.issue}
+                                                        </span>
+                                                    )}
 
-                                                    <span className="px-3 py-1 bg-gray-100 text-sm rounded-lg">
-                                                        Fee: ${conference.registration?.fee}
-                                                    </span>
-
-                                                    {conference.published_proceedings && (
-                                                        <span className="px-3 py-1 bg-green-50 text-green-700 text-sm rounded-lg">
-                                                            Proceedings Published
+                                                    {conference.pp && (
+                                                        <span className="px-3 py-1 bg-gray-100 text-sm rounded-lg">
+                                                            pp: {conference.pp}
                                                         </span>
                                                     )}
 
                                                 </div>
 
-                                                {/* WEBSITE */}
-                                                {conference.contact?.website && (
+                                                {/* PUBLICATION URL */}
+                                                {(conference.publicationUrl || conference.contact?.website) && (
 
                                                     <a
-                                                        href={conference.contact.website}
+                                                        href={conference.publicationUrl || conference.contact?.website}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="inline-flex items-center gap-2 text-teal-500 hover:text-teal-600 text-sm font-semibold"
                                                     >
-                                                        Visit Website
+                                                        View Publication
                                                         <ExternalLink className="w-4 h-4" />
                                                     </a>
 

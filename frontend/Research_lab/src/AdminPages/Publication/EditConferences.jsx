@@ -12,21 +12,22 @@ export default function AdminAddConferenceForm() {
 
   const { register, control, handleSubmit, reset } = useForm({
     defaultValues: {
-      guests: [{ name: "", title: "", affiliation: "", country: "", role: "" }],
-      sponsors: [""],
-      photos: [],
-      dates: { start_date: "", end_date: "" },
-      venue: { building: "", room: "", city: "", country: "" },
-      registration: { fee: "", deadline: "" },
-      contact: { email: "", phone: "", website: "" },
-      related_journal: "",
-      published_proceedings: false
+      title: "",
+      conferenceName: "",
+      conferenceVolume: "",
+      issue: "",
+      pp: "",
+      publicationName: "",
+      publicationUrl: "",
+      yearOfPublication: "",
+      keywords: [""],
+      authors: [{ name: "" }],
+      publisher: "",
     },
   });
 
-  const guestsField = useFieldArray({ control, name: "guests" });
-  const sponsorsField = useFieldArray({ control, name: "sponsors" });
-  const photosField = useFieldArray({ control, name: "photos" });
+  const keywordsField = useFieldArray({ control, name: "keywords" });
+  const authorsField = useFieldArray({ control, name: "authors" });
 
   // ---------------- GET API ----------------
   const { data: conferences = [], isLoading } = useQuery({
@@ -61,8 +62,27 @@ export default function AdminAddConferenceForm() {
 
   // ---------------- EDIT ----------------
   const handleEdit = (conf) => {
-    // Convert MongoDB _id to id for React form
-    reset(conf);
+    const normalizedAuthors = Array.isArray(conf.authors) && conf.authors.length > 0
+      ? conf.authors.map((a) => (typeof a === "string" ? { name: a } : { name: a?.name || "" }))
+      : [{ name: "" }];
+
+    const normalizedKeywords = Array.isArray(conf.keywords) && conf.keywords.length > 0
+      ? conf.keywords
+      : [""];
+
+    reset({
+      title: conf.title || "",
+      conferenceName: conf.conferenceName || conf.publicationName || conf.journalName || "",
+      conferenceVolume: conf.conferenceVolume || conf.volume || "",
+      issue: conf.issue || "",
+      pp: conf.pp || conf.pages || "",
+      publicationName: conf.publicationName || conf.journalName || "",
+      publicationUrl: conf.publicationUrl || conf.articleUrl || conf.link || "",
+      yearOfPublication: conf.yearOfPublication || conf.year || "",
+      keywords: normalizedKeywords,
+      authors: normalizedAuthors,
+      publisher: conf.publisher || "",
+    });
     setEditId(conf.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -105,92 +125,40 @@ export default function AdminAddConferenceForm() {
         {/* Basic Info */}
         <SectionTitle title="Basic Information" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Conference Title" {...register("title", { required: true })} />
-          <Input label="Theme" {...register("theme")} />
-          <Input label="Conference Type" {...register("conference_type")} />
-          <Input label="Organizer Professor" {...register("organizer_professor")} />
-          <Input label="Organizing Department" {...register("organizing_department")} />
-          <Input label="University Name" {...register("university_name")} />
+          <Input label="Title" {...register("title", { required: true })} />
+          <Input label="Conference Name" {...register("conferenceName")} />
+          <Input label="Conference Volume" {...register("conferenceVolume")} />
+          <Input label="Issue" {...register("issue")} />
+          <Input label="pp" {...register("pp")} />
+          <Input label="Publication Name" {...register("publicationName")} />
+          <Input label="Publication URL" {...register("publicationUrl")} />
+          <Input type="number" label="Year of Publication" {...register("yearOfPublication")} />
+          <Input label="Publishers" {...register("publisher")} />
         </div>
 
-        {/* Dates */}
-        <SectionTitle title="Conference Dates" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input type="date" label="Start Date" {...register("dates.start_date")} />
-          <Input type="date" label="End Date" {...register("dates.end_date")} />
-        </div>
-
-        {/* Venue */}
-        <SectionTitle title="Venue" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Building" {...register("venue.building")} />
-          <Input label="Room" {...register("venue.room")} />
-          <Input label="City" {...register("venue.city")} />
-          <Input label="Country" {...register("venue.country")} />
-        </div>
-
-        {/* Guests */}
-        <SectionTitle title="Guests" />
-        {guestsField.fields.map((item, index) => (
-          <div key={item.id} className="grid grid-cols-1 md:grid-cols-2 gap-4 border p-4 rounded mb-2">
-            <Input placeholder="Name" {...register(`guests.${index}.name`)} />
-            <Input placeholder="Title" {...register(`guests.${index}.title`)} />
-            <Input placeholder="Affiliation" {...register(`guests.${index}.affiliation`)} />
-            <Input placeholder="Country" {...register(`guests.${index}.country`)} />
-            <Input placeholder="Role" {...register(`guests.${index}.role`)} />
-            <button type="button" onClick={() => guestsField.remove(index)} className="text-red-500 text-sm self-end">
-              Remove
-            </button>
-          </div>
-        ))}
-        <AddButton onClick={() => guestsField.append({})} />
-
-        {/* Sponsors */}
-        <SectionTitle title="Sponsors" />
-        {sponsorsField.fields.map((item, index) => (
+        {/* Keywords */}
+        <SectionTitle title="Keywords" />
+        {keywordsField.fields.map((item, index) => (
           <div key={item.id} className="flex gap-2 items-center mb-2">
-            <Input {...register(`sponsors.${index}`)} placeholder={`Sponsor ${index + 1}`} />
-            <button type="button" className="text-red-500 text-sm" onClick={() => sponsorsField.remove(index)}>
+            <Input {...register(`keywords.${index}`)} placeholder={`Keyword ${index + 1}`} />
+            <button type="button" className="text-red-500 text-sm" onClick={() => keywordsField.remove(index)}>
               Remove
             </button>
           </div>
         ))}
-        <AddButton onClick={() => sponsorsField.append("")} />
+        <AddButton text="+ Add Keyword" onClick={() => keywordsField.append("")} />
 
-        {/* Photos */}
-        <SectionTitle title="Photos" />
-        {photosField.fields.map((item, index) => (
+        {/* Authors */}
+        <SectionTitle title="Authors" />
+        {authorsField.fields.map((item, index) => (
           <div key={item.id} className="flex gap-2 items-center mb-2">
-            <Input placeholder={`Photo URL ${index + 1}`} {...register(`photos.${index}`)} />
-            <button type="button" className="text-red-500 text-sm" onClick={() => photosField.remove(index)}>
+            <Input {...register(`authors.${index}.name`)} placeholder={`Author ${index + 1}`} />
+            <button type="button" className="text-red-500 text-sm" onClick={() => authorsField.remove(index)}>
               Remove
             </button>
           </div>
         ))}
-        <AddButton onClick={() => photosField.append("")} />
-
-        {/* Proceedings */}
-        <SectionTitle title="Proceedings" />
-        <Input label="Related Journal" {...register("related_journal")} />
-        <label className="flex gap-2 items-center">
-          <input type="checkbox" {...register("published_proceedings")} />
-          Published Proceedings
-        </label>
-
-        {/* Registration */}
-        <SectionTitle title="Registration" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input type="number" label="Registration Fee" {...register("registration.fee")} />
-          <Input type="date" label="Registration Deadline" {...register("registration.deadline")} />
-        </div>
-
-        {/* Contact */}
-        <SectionTitle title="Contact Information" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Email" type="email" {...register("contact.email")} />
-          <Input label="Phone" type="tel" {...register("contact.phone")} />
-          <Input label="Website" {...register("contact.website")} />
-        </div>
+        <AddButton text="+ Add Author" onClick={() => authorsField.append({ name: "" })} />
 
         {/* Submit */}
         <div className="flex justify-end pt-6">
@@ -221,9 +189,11 @@ export default function AdminAddConferenceForm() {
             <div key={conf.id} className="border p-4 rounded-lg shadow-sm flex flex-col justify-between">
               <div>
                 <h4 className="text-lg font-bold">Title: {conf.title}</h4>
-                <p className="text-gray-700">Theme: {conf.theme}</p>
-                <p className="text-gray-600 text-sm">University: {conf.university_name}</p>
-                <p className="text-gray-600 text-sm">Department: {conf.organizing_department}</p>
+                <p className="text-gray-700">Conference: {conf.conferenceName || conf.publicationName || "-"}</p>
+                <p className="text-gray-700">Publication: {conf.publicationName || "-"}</p>
+                <p className="text-gray-700">Volume: {conf.conferenceVolume || "-"}</p>
+                <p className="text-gray-600 text-sm">Publisher: {conf.publisher || "-"}</p>
+                <p className="text-gray-600 text-sm">Year: {conf.yearOfPublication || "-"}</p>
               </div>
               <div className="flex gap-2 mt-4 justify-end">
                 <button className="bg-yellow-400 text-white px-3 py-1 rounded text-sm" onClick={() => handleEdit(conf)}>
@@ -255,10 +225,10 @@ function SectionTitle({ title }) {
   return <h3 className="text-lg font-bold text-indigo-600 pt-4">{title}</h3>;
 }
 
-function AddButton({ onClick }) {
+function AddButton({ onClick, text = "+ Add More" }) {
   return (
     <button type="button" onClick={onClick} className="text-blue-600 text-sm mb-2">
-      + Add More
+      {text}
     </button>
   );
 }

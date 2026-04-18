@@ -142,10 +142,17 @@ const Journal = () => {
                                                     {/* FOOTER */}
                                                     <div className="flex items-center justify-between">
 
-                                                        {/* Year small badge */}
-                                                        <span className="text-xs px-2 py-1 bg-teal-50 text-teal-600 rounded-md font-semibold">
-                                                            {year}
-                                                        </span>
+                                                        <div className="flex items-center gap-2">
+                                                            {/* Year small badge */}
+                                                            <span className="text-xs px-2 py-1 bg-teal-50 text-teal-600 rounded-md font-semibold">
+                                                                {year}
+                                                            </span>
+                                                            {publication.impactFactor && (
+                                                                <span className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded-md font-semibold">
+                                                                    Impact Factor: {publication.impactFactor}
+                                                                </span>
+                                                            )}
+                                                        </div>
 
                                                         {/* VIEW BUTTON */}
                                                         {link && (

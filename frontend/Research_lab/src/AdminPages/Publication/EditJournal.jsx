@@ -26,11 +26,11 @@ const AdminArticleFormSections = () => {
       pages: "",
       month: "",
       year: "",
+      impactFactor: "",
       doi: "",
       articleUrl: "",
       pdfUrl: "",
       abstract: "",
-      citationCount: 0,
     },
   });
 
@@ -257,6 +257,15 @@ const AdminArticleFormSections = () => {
                 className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
+            <div>
+              <label className="block text-gray-700 mb-1 font-medium">Impact Factor</label>
+              <input
+                type="number"
+                step="any"
+                {...register("impactFactor")}
+                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
             <div className="col-span-2">
               <label className="block text-gray-700 mb-1 font-medium">DOI</label>
               <input
@@ -352,9 +361,9 @@ const AdminArticleFormSections = () => {
           </div>
         </section>
 
-        {/* ====================== 5. Abstract & Citation ====================== */}
+        {/* ====================== 5. Abstract ====================== */}
         <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Abstract & Citation</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gray-700">Abstract</h3>
           <div className="space-y-4">
             <div>
               <label className="block text-gray-700 mb-1 font-medium">Abstract</label>
@@ -363,15 +372,6 @@ const AdminArticleFormSections = () => {
                 rows={3}
                 className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
               ></textarea>
-            </div>
-
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Citation Count</label>
-              <input
-                type="number"
-                {...register("citationCount")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
             </div>
           </div>
         </section>

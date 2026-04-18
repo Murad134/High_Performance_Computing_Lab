@@ -19,7 +19,6 @@ export default function Register() {
     const axiosInstance = useAxios();
     const axiosSecure = useAxiosSecure();
 
-
     // Image upload handler
     const handleImageUpload = async (e) => {
         const image = e.target.files[0];
