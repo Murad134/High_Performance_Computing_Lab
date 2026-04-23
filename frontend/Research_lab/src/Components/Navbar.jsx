@@ -644,9 +644,16 @@ function Header() {
                         <Link
                             to="/"
                             onClick={closeAllDropdowns}
-                            className="ml-2 text-xl md:text-2xl font-extrabold text-white hover:text-yellow-300 transition"
+                            className="ml-2 flex items-center gap-2"
                         >
-                            HPC LAB
+                            <img
+                                src="/assetss/HPC_Login.jpg"
+                                alt="HPC Lab Logo"
+                                className="h-9 w-9 md:h-10 md:w-10 rounded-lg object-cover border border-white/60 shadow-sm"
+                            />
+                            <span className="hidden sm:inline text-xl md:text-2xl font-extrabold text-white hover:text-yellow-300 transition">
+                                HPC LAB
+                            </span>
                         </Link>
                     </div>
                     {/* Center - Desktop Menu */}

@@ -1,10 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 const SECTIONS = [
-  { key: 'bsc', label: 'BSC' },
-  { key: 'msc', label: 'MSC' },
-  { key: 'phd', label: 'PHD' }
+  {
+    key: 'bsc',
+    label: 'BSc',
+    tag: '01',
+    tone: 'from-cyan-500 to-sky-500',
+    note: 'Undergraduate researchers'
+  },
+  {
+    key: 'msc',
+    label: 'MSc',
+    tag: '02',
+    tone: 'from-emerald-500 to-teal-500',
+    note: 'Graduate research track'
+  },
+  {
+    key: 'phd',
+    label: 'PhD',
+    tag: '03',
+    tone: 'from-amber-500 to-orange-500',
+    note: 'Doctoral candidates'
+  }
 ];
 
 function LeftSidebar() {
@@ -17,83 +35,93 @@ function LeftSidebar() {
   }, [level]);
 
   const handleSectionClick = (sectionKey) => {
-    // Navigate to default 'current' page
     navigate(`/member/${sectionKey}/current`);
-    // Expand/collapse accordion
-    setExpandedSection(prev => prev === sectionKey ? null : sectionKey);
+    setExpandedSection(sectionKey);
   };
 
   return (
-    <aside className="w-[300px] min-h-screen sticky top-16 overflow-y-auto">
-      <div className="p-8">
-        <h2 className="text-2xl font-bold text-primary mb-8">Members</h2>
+    <aside className="w-full md:w-[340px] md:sticky md:top-20 md:self-start">
+      <div className="rounded-3xl border border-slate-200 bg-gradient-to-b from-white via-slate-50 to-slate-100 p-5 shadow-[0_20px_40px_-28px_rgba(15,23,42,0.7)] md:p-6">
+        <div className="mb-5 border-b border-slate-200 pb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Members</p>
+          <h2 className="mt-1 text-2xl font-bold text-slate-900">Program Explorer</h2>
+        </div>
 
-        {/* Tree Structure */}
-        <div className="relative pl-4">
-          {/* Main Vertical Line */}
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-700"></div>
+        <div className="space-y-3">
+          {SECTIONS.map((section) => {
+            const isActiveProgram = level === section.key;
+            const isOpen = expandedSection === section.key;
 
-          {SECTIONS.map((section) => (
-            <div key={section.key} className="relative mb-8">
-              {/* Horizontal Line */}
-              <div className="absolute left-0 top-6 w-6 h-0.5 bg-blue-700"></div>
-
-              {/* Section Content */}
-              <div className="ml-6">
-                {/* Main Section as Link */}
+            return (
+              <div
+                key={section.key}
+                className={`rounded-2xl border bg-white/85 p-3 transition-all duration-300 ${
+                  isActiveProgram
+                    ? 'border-slate-900 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.85)]'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
                 <button
+                  type="button"
                   onClick={() => handleSectionClick(section.key)}
-                  className={`text-lg font-bold mb-3 transition-all hover:text-primary ${
-                    level === section.key ? 'text-primary scale-105' : 'text-base-content'
-                  }`}
+                  className="flex w-full items-center gap-3 text-left"
                 >
-                  {section.label}
+                  <span
+                    className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r ${section.tone} text-sm font-bold text-white`}
+                  >
+                    {section.tag}
+                  </span>
+
+                  <span className="flex-1">
+                    <span className="block text-base font-bold text-slate-900">{section.label}</span>
+                    <span className="block text-xs text-slate-500">{section.note}</span>
+                  </span>
+
+                  <span
+                    className={`text-xs font-bold uppercase tracking-[0.3em] text-slate-500 transition-transform ${
+                      isOpen ? 'rotate-180' : ''
+                    }`}
+                  >
+                    v
+                  </span>
                 </button>
 
-                {/* Sub-items */}
-                {expandedSection === section.key && (
-                  <div className="relative ml-4 space-y-2">
-                    {/* Sub Vertical Line */}
-                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-red-700"></div>
+                <div
+                  className={`grid overflow-hidden transition-all duration-300 ${
+                    isOpen ? 'mt-3 grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="min-h-0 space-y-2 pl-1">
+                    <NavLink
+                      to={`/member/${section.key}/current`}
+                      className={({ isActive }) =>
+                        `block rounded-xl border px-3 py-2 text-sm font-semibold transition-all ${
+                          isActive
+                            ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
+                            : 'border-slate-200 text-slate-700 hover:border-cyan-300 hover:bg-cyan-50/60'
+                        }`
+                      }
+                    >
+                      Current Students
+                    </NavLink>
 
-                    {/* Current Students */}
-                    <div className="relative">
-                      <div className="absolute text-[16px] left-0 top-3 w-4 h-0.5 bg-red-700"></div>
-                      <NavLink
-                        to={`/member/${section.key}/current`}
-                        className={({ isActive }) =>
-                          `block ml-4 py-1 text-lg transition-all ${
-                            isActive
-                              ? 'text-secondary font-semibold scale-105'
-                              : 'text-base-content hover:text-secondary'
-                          }`
-                        }
-                      >
-                        Current Students
-                      </NavLink>
-                    </div>
-
-                    {/* Alumni */}
-                    <div className="relative">
-                      <div className="absolute left-0 top-3 w-4 h-0.5 bg-base-300"></div>
-                      <NavLink
-                        to={`/member/${section.key}/alumni`}
-                        className={({ isActive }) =>
-                          `block ml-4 py-1 text-lg transition-all ${
-                            isActive
-                              ? 'text-accent font-semibold scale-105'
-                              : 'text-base-content hover:text-accent'
-                          }`
-                        }
-                      >
-                        Alumni
-                      </NavLink>
-                    </div>
+                    <NavLink
+                      to={`/member/${section.key}/alumni`}
+                      className={({ isActive }) =>
+                        `block rounded-xl border px-3 py-2 text-sm font-semibold transition-all ${
+                          isActive
+                            ? 'border-amber-500 bg-amber-50 text-amber-700'
+                            : 'border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50/60'
+                        }`
+                      }
+                    >
+                      Alumni
+                    </NavLink>
                   </div>
-                )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </aside>

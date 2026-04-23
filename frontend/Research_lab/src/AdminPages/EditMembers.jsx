@@ -738,14 +738,20 @@ const AdminStudentProjectPage = () => {
               <label className="text-sm font-semibold text-gray-700">
                 Student Level
               </label>
-              <select
-                {...register("studentLevel")}
-                className="border rounded-lg px-3 py-2"
-              >
-                <option>BSc</option>
-                <option>MSc</option>
-                <option>PhD</option>
-              </select>
+              <div className="relative">
+                <select
+                  {...register("studentLevel")}
+                  className="w-full appearance-none rounded-xl border border-slate-300 bg-gradient-to-r from-slate-50 to-white px-3 py-2.5 pr-10 font-medium text-slate-700 shadow-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                >
+                  <option value="BSc">BSc</option>
+                  <option value="MSc">MSc</option>
+                  <option value="PhD">PhD</option>
+                </select>
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">
+                  v
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">Used to group the member under BSc, MSc, or PhD views.</p>
             </div>
           </div>
 
@@ -753,13 +759,18 @@ const AdminStudentProjectPage = () => {
           <h3 className="text-2xl font-bold text-indigo-600 border-b pb-2">
             Select Record Type
           </h3>
-          <select
-            {...register("type")}
-            className="border rounded-lg p-3 w-full"
-          >
-            <option value="project">Project</option>
-            <option value="thesis">Thesis</option>
-          </select>
+          <div className="relative">
+            <select
+              {...register("type")}
+              className="w-full appearance-none rounded-xl border border-slate-300 bg-gradient-to-r from-slate-50 to-white p-3 pr-10 font-medium text-slate-700 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+            >
+              <option value="project">Project</option>
+              <option value="thesis">Thesis</option>
+            </select>
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">
+              v
+            </span>
+          </div>
 
           {/* ================= PROJECT INFO ================= */}
           {type === "project" && (
