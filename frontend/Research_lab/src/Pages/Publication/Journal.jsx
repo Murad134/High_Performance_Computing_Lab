@@ -51,7 +51,7 @@ const Journal = () => {
 
                 {/* Header */}
                 <div className="text-center mb-14 pt-10">
-                    <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-4 tracking-tight">
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-teal-500 mb-4 tracking-tight">
                         Journal Publications
                     </h1>
                     <div className="w-28 h-1.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full shadow-sm"></div>

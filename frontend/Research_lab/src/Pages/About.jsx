@@ -17,7 +17,7 @@ function About() {
                     <Lababout></Lababout>
                 </div>
                 <div className="md:col-span-3 font-poppins">
-                    <h2 className="text-3xl font-extrabold text-indigo-700 mb-6 text-center md:text-left tracking-wide">
+                    <h2 className="text-3xl font-extrabold text-teal-500 mb-6 text-center md:text-left tracking-wide">
                         Research Interests
                     </h2>
                     <ResearchInterest />

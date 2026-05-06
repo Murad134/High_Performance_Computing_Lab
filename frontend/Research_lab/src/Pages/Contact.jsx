@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../hooks/useAxios";
 import ProfAbout from "../Components/ProfAbout";
 import { FaLinkedin, FaFacebook } from "react-icons/fa";
+import { Mail, Globe, GraduationCap, Award, Users, Building, MapPin } from "lucide-react";
 
 function Contact() {
   const axiosInstance = useAxios();
@@ -16,189 +17,237 @@ function Contact() {
   });
 
   if (isLoading) return (
-    <div className="text-center mt-20 text-lg font-semibold">Loading Contact Information...</div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-lg font-semibold text-teal-700">Loading Contact Information...</p>
+      </div>
+    </div>
   );
 
   if (isError || !contact) return (
-    <div className="text-center mt-20 text-red-500">Failed to load contact information.</div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center p-8 bg-red-50 rounded-2xl border border-red-200">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        </div>
+        <p className="text-lg font-semibold text-red-700">Failed to load contact information.</p>
+      </div>
+    </div>
   );
 
-  /* ===== Reusable link card ===== */
-  const LinkCard = ({ label, href, isEmail = false, icon, colorClass = "teal" }) => {
-    const colors = {
-      teal: { bg: "bg-teal-100", hover: "hover:bg-teal-200", text: "text-teal-600 hover:text-teal-700", icon: "text-teal-600" },
-      blue: { bg: "bg-blue-100", hover: "hover:bg-blue-200", text: "text-blue-600 hover:text-blue-700", icon: "text-blue-600" },
-      indigo: { bg: "bg-indigo-100", hover: "hover:bg-indigo-200", text: "text-indigo-600 hover:text-indigo-700", icon: "text-indigo-600" },
-      blueSoft: { bg: "bg-blue-50", hover: "hover:bg-blue-100", text: "text-blue-600 hover:text-blue-700", icon: "text-blue-600" },
+  /* ===== Enhanced Link Card ===== */
+  const LinkCard = ({ label, href, isEmail = false, icon, variant = "primary" }) => {
+    const variants = {
+      primary: {
+        bg: "bg-teal-50",
+        hover: "hover:bg-teal-100",
+        text: "text-teal-700 hover:text-teal-800",
+        icon: "text-teal-600",
+        border: "border-teal-200"
+      },
+      secondary: {
+        bg: "bg-cyan-50",
+        hover: "hover:bg-cyan-100",
+        text: "text-cyan-700 hover:text-cyan-800",
+        icon: "text-cyan-600",
+        border: "border-cyan-200"
+      },
+      accent: {
+        bg: "bg-blue-50",
+        hover: "hover:bg-blue-100",
+        text: "text-blue-700 hover:text-blue-800",
+        icon: "text-blue-600",
+        border: "border-blue-200"
+      }
     };
-    const c = colors[colorClass];
+    const v = variants[variant];
 
     return (
-      <div className="flex items-center gap-3 p-4 bg-white/70 rounded-xl hover:bg-white transition-colors group">
-        <div className={`w-10 h-10 ${c.bg} rounded-lg flex items-center justify-center ${c.hover} transition-colors`}>
-          {icon}
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-xs text-slate-500 font-medium mb-1">{label}</p>
-          {isEmail ? (
-            <a href={`mailto:${href}`} className={`${c.text} font-semibold hover:underline transition-colors truncate block`}>
-              {href}
-            </a>
-          ) : (
-            <a href={href} target="_blank" rel="noopener noreferrer"
-              className={`${c.text} font-semibold hover:underline transition-colors flex items-center gap-2`}>
-              View Profile
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          )}
+      <div className={`group p-4 bg-white/80 backdrop-blur-sm rounded-xl border ${v.border} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-12 h-12 ${v.bg} rounded-xl flex items-center justify-center ${v.hover} transition-all duration-300 group-hover:scale-110`}>
+            {icon}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">{label}</p>
+            {isEmail ? (
+              <a href={`mailto:${href}`} className={`${v.text} font-semibold hover:underline transition-colors block text-sm`}>
+                {href}
+              </a>
+            ) : (
+              <a href={href} target="_blank" rel="noopener noreferrer"
+                className={`${v.text} font-semibold hover:underline transition-colors flex items-center gap-2 text-sm`}>
+                View Profile
+                <svg className="w-4 h-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            )}
+          </div>
         </div>
       </div>
     );
   };
 
-  /* ===== Icons ===== */
-  const EmailIcon = (cls) => (
-    <svg className={`w-5 h-5 ${cls}`} fill="currentColor" viewBox="0 0 20 20">
-      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-    </svg>
-  );
-  const WebIcon = (cls) => (
-    <svg className={`w-5 h-5 ${cls}`} fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd" />
-    </svg>
-  );
-  const ScholarIcon = (cls) => (
-    <svg className={`w-5 h-5 ${cls}`} fill="currentColor" viewBox="0 0 20 20">
-      <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-      <path d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762z" />
-    </svg>
-  );
-  const ResearchIcon = (cls) => (
-    <svg className={`w-5 h-5 ${cls}`} fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-    </svg>
-  );
+  /* ===== Info Card ===== */
+  const InfoCard = ({ icon, label, value, variant = "primary" }) => {
+    const variants = {
+      primary: {
+        bg: "bg-teal-50",
+        text: "text-teal-700",
+        icon: "text-teal-600",
+        border: "border-teal-200"
+      },
+      secondary: {
+        bg: "bg-cyan-50",
+        text: "text-cyan-700",
+        icon: "text-cyan-600",
+        border: "border-cyan-200"
+      }
+    };
+    const v = variants[variant];
+
+    return (
+      <div className={`p-4 bg-white/80 backdrop-blur-sm rounded-xl border ${v.border} hover:shadow-md transition-all duration-300`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 ${v.bg} rounded-lg flex items-center justify-center`}>
+            {icon}
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">{label}</p>
+            <p className={`font-semibold ${v.text} text-sm`}>{value}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-start rounded-xl p-8 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-cyan-50/40">
+      <div className="mx-auto px-4 py-8 mt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-      {/* Left Sidebar */}
-      <aside className="md:col-span-4 p-4 rounded-lg">
-        <ProfAbout />
-      </aside>
-
-      {/* Main Content */}
-      <aside className="md:col-span-8 space-y-6">
-
-        {/* ================= General Information ================= */}
-        <div className="bg-gradient-to-br from-teal-50 to-blue-50 p-6 rounded-2xl border border-teal-100 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-teal-300">
-            <div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
-              </svg>
+          {/* Left Sidebar */}
+          <aside className="lg:col-span-4">
+            <div className="sticky top-8">
+              <ProfAbout />
             </div>
-            <h2 className="text-2xl font-bold text-teal-700">General Information</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { label: "Room", value: contact.room },
-              { label: "Department", value: contact.department },
-              { label: "Building", value: contact.building },
-              { label: "University", value: contact.university },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex items-start gap-3 p-3 bg-white/60 rounded-lg">
+          </aside>
+
+          {/* Main Content */}
+          <main className="lg:col-span-8 space-y-8">
+
+            {/* ================= General Information ================= */}
+            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-3xl border border-teal-200 shadow-[0_25px_50px_-20px_rgba(20,184,166,0.25)] hover:shadow-[0_35px_60px_-25px_rgba(20,184,166,0.4)] transition-all duration-500">
+              <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-teal-300">
+                <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Building className="w-6 h-6 text-white" />
+                </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-medium mb-1">{label}</p>
-                  <p className="text-slate-800 font-semibold">{value}</p>
+                  <p className="text-sm font-bold uppercase tracking-[0.2em] text-teal-600">Contact Details</p>
+                  <h2 className="text-3xl font-bold text-slate-900">General Information</h2>
                 </div>
               </div>
-            ))}
-            <div className="flex items-start gap-3 p-3 bg-white/60 rounded-lg sm:col-span-2">
-              <div>
-                <p className="text-xs text-slate-500 font-medium mb-1">City - Zip</p>
-                <p className="text-slate-800 font-semibold">{contact.cityZip}</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InfoCard icon={<Building className="w-5 h-5 text-teal-600" />} label="Room" value={contact.room} />
+                <InfoCard icon={<Users className="w-5 h-5 text-teal-600" />} label="Department" value={contact.department} />
+                <InfoCard icon={<Building className="w-5 h-5 text-teal-600" />} label="Building" value={contact.building} />
+                <InfoCard icon={<GraduationCap className="w-5 h-5 text-teal-600" />} label="University" value={contact.university} />
+                <div className="md:col-span-2">
+                  <InfoCard icon={<MapPin className="w-5 h-5 text-cyan-600" />} label="City - Zip" value={contact.cityZip} variant="secondary" />
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* ================= Head of Lab ================= */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-300">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
+            {/* ================= Head of Lab ================= */}
+            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-3xl border border-teal-200 shadow-[0_25px_50px_-20px_rgba(20,184,166,0.25)] hover:shadow-[0_35px_60px_-25px_rgba(20,184,166,0.4)] transition-all duration-500">
+              <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-teal-300">
+                <div className="w-12 h-12 bg-gradient-to-r from-teal-600 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Award className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.2em] text-teal-600">Leadership</p>
+                  <h2 className="text-3xl font-bold text-slate-900">Head of Lab</h2>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {/* Contact Links */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <LinkCard label="Email Address" href={contact.headEmail} isEmail variant="primary"
+                    icon={<Mail className="w-5 h-5" />} />
+                  <LinkCard label="University Website" href={contact.headUniversityWebsite} variant="secondary"
+                    icon={<Globe className="w-5 h-5" />} />
+                </div>
+
+                {/* Academic Profiles */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <LinkCard label="Google Scholar" href={contact.headGoogleScholar} variant="accent"
+                    icon={<GraduationCap className="w-5 h-5" />} />
+                  <LinkCard label="ResearchGate" href={contact.headResearchGate} variant="primary"
+                    icon={<Award className="w-5 h-5" />} />
+                </div>
+
+                {/* Social Profiles */}
+                {(contact.headLinkedin || contact.headFacebook) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {contact.headLinkedin && (
+                      <LinkCard label="LinkedIn Profile" href={contact.headLinkedin} variant="secondary"
+                        icon={<FaLinkedin className="w-5 h-5" />} />
+                    )}
+                    {contact.headFacebook && (
+                      <LinkCard label="Facebook Profile" href={contact.headFacebook} variant="secondary"
+                        icon={<FaFacebook className="w-5 h-5" />} />
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-            <h2 className="text-2xl font-bold text-blue-700">Head of Lab</h2>
-          </div>
 
-          {/* Row 1: Email | University Website */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <LinkCard label="Email" href={contact.headEmail} isEmail colorClass="blue"
-              icon={EmailIcon("text-blue-600")} />
-            <LinkCard label="University Website" href={contact.headUniversityWebsite} colorClass="blue"
-              icon={WebIcon("text-blue-600")} />
-          </div>
+            {/* ================= Deputy Head of Lab ================= */}
+            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-3xl border border-teal-200 shadow-[0_25px_50px_-20px_rgba(20,184,166,0.25)] hover:shadow-[0_35px_60px_-25px_rgba(20,184,166,0.4)] transition-all duration-500">
+              <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-teal-300">
+                <div className="w-12 h-12 bg-gradient-to-r from-teal-700 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.2em] text-teal-600">Leadership</p>
+                  <h2 className="text-3xl font-bold text-slate-900">Deputy Head of Lab</h2>
+                </div>
+              </div>
 
-          {/* Row 2: Google Scholar | ResearchGate */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <LinkCard label="Google Scholar" href={contact.headGoogleScholar} colorClass="indigo"
-              icon={ScholarIcon("text-indigo-600")} />
-            <LinkCard label="ResearchGate" href={contact.headResearchGate} colorClass="indigo"
-              icon={ResearchIcon("text-indigo-600")} />
-          </div>
+              <div className="space-y-6">
+                {/* Contact Links */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <LinkCard label="Email Address" href={contact.deputyHeadEmail} isEmail variant="primary"
+                    icon={<Mail className="w-5 h-5" />} />
+                  <LinkCard label="ResearchGate" href={contact.deputyHeadResearchGate} variant="accent"
+                    icon={<Award className="w-5 h-5" />} />
+                </div>
 
-          {/* Row 3: LinkedIn | Facebook */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {contact.headLinkedin && (
-              <LinkCard label="LinkedIn Profile" href={contact.headLinkedin} colorClass="blueSoft"
-                icon={<FaLinkedin className="w-5 h-5 text-blue-600" />} />
-            )}
-            {contact.headFacebook && (
-              <LinkCard label="Facebook Profile" href={contact.headFacebook} colorClass="blueSoft"
-                icon={<FaFacebook className="w-5 h-5 text-blue-600" />} />
-            )}
-          </div>
-        </div>
-
-        {/* ================= Deputy Head of Lab ================= */}
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border border-indigo-100 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-indigo-300">
-            <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
+                {/* Social Profiles */}
+                {(contact.deputyHeadLinkedin || contact.deputyHeadFacebook) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {contact.deputyHeadLinkedin && (
+                      <LinkCard label="LinkedIn Profile" href={contact.deputyHeadLinkedin} variant="secondary"
+                        icon={<FaLinkedin className="w-5 h-5" />} />
+                    )}
+                    {contact.deputyHeadFacebook && (
+                      <LinkCard label="Facebook Profile" href={contact.deputyHeadFacebook} variant="secondary"
+                        icon={<FaFacebook className="w-5 h-5" />} />
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-            <h2 className="text-2xl font-bold text-indigo-700">Deputy Head of Lab</h2>
-          </div>
 
-          {/* Row 1: Email | ResearchGate */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <LinkCard label="Email" href={contact.deputyHeadEmail} isEmail colorClass="indigo"
-              icon={EmailIcon("text-indigo-600")} />
-            <LinkCard label="ResearchGate" href={contact.deputyHeadResearchGate} colorClass="indigo"
-              icon={ResearchIcon("text-indigo-600")} />
-          </div>
-
-          {/* Row 2: LinkedIn | Facebook */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {contact.deputyHeadLinkedin && (
-              <LinkCard label="LinkedIn Profile" href={contact.deputyHeadLinkedin} colorClass="blueSoft"
-                icon={<FaLinkedin className="w-5 h-5 text-blue-600" />} />
-            )}
-            {contact.deputyHeadFacebook && (
-              <LinkCard label="Facebook Profile" href={contact.deputyHeadFacebook} colorClass="blueSoft"
-                icon={<FaFacebook className="w-5 h-5 text-blue-600" />} />
-            )}
-          </div>
+          </main>
         </div>
-
-      </aside>
+      </div>
     </div>
   );
 }

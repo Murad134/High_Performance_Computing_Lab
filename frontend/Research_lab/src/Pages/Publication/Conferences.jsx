@@ -43,7 +43,7 @@ const Conference = () => {
 
                 {/* HEADER */}
                 <div className="text-center mb-12 pt-5">
-                    <h1 className="text-5xl md:text-6xl font-extrabold text-gray-800 mb-4">
+                    <h1 className="text-5xl md:text-6xl font-extrabold text-teal-500 mb-4">
                         Conference
                     </h1>
                     <div className="w-24 h-1 bg-teal-400 mx-auto rounded-full"></div>
