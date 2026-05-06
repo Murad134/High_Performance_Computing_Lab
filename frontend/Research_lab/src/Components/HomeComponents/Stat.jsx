@@ -55,32 +55,32 @@ export default function SimpleStats() {
             label: "Head of Lab Experience",
             value: totalExp,
             icon: "⏳",
-            color: "from-orange-500 to-orange-600",
+            color: "from-teal-400 to-teal-500",
         },
         {
             label: "Departments",
             value: statsData.departments || 0,
             icon: "🏢",
-            color: "from-purple-500 to-purple-600",
+            color: "from-teal-400 to-teal-500",
         },
         {
             label :'Teams',
             value: statsData.teams || 0,
             icon: "👥",
-            color: "from-pink-500 to-pink-600",
+            color: "from-teal-400 to-teal-500",
 
         },
         {
             label: "Publications",
             value: statsData.publications || 0,
             icon: "📘",
-            color: "from-green-500 to-green-600",
+            color: "from-teal-400 to-teal-500",
         },
         {
             label: "Members / Students",
             value: statsData.members || 0,
             icon: "👨‍🎓",
-            color: "from-blue-500 to-blue-600",
+            color: "from-teal-400 to-teal-500",
         },
     ];
 
