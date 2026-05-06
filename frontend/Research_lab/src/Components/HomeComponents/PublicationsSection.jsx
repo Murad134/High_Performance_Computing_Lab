@@ -51,70 +51,81 @@ const Journal = () => {
   };
 
   return (
-    <section className="py-20 px-6 md:px-20">
-      <div className="mx-auto">
+    <section className="py-16 px-4 md:px-8 lg:px-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
 
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">
-          Featured Publications
-        </h2>
+        {/* Heading Section */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-teal-600 mb-4">
+            Featured Publications
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Explore our latest research publications and academic contributions
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {latestJournals.map((pub,) => (
+        {/* Publications Grid - Equal Height Cards */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          {latestJournals.map((pub) => (
             <div
               key={pub._id}
-              className="bg-white rounded-2xl border hover:shadow-lg transition"
+              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col"
             >
               {/* HEADER */}
-              <div className="p-6 bg-teal-400 text-white">
+              <div className="p-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5" />
-                  <span className="font-semibold">
+                  <span className="font-semibold text-sm">
                     {pub.journalName || "Journal"}
                   </span>
                 </div>
               </div>
 
-              {/* CONTENT */}
-              <div className="p-6">
+              {/* CONTENT - Flex grow to fill space */}
+              <div className="p-6 flex flex-col flex-1">
 
                 {pub.month && (
-                    <span className="text-sm text-gray-500">
-                        {pub.month} {pub.year}
-                    </span>
-                )}                    
-                <h3 className="text-lg font-bold mt-2 mb-2 line-clamp-2">
+                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full w-fit mb-3">
+                    {pub.month} {pub.year}
+                  </span>
+                )}
+
+                <h3 className="text-lg font-bold mb-3 line-clamp-2 text-gray-800 leading-tight flex-shrink-0">
                   {pub.title}
                 </h3>
 
                 {/* AUTHORS */}
-                <p className="text-sm text-gray-500 mb-2">
+                <p className="text-sm text-gray-600 mb-3 flex-shrink-0">
                   {pub.authors?.map((a) => a.name).join(", ")}
                 </p>
 
-                {/* ABSTRACT */}
-                <p className="text-gray-600 mb-4 line-clamp-3">
+                {/* ABSTRACT - Flex grow to fill remaining space */}
+                <p className="text-gray-700 mb-4 line-clamp-3 text-sm leading-relaxed flex-1">
                   {pub.abstract || "No abstract available"}
                 </p>
 
-                <a
-                  href={getLink(pub)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-teal-400 text-white py-2 px-5 rounded-lg hover:bg-teal-600 transition"
-                >
-                  Read More
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+                {/* BUTTON - Always at bottom */}
+                <div className="mt-auto">
+                  <a
+                    href={getLink(pub)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors duration-200 text-sm font-medium"
+                  >
+                    Read More
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
         {/* VIEW ALL */}
-        <div className="mt-12 text-center">
+        <div className="text-center">
           <a
             href="/research/publications/journal"
-            className="inline-block border border-indigo-300 text-indigo-600 py-3 px-8 rounded-lg hover:bg-indigo-50 transition"
+            className="inline-block bg-teal-600 text-white py-3 px-8 rounded-lg hover:bg-teal-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl"
           >
             View All Publications
           </a>

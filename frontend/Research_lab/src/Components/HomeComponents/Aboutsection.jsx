@@ -42,7 +42,7 @@ function Aboutsection() {
                 </p>
                 <a
                     href={home?.aboutButtonLink || "#"}
-                    className="inline-block bg-indigo-600  px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+                    className="inline-block bg-teal-600  px-6 py-3 rounded-lg hover:bg-teal-700 transition"
                 >
                     {home?.aboutButtonName || "Read More"}
                 </a>

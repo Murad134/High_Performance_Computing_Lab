@@ -98,7 +98,7 @@ function Home() {
       {/* Awards */}
       <section className=" py-6 md:py-10">
         <div className="px-4 sm:px-6 md:px-10">
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-teal-600 mb-8 md:mb-12">
             Awards Pictures
           </h3>
           <Picture_Awards />
