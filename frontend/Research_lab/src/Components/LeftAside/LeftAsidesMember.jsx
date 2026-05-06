@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Users, GraduationCap, BookOpen, Award, ArrowRight } from 'lucide-react';
 
 const SECTIONS = [
   {
     key: 'bsc',
-    label: 'BSc',
+    label: 'BSc Program',
     tag: '01',
-    tone: 'from-cyan-500 to-sky-500',
-    note: 'Undergraduate researchers'
+    tone: 'from-teal-500 to-cyan-500',
+    icon: BookOpen,
+    note: 'Undergraduate researchers',
+    currentColor: 'border-teal-500 bg-teal-50 text-teal-700',
+    alumniColor: 'border-teal-600 bg-teal-50 text-teal-800'
   },
   {
     key: 'msc',
-    label: 'MSc',
+    label: 'MSc Program',
     tag: '02',
-    tone: 'from-emerald-500 to-teal-500',
-    note: 'Graduate research track'
+    tone: 'from-teal-600 to-blue-500',
+    icon: Users,
+    note: 'Graduate research track',
+    currentColor: 'border-blue-500 bg-blue-50 text-blue-700',
+    alumniColor: 'border-blue-600 bg-blue-50 text-blue-800'
   },
   {
     key: 'phd',
-    label: 'PhD',
+    label: 'PhD Program',
     tag: '03',
-    tone: 'from-amber-500 to-orange-500',
-    note: 'Doctoral candidates'
+    tone: 'from-teal-700 to-indigo-500',
+    icon: GraduationCap,
+    note: 'Doctoral candidates',
+    currentColor: 'border-indigo-500 bg-indigo-50 text-indigo-700',
+    alumniColor: 'border-indigo-600 bg-indigo-50 text-indigo-800'
   }
 ];
 
@@ -41,49 +50,67 @@ function LeftSidebar() {
   };
 
   return (
-    <aside className="w-full md:w-[340px] md:sticky md:top-20 md:self-start">
-      <div className="rounded-3xl border border-slate-200 bg-gradient-to-b from-white via-slate-50 to-slate-100 p-5 shadow-[0_20px_40px_-28px_rgba(15,23,42,0.7)] md:p-6">
-        <div className="mb-5 border-b border-slate-200 pb-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Members</p>
-          <h2 className="mt-1 text-2xl font-bold text-slate-900">Program Explorer</h2>
+    <aside className="w-full md:w-[360px] md:sticky md:top-20 md:self-start">
+      <div className="rounded-3xl border border-teal-200 bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/40 p-6 shadow-[0_25px_50px_-20px_rgba(20,184,166,0.25)] backdrop-blur-sm">
+        {/* Header */}
+        <div className="mb-6 border-b border-teal-200 pb-5">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center">
+              <Users className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-slate-900">Program Explorer</h2>
+            </div>
+          </div>
+          <p className="text-sm text-slate-600 mt-2">Navigate through our academic programs and meet our talented researchers</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {SECTIONS.map((section) => {
             const isActiveProgram = level === section.key;
             const isOpen = expandedSection === section.key;
+            const IconComponent = section.icon;
 
             return (
               <div
                 key={section.key}
-                className={`rounded-2xl border bg-white/85 p-3 transition-all duration-300 ${
+                className={`rounded-2xl border-2 bg-white/90 backdrop-blur-sm p-4 transition-all duration-500 hover:shadow-lg hover:shadow-teal-100/50 ${
                   isActiveProgram
-                    ? 'border-slate-900 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.85)]'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-teal-400 shadow-[0_12px_32px_-16px_rgba(20,184,166,0.4)] ring-1 ring-teal-200'
+                    : 'border-teal-100 hover:border-teal-300'
                 }`}
               >
                 <button
                   type="button"
                   onClick={() => handleSectionClick(section.key)}
-                  className="flex w-full items-center gap-3 text-left"
+                  className="flex w-full items-center gap-4 text-left group"
                 >
-                  <span
-                    className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r ${section.tone} text-sm font-bold text-white`}
-                  >
-                    {section.tag}
-                  </span>
+                  <div className="relative">
+                    <span
+                      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r ${section.tone} text-sm font-bold text-white shadow-lg transition-transform group-hover:scale-110`}
+                    >
+                      <IconComponent className="w-5 h-5" />
+                    </span>
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-teal-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">
+                      {section.tag}
+                    </span>
+                  </div>
 
                   <span className="flex-1">
-                    <span className="block text-base font-bold text-slate-900">{section.label}</span>
-                    <span className="block text-xs text-slate-500">{section.note}</span>
+                    <span className="block text-base font-bold text-slate-900 group-hover:text-teal-800 transition-colors">
+                      {section.label}
+                    </span>
+                    <span className="block text-xs text-slate-500 mt-1 leading-relaxed">
+                      {section.note}
+                    </span>
                   </span>
 
                   <span
-                    className={`text-xs font-bold uppercase tracking-[0.3em] text-slate-500 transition-transform ${
+                    className={`text-slate-400 transition-all duration-300 group-hover:text-teal-600 ${
                       isOpen ? 'rotate-180' : ''
                     }`}
                   >
-                    <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className="w-5 h-5" />
                   </span>
                 </button>
 
@@ -98,8 +125,8 @@ function LeftSidebar() {
                       className={({ isActive }) =>
                         `block rounded-xl border px-3 py-2 text-sm font-semibold transition-all ${
                           isActive
-                            ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
-                            : 'border-slate-200 text-slate-700 hover:border-cyan-300 hover:bg-cyan-50/60'
+                            ? 'border-teal-500 bg-teal-50 text-teal-700'
+                            : 'border-slate-200 text-slate-700 hover:border-teal-300 hover:bg-teal-50/60'
                         }`
                       }
                     >
@@ -111,8 +138,8 @@ function LeftSidebar() {
                       className={({ isActive }) =>
                         `block rounded-xl border px-3 py-2 text-sm font-semibold transition-all ${
                           isActive
-                            ? 'border-amber-500 bg-amber-50 text-amber-700'
-                            : 'border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50/60'
+                            ? 'border-teal-600 bg-teal-50 text-teal-800'
+                            : 'border-slate-200 text-slate-700 hover:border-teal-300 hover:bg-teal-50/60'
                         }`
                       }
                     >
