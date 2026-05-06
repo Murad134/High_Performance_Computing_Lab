@@ -76,7 +76,7 @@ const CardProject = ({ item, onMarkComplete, onMarkIncomplete }) => {
         <div className="mb-4 border-b border-teal-100 pb-4">
           <div className="flex items-start gap-2 mb-2">
             <BookOpen className="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" />
-            <h3 className="text-lg font-semibold text-gray-900 leading-tight line-clamp-2">
+            <h3 className="text-lg font-semibold text-teal-600 leading-tight line-clamp-2">
               {item.type === "project" ? item.project?.projectTitle : item.thesis?.thesisTitle}
             </h3>
           </div>
@@ -107,7 +107,7 @@ const CardProject = ({ item, onMarkComplete, onMarkIncomplete }) => {
           )}
 
           {item.student.department && (
-            <div className="text-gray-600 ml-6">
+            <div className="text-gray-600 ml-6 font-medium">
               Dept: {item.student.department}
             </div>
           )}

@@ -85,7 +85,7 @@ export default function StudentCard({ item }) {
         <div className="mb-4 border-b border-teal-100 pb-4">
           <div className="flex items-start gap-2 mb-2">
             <User className="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" />
-            <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+            <h3 className="text-lg font-semibold text-teal-600 leading-tight">
               {item.student?.studentName}
             </h3>
           </div>
@@ -103,7 +103,7 @@ export default function StudentCard({ item }) {
             <span>Session: {item.student?.session}</span>
           </div>
 
-          <div className="text-gray-600 ml-6">
+          <div className="text-gray-600 ml-6 font-medium">
             Dept: {item.student?.department}
           </div>
         </div>

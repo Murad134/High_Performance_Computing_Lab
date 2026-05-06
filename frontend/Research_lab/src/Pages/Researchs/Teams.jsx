@@ -20,13 +20,13 @@ function Teams() {
     <div className="px-2 py-4">
       {/* Breadcrumb */}
       <div className="mb-6 text-sm flex items-center space-x-2">
-        <Link to="/" className="text-pink-600 hover:text-pink-700 font-medium">
+        <Link to="/" className="text-teal-500 hover:text-teal-600 font-medium">
           HPC
         </Link>
         <span className="text-gray-400">/</span>
         <Link
           to="/research/researchs"
-          className="text-pink-600 hover:text-pink-700 font-medium"
+          className="text-teal-500 hover:text-teal-600 font-medium"
         >
           Research
         </Link>
@@ -35,7 +35,7 @@ function Teams() {
       </div>
 
       {/* Title */}
-      <h1 className="text-4xl font-bold text-gray-900 mb-8 tracking-tight">
+      <h1 className="text-4xl font-bold text-teal-800 mb-8 tracking-tight">
         Research Teams
       </h1>
 
@@ -44,13 +44,13 @@ function Teams() {
         <table className="w-full text-left border-collapse">
           <thead className="bg-gradient-to-r from-pink-50 to-pink-100 border-b border-gray-200">
             <tr>
-              <th className="py-4 px-6 font-semibold text-gray-700 w-1/4">
+              <th className="py-4 px-6 font-semibold text-teal-500 w-1/4">
                 Department
               </th>
-              <th className="py-4 px-6 font-semibold text-gray-700 w-1/6">
+              <th className="py-4 px-6 font-semibold text-teal-500 w-1/6">
                 Team
               </th>
-              <th className="py-4 px-6 font-semibold text-gray-700">
+              <th className="py-4 px-6 font-semibold text-teal-500">
                 Description
               </th>
             </tr>
@@ -67,7 +67,7 @@ function Teams() {
                   <td className="py-4 px-6 align-top">
                     {idx === 0 && (
                       <div>
-                        <div className="font-bold text-red-600">
+                        <div className="font-bold text-teal-500">
                           {dept.name}
                         </div>
                       </div>
@@ -78,7 +78,7 @@ function Teams() {
                   <td className="py-4 px-6 align-top">
                     <Link
                       to={`/research/researchs/teams/${team._id}`}
-                      className="text-pink-600 hover:text-pink-700 font-medium underline decoration-pink-400"
+                      className="text-teal-500 hover:text-teal-600 font-medium underline decoration-teal-400"
                     >
                       {team.teamName}
                     </Link>
