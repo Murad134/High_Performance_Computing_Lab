@@ -278,7 +278,7 @@
 //                                     closeAllDropdowns();
 //                                     navigate('/auth/login'); // redirect to login after logout
 //                                 }}
-//                                 className="btn btn-sm md:btn-md bg-red-500 hover:bg-red-600 text-white font-semibold shadow-md transition border-none px-2"
+//                                 className="btn btn-sm md:btn-md bg-teal-500 hover:bg-teal-600 text-white font-semibold shadow-md transition border-none px-2"
 //                             >
 //                                 Logout
 //                             </button>
@@ -622,7 +622,7 @@ function Header() {
             )}
             {/* Main Navbar */}
             <div className="fixed top-0 left-0 w-full z-50">
-                <div className="navbar bg-gradient-to-r bg-blue-600 shadow-md text-white px-4">
+                <div className="navbar bg-gradient-to-r bg-teal-600 shadow-md text-white px-4">
                     {/* Left Side - Menu Button & Logo */}
                     <div className="navbar-start">
                         {/* Hamburger Menu Button (Mobile/Tablet only) */}
@@ -665,8 +665,8 @@ function Header() {
                                     onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
-                                            ? "text-red-500 underline font-semibold"
-                                            : "hover:text-red-400 transition"
+                                            ? "bg-red-100 text-red-600 font-semibold rounded-lg"
+                                            : "hover:text-teal-400 transition"
                                     }
                                 >
                                     Home
@@ -678,8 +678,8 @@ function Header() {
                                     onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
-                                            ? "text-red-500 underline font-semibold"
-                                            : "hover:text-red-400 transition"
+                                            ? "bg-red-100 text-red-600 font-semibold rounded-lg"
+                                            : "hover:text-teal-400 transition"
                                     }
                                 >
                                     About
@@ -698,8 +698,8 @@ function Header() {
                                                 onClick={closeAllDropdowns}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
-                                                        : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
+                                                        ? "block px-3 py-2 bg-red-100 text-red-600 font-semibold rounded"
+                                                        : "block px-3 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-400 transition rounded"
                                                 }
                                             >
                                                 Researchs
@@ -711,8 +711,8 @@ function Header() {
                                                 onClick={closeAllDropdowns}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
-                                                        : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
+                                                        ? "block px-3 py-2 bg-red-100 text-red-600 font-semibold rounded"
+                                                        : "block px-3 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-400 transition rounded"
                                                 }
                                             >
                                                 Publications
@@ -734,8 +734,8 @@ function Header() {
                                                 onClick={closeAllDropdowns}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
-                                                        : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
+                                                        ? "block px-3 py-2 bg-red-100 text-red-600 font-semibold rounded"
+                                                        : "block px-3 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-400 transition rounded"
                                                 }
                                             >
                                                 Academic Thesis
@@ -747,8 +747,8 @@ function Header() {
                                                 onClick={closeAllDropdowns}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "block px-3 py-2 text-red-500 underline font-semibold rounded"
-                                                        : "block px-3 py-2 text-gray-800 hover:bg-red-50 hover:text-red-400 transition rounded"
+                                                        ? "block px-3 py-2 bg-red-100 text-red-600 font-semibold rounded"
+                                                        : "block px-3 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-400 transition rounded"
                                                 }
                                             >
                                                 Academic Projects
@@ -763,8 +763,8 @@ function Header() {
                                     onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
-                                            ? "text-red-500 underline font-semibold"
-                                            : "hover:text-red-400 transition"
+                                            ? "bg-red-100 text-red-600 font-semibold rounded-lg"
+                                            : "hover:text-teal-400 transition"
                                     }
                                 >
                                     Member
@@ -776,8 +776,8 @@ function Header() {
                                     onClick={closeAllDropdowns}
                                     className={({ isActive }) =>
                                         isActive
-                                            ? "text-red-500 underline font-semibold"
-                                            : "hover:text-red-400 transition"
+                                            ? "bg-red-100 text-red-600 font-semibold rounded-lg"
+                                            : "hover:text-teal-400 transition"
                                     }
                                 >
                                     Contact
@@ -794,8 +794,8 @@ function Header() {
                                             onClick={closeAllDropdowns}
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "text-red-500 underline font-semibold"
-                                                    : "hover:text-red-400 transition"
+                                                    ? "bg-red-100 text-red-600 font-semibold rounded-lg"
+                                                    : "hover:text-teal-400 transition"
                                             }
                                         >
                                             Admin Panel
@@ -913,7 +913,7 @@ function Header() {
                 }
             >
                 {/* Drawer Header */}
-                < div className="flex items-center justify-between p-4 bg-blue-600 text-white" >
+                < div className="flex items-center justify-between p-4 bg-teal-600 text-white" >
                     <h2 className="text-xl font-bold">Menu</h2>
                     <button
                         onClick={closeDrawer}
@@ -940,7 +940,7 @@ function Header() {
                             className={({ isActive }) =>
                                 isActive
                                     ? "bg-red-100 text-red-600 font-semibold rounded-lg"
-                                    : "hover:bg-gray-100 transition rounded-lg"
+                                    : "hover:bg-gray-100 hover:text-red-500 transition rounded-lg"
                             }
                         >
                             🏠 Home
