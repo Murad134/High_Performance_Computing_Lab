@@ -24,11 +24,11 @@ function Contact() {
   );
 
   /* ===== Reusable link card ===== */
-  const LinkCard = ({ label, href, isEmail = false, icon, colorClass = "green" }) => {
+  const LinkCard = ({ label, href, isEmail = false, icon, colorClass = "teal" }) => {
     const colors = {
-      green: { bg: "bg-green-100", hover: "hover:bg-green-200", text: "text-green-600 hover:text-green-700", icon: "text-green-600" },
-      purple: { bg: "bg-purple-100", hover: "hover:bg-purple-200", text: "text-purple-600 hover:text-purple-700", icon: "text-purple-600" },
-      blue: { bg: "bg-blue-100", hover: "hover:bg-blue-200", text: "text-blue-700 hover:text-blue-800", icon: "text-blue-700" },
+      teal: { bg: "bg-teal-100", hover: "hover:bg-teal-200", text: "text-teal-600 hover:text-teal-700", icon: "text-teal-600" },
+      blue: { bg: "bg-blue-100", hover: "hover:bg-blue-200", text: "text-blue-600 hover:text-blue-700", icon: "text-blue-600" },
+      indigo: { bg: "bg-indigo-100", hover: "hover:bg-indigo-200", text: "text-indigo-600 hover:text-indigo-700", icon: "text-indigo-600" },
       blueSoft: { bg: "bg-blue-50", hover: "hover:bg-blue-100", text: "text-blue-600 hover:text-blue-700", icon: "text-blue-600" },
     };
     const c = colors[colorClass];
@@ -39,7 +39,7 @@ function Contact() {
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-gray-500 font-medium mb-1">{label}</p>
+          <p className="text-xs text-slate-500 font-medium mb-1">{label}</p>
           {isEmail ? (
             <a href={`mailto:${href}`} className={`${c.text} font-semibold hover:underline transition-colors truncate block`}>
               {href}
@@ -94,14 +94,14 @@ function Contact() {
       <aside className="md:col-span-8 space-y-6">
 
         {/* ================= General Information ================= */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-300">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+        <div className="bg-gradient-to-br from-teal-50 to-blue-50 p-6 rounded-2xl border border-teal-100 hover:shadow-xl transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-teal-300">
+            <div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center">
               <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800">General Information</h2>
+            <h2 className="text-2xl font-bold text-teal-700">General Information</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
@@ -112,52 +112,52 @@ function Contact() {
             ].map(({ label, value }) => (
               <div key={label} className="flex items-start gap-3 p-3 bg-white/60 rounded-lg">
                 <div>
-                  <p className="text-xs text-gray-500 font-medium mb-1">{label}</p>
-                  <p className="text-gray-800 font-semibold">{value}</p>
+                  <p className="text-xs text-slate-500 font-medium mb-1">{label}</p>
+                  <p className="text-slate-800 font-semibold">{value}</p>
                 </div>
               </div>
             ))}
             <div className="flex items-start gap-3 p-3 bg-white/60 rounded-lg sm:col-span-2">
               <div>
-                <p className="text-xs text-gray-500 font-medium mb-1">City - Zip</p>
-                <p className="text-gray-800 font-semibold">{contact.cityZip}</p>
+                <p className="text-xs text-slate-500 font-medium mb-1">City - Zip</p>
+                <p className="text-slate-800 font-semibold">{contact.cityZip}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* ================= Head of Lab ================= */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-100 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-green-300">
-            <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100 hover:shadow-xl transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-300">
+            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
               <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800">Head of Lab</h2>
+            <h2 className="text-2xl font-bold text-blue-700">Head of Lab</h2>
           </div>
 
           {/* Row 1: Email | University Website */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <LinkCard label="Email" href={contact.headEmail} isEmail colorClass="green"
-              icon={EmailIcon("text-green-600")} />
-            <LinkCard label="University Website" href={contact.headUniversityWebsite} colorClass="green"
-              icon={WebIcon("text-green-600")} />
+            <LinkCard label="Email" href={contact.headEmail} isEmail colorClass="blue"
+              icon={EmailIcon("text-blue-600")} />
+            <LinkCard label="University Website" href={contact.headUniversityWebsite} colorClass="blue"
+              icon={WebIcon("text-blue-600")} />
           </div>
 
           {/* Row 2: Google Scholar | ResearchGate */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <LinkCard label="Google Scholar" href={contact.headGoogleScholar} colorClass="green"
-              icon={ScholarIcon("text-green-600")} />
-            <LinkCard label="ResearchGate" href={contact.headResearchGate} colorClass="green"
-              icon={ResearchIcon("text-green-600")} />
+            <LinkCard label="Google Scholar" href={contact.headGoogleScholar} colorClass="indigo"
+              icon={ScholarIcon("text-indigo-600")} />
+            <LinkCard label="ResearchGate" href={contact.headResearchGate} colorClass="indigo"
+              icon={ResearchIcon("text-indigo-600")} />
           </div>
 
           {/* Row 3: LinkedIn | Facebook */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {contact.headLinkedin && (
-              <LinkCard label="LinkedIn Profile" href={contact.headLinkedin} colorClass="blue"
-                icon={<FaLinkedin className="w-5 h-5 text-blue-700" />} />
+              <LinkCard label="LinkedIn Profile" href={contact.headLinkedin} colorClass="blueSoft"
+                icon={<FaLinkedin className="w-5 h-5 text-blue-600" />} />
             )}
             {contact.headFacebook && (
               <LinkCard label="Facebook Profile" href={contact.headFacebook} colorClass="blueSoft"
@@ -167,29 +167,29 @@ function Contact() {
         </div>
 
         {/* ================= Deputy Head of Lab ================= */}
-        <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-8 rounded-2xl border border-purple-100 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-purple-300">
-            <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border border-indigo-100 hover:shadow-xl transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-indigo-300">
+            <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
               <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800">Deputy Head of Lab</h2>
+            <h2 className="text-2xl font-bold text-indigo-700">Deputy Head of Lab</h2>
           </div>
 
           {/* Row 1: Email | ResearchGate */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <LinkCard label="Email" href={contact.deputyHeadEmail} isEmail colorClass="purple"
-              icon={EmailIcon("text-purple-600")} />
-            <LinkCard label="ResearchGate" href={contact.deputyHeadResearchGate} colorClass="purple"
-              icon={ResearchIcon("text-purple-600")} />
+            <LinkCard label="Email" href={contact.deputyHeadEmail} isEmail colorClass="indigo"
+              icon={EmailIcon("text-indigo-600")} />
+            <LinkCard label="ResearchGate" href={contact.deputyHeadResearchGate} colorClass="indigo"
+              icon={ResearchIcon("text-indigo-600")} />
           </div>
 
           {/* Row 2: LinkedIn | Facebook */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {contact.deputyHeadLinkedin && (
-              <LinkCard label="LinkedIn Profile" href={contact.deputyHeadLinkedin} colorClass="blue"
-                icon={<FaLinkedin className="w-5 h-5 text-blue-700" />} />
+              <LinkCard label="LinkedIn Profile" href={contact.deputyHeadLinkedin} colorClass="blueSoft"
+                icon={<FaLinkedin className="w-5 h-5 text-blue-600" />} />
             )}
             {contact.deputyHeadFacebook && (
               <LinkCard label="Facebook Profile" href={contact.deputyHeadFacebook} colorClass="blueSoft"

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 
 const SECTIONS = [
   {
@@ -82,7 +83,7 @@ function LeftSidebar() {
                       isOpen ? 'rotate-180' : ''
                     }`}
                   >
-                    v
+                    <ChevronDown className="w-4 h-4" />
                   </span>
                 </button>
 
