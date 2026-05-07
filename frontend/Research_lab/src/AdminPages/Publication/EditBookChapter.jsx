@@ -149,12 +149,12 @@ export default function AddPublication() {
                     <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-8">
                         <section>
                             <div className="flex items-center justify-center  gap-2 mb-1">
-                                <h3 className="text-xl font-bold  uppercase tracking-widest">Basic Information</h3>
+                                <h3 className="text-xl text-blue-700 font-bold  uppercase tracking-widest">Basic Information</h3>
                             </div>
                             <div className="h-px bg-slate-100 mb-4" />
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-semibold  mb-1">
+                                    <label className="block text-sm  font-semibold  mb-1">
                                         Book Title
                                     </label>
                                     <input
@@ -178,7 +178,7 @@ export default function AddPublication() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold  mb-1">
+                                    <label className="block text-sm text-gray-700 font-semibold  mb-1">
                                         Publication Type
                                     </label>
                                     <select
@@ -196,7 +196,7 @@ export default function AddPublication() {
                         {/* ── 2. Publication Details ── */}
                         <section>
                             <div className="flex items-center gap-2 mb-1">
-                                <h3 className="text-sm font-bold text-slate-700 uppercase tracking-widest">Publication Details</h3>
+                                <h3 className="text-sm font-bold text-blue-600 uppercase tracking-widest">Publication Details</h3>
                             </div>
                             <div className="h-px bg-slate-100 mb-4" />
                             <div className="grid md:grid-cols-2 gap-4">
@@ -235,7 +235,7 @@ export default function AddPublication() {
                         {/* ── 3. Authors ── */}
                         <section>
                             <div className="flex items-center gap-2 mb-1">
-                                <h3 className="text-sm font-bold text-slate-700 uppercase tracking-widest">Authors</h3>
+                                <h3 className="text-sm font-bold text-blue-700 uppercase tracking-widest">Authors</h3>
                             </div>
                             <div className="h-px bg-slate-100 mb-4" />
                             <div className="space-y-3">
@@ -255,7 +255,7 @@ export default function AddPublication() {
                                             <button
                                                 type="button"
                                                 onClick={() => remove(index)}
-                                                className="w-9 h-10 flex items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-100 border border-red-100 text-sm font-bold transition"
+                                                className="w-9 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-500 hover:bg-blue-100 border border-blue-100 text-sm font-bold transition"
                                             >
                                                 ✕
                                             </button>
@@ -265,9 +265,9 @@ export default function AddPublication() {
                                 <button
                                     type="button"
                                     onClick={() => append({ name: "" })}
-                                    className="flex items-center gap-2 text-sm font-semibold text-orange-600 hover:text-orange-800 mt-1 transition"
+                                    className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 mt-1 transition"
                                 >
-                                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 font-bold text-base">+</span>
+                                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 font-bold text-base">+</span>
                                     Add Another Author
                                 </button>
                             </div>
@@ -279,7 +279,7 @@ export default function AddPublication() {
                                 <button
                                     type="button"
                                     onClick={handleCancelEdit}
-                                    className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50 transition"
+                                    className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-bold text-sm hover:bg-gray-50 transition"
                                 >
                                     Cancel
                                 </button>
@@ -288,7 +288,7 @@ export default function AddPublication() {
                                 type="submit"
                                 disabled={isPending}
                                 className={`flex-1 py-3 rounded-xl font-bold text-sm text-white shadow transition-all flex items-center justify-center gap-2 disabled:opacity-50 ${editingId
-                                    ? "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+                                    ? "bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-600 hover:to-blue-800"
                                     : "bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-800 hover:to-blue-600"
                                     }`}
                             >
@@ -312,7 +312,7 @@ export default function AddPublication() {
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-800">All Publications</h2>
+                            <h2 className="text-2xl font-bold text-blue-800">All Publications</h2>
                             <p className="text-slate-500 text-sm">
                                 {books.length} publication{books.length !== 1 ? "s" : ""} found
                             </p>
@@ -346,8 +346,8 @@ export default function AddPublication() {
                             {books.map((book) => (
                                 <div
                                     key={book._id}
-                                    className={`group bg-white rounded-2xl border shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden ${editingId === book._id
-                                        ? "border-amber-400 ring-2 ring-amber-200"
+                                    className={`group bg-white rounded-2xl border  shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden ${editingId === book._id
+                                        ? "border-blue-400 ring-2 ring-blue-200"
                                         : "border-slate-100"
                                         }`}
                                 >
@@ -361,8 +361,8 @@ export default function AddPublication() {
                                             </span>
 
                                             {editingId === book._id && (
-                                                <span className="px-2.5 py-0.5 bg-amber-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
-                                                    ✏️ Editing
+                                                <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+                                                     Editing
                                                 </span>
                                             )}
                                         </div>
@@ -374,26 +374,26 @@ export default function AddPublication() {
 
                                         {/* Meta */}
                                         <div className="space-y-2 text-sm mb-4">
-                                            <p className="text-slate-600">
-                                                📅 <span className="text-slate-400">Year:</span>{" "}
-                                                <span className="font-semibold text-slate-800">
+                                            <p className="text-gray-600">
+                                                📅 <span className="text-gray-600">Year:</span>{" "}
+                                                <span className="font-semibold text-gray-800">
                                                     {book.year}
                                                 </span>
                                             </p>
 
                                             {book.publisher && (
-                                                <p className="text-slate-600 truncate">
-                                                    🏢 <span className="text-slate-400">Publisher:</span>{" "}
-                                                    <span className="font-medium text-slate-800">
+                                                <p className="text-gray-600 truncate">
+                                                    🏢 <span className="text-gray-700">Publisher:</span>{" "}
+                                                    <span className="font-medium text-gray-800">
                                                         {book.publisher}
                                                     </span>
                                                 </p>
                                             )}
 
                                             {book.conference && (
-                                                <p className="text-slate-600 line-clamp-2">
-                                                    📖 <span className="text-slate-400">Venue:</span>{" "}
-                                                    <span className="font-medium text-slate-800">
+                                                <p className="text-gray-600 line-clamp-2">
+                                                    📖 <span className="text-gray-600">Venue:</span>{" "}
+                                                    <span className="font-medium text-gray-800">
                                                         {book.conference}
                                                     </span>
                                                 </p>
@@ -403,7 +403,7 @@ export default function AddPublication() {
                                         {/* Authors */}
                                         {book.authors?.length > 0 && (
                                             <div className="mb-4">
-                                                <p className="text-xs font-semibold text-slate-400 uppercase mb-2">
+                                                <p className="text-xs font-semibold text-gray-700 uppercase mb-2">
                                                     Authors
                                                 </p>
 
@@ -411,7 +411,7 @@ export default function AddPublication() {
                                                     {book.authors.slice(0, 4).map((author, i) => (
                                                         <span
                                                             key={i}
-                                                            className="px-2.5 py-0.5 bg-slate-100 text-slate-700 text-xs rounded-full"
+                                                            className="px-2.5 py-0.5 bg-slate-100 text-gray-700 text-xs rounded-full"
                                                         >
                                                             {typeof author === "string"
                                                                 ? author
@@ -421,7 +421,7 @@ export default function AddPublication() {
 
                                                     {/* Extra count */}
                                                     {book.authors.length > 4 && (
-                                                        <span className="text-xs text-slate-400">
+                                                        <span className="text-xs text-gray-700">
                                                             +{book.authors.length - 4} more
                                                         </span>
                                                     )}
@@ -434,9 +434,9 @@ export default function AddPublication() {
 
                                             <button
                                                 onClick={() => handleEdit(book)}
-                                                className="flex-1 py-2 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm font-semibold transition"
+                                                className="flex-1 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 text-sm font-semibold transition"
                                             >
-                                                ✏️ Edit
+                                                Edit
                                             </button>
 
                                             <button
@@ -444,7 +444,7 @@ export default function AddPublication() {
                                                 disabled={deleteMutation.isPending}
                                                 className="flex-1 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 text-sm font-semibold transition disabled:opacity-50"
                                             >
-                                                🗑️ Delete
+                                                Delete
                                             </button>
 
                                             {book.link && (

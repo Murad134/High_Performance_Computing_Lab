@@ -518,74 +518,127 @@ const AdminArticleFormSections = () => {
                 className="bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden min-h-[350px] flex flex-col"
               >
                 {/* ================= Header ================= */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 border-b-2 border-blue-200">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/20 rounded-lg">
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white p-5 border-b-2 border-blue-300 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-transparent"></div>
+                  <div className="relative z-10 flex items-start gap-4">
+                    <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm border border-white/30 shadow-lg">
+                      <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                       </svg>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-lg truncate">Title: {journal.title}</h4>
-                      <span className="inline-block px-2 py-1 rounded-full text-xs font-semibold mt-1 bg-blue-100 text-blue-700">
-                        Journal Article
-                      </span>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-xl leading-tight text-white mb-2 break-words">Title: {journal.title}</h4>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-white/20 text-white border border-white/30 backdrop-blur-sm">
+                          <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                          </svg>
+                          Journal Article
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* ================= Body ================= */}
-                <div className="p-4 flex-1 text-sm text-gray-600 space-y-2">
-                  <div>
-                    <span className="font-semibold text-blue-600">Journal Name:</span>
-                    <p className="text-gray-700 mt-1">{journal.journalName || "Not specified"}</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-blue-600">Publisher:</span>
-                    <p className="text-gray-700 mt-1">{journal.publisher || "Not specified"}</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-blue-600">Year:</span>
-                    <p className="text-gray-700 mt-1">{journal.year || "Not specified"}</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-blue-600">DOI:</span>
-                    <p className="text-gray-700 mt-1 break-all">{journal.doi || "Not specified"}</p>
+                <div className="p-6 flex-1 bg-gradient-to-b from-white to-blue-50/30">
+                  <div className="space-y-4">
+                    <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-blue-100/50 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                          </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="font-semibold text-blue-700 text-sm block mb-1">Journal Name</span>
+                          <p className="text-gray-800 font-medium break-words">{journal.journalName || "Not specified"}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-blue-100/50 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                          </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="font-semibold text-blue-700 text-sm block mb-1">Publisher</span>
+                          <p className="text-gray-800 font-medium break-words">{journal.publisher || "Not specified"}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-blue-100/50 shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="p-2 bg-blue-100 rounded-lg">
+                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-blue-700 text-sm block">Year</span>
+                            <p className="text-gray-800 font-medium">{journal.year || "N/A"}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                  
+                    </div>
                   </div>
                 </div>
 
                 {/* ================= Footer ================= */}
-                <div className="bg-gradient-to-r from-blue-100 to-white p-4 border-t-2 border-blue-200">
-                  <div className="flex flex-col gap-3">
-                    <a
-                      href={journal.articleUrl || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-teal-500 hover:bg-teal-600 text-white rounded-xl font-semibold py-2 px-4 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                      View Article
-                    </a>
-                    <div className="flex gap-2">
+                <div className="bg-gradient-to-r from-blue-50 via-white to-blue-50 p-5 border-t-2 border-blue-200 relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-100/30 to-transparent"></div>
+                  <div className="relative z-10 space-y-4">
+                    {journal.articleUrl && (
+                      <a
+                        href={journal.articleUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-semibold py-3 px-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
+                      >
+                        <div className="p-1.5 bg-white/20 rounded-lg group-hover:bg-white/30 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                          </svg>
+                        </div>
+                        <span>View Full Article</span>
+                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                      </a>
+                    )}
+
+                    <div className="grid grid-cols-2 gap-3">
                       <button
+                        type="button"
                         onClick={() => handleEdit(journal)}
-                        className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-teal-600 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-semibold py-3 px-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Edit
+                        <div className="p-1.5 bg-white/20 rounded-lg group-hover:bg-white/30 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                          </svg>
+                        </div>
+                        <span>Edit</span>
                       </button>
+
                       <button
+                        type="button"
                         onClick={() => handleDelete(journal._id)}
-                        className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-red-600 hover:to-red-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
+                        className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl font-semibold py-3 px-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Delete
+                        <div className="p-1.5 bg-white/20 rounded-lg group-hover:bg-white/30 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                          </svg>
+                        </div>
+                        <span>Delete</span>
                       </button>
                     </div>
                   </div>
