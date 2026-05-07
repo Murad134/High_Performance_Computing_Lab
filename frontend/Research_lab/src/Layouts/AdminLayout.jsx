@@ -33,7 +33,7 @@ export default function AdminLayout() {
         {
             title: "About",
             icon: GraduationCap,
-            color: "from-indigo-500 to-purple-600",
+            color: "from-blue-500 to-indigo-600",
             children: [
                 { label: "About Lab", path: "/admin/about/lab" },
                 { label: "About Professor", path: "/admin/about/professor" },
@@ -43,7 +43,7 @@ export default function AdminLayout() {
         {
             title: "Research",
             icon: Users,
-            color: "from-purple-500 to-pink-600",
+            color: "from-blue-500 to-indigo-600",
             children: [
                 { label: "Departments", path: "/admin/research/departments" },
                 { label: "Teams", path: "/admin/research/teams" },
@@ -52,7 +52,7 @@ export default function AdminLayout() {
         {
             title: "Publication",
             icon: BookOpen,
-            color: "from-pink-500 to-red-600",
+            color: "from-blue-500 to-indigo-600",
             children: [
                 { label: "Journal", path: "/admin/publication/journal" },
                 { label: "Conferences", path: "/admin/publication/conferences" },
@@ -63,26 +63,26 @@ export default function AdminLayout() {
             title: "Members",
             path: "/admin/members",
             icon: Users,
-            color: "from-green-500 to-teal-600"
+            color: "from-blue-500 to-indigo-600"
         },
         {
             title: "Contacts",
             path: "/admin/contacts",
             icon: Settings,
-            color: "from-teal-500 to-cyan-600"
+            color: "from-blue-500 to-indigo-600"
         },
         {
             title: "Footer",
             path: "/admin/footer",
             icon: Settings,
-            color: "from-cyan-500 to-blue-600"
+            color: "from-blue-500 to-indigo-600"
         },
         ...(role === 'superadmin' ? [
             {
                 title: 'Make Admin',
                 path: '/admin/make-admin',
                 icon: GraduationCap,
-                color: "from-yellow-500 to-orange-600"
+                color: "from-blue-500 to-indigo-600"
             }
         ] : [])
 

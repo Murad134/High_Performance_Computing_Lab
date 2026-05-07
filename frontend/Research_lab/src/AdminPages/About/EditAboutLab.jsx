@@ -51,121 +51,147 @@ const AdminAboutLab = () => {
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+          <p className="text-blue-600 font-semibold">Loading...</p>
+        </div>
       </div>
     );
 
   return (
-    <div className="min-h-screen  py-12 px-2">
-      <div className=" mx-auto  rounded-3xl py-3 px-2 border border-gray-100">
+    <div className="min-h-screen py-8 px-4">
+      <div className="mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-blue-800 mb-2">
+            🧪 About Lab Management
+          </h1>
+          <p className="text-gray-600">Update laboratory information and details</p>
+        </div>
 
-        {/* Gradient Heading */}
-        <h2 className="text-4xl font-extrabold text-center bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">
-          Update About Lab Information
-        </h2>
-        <div className="border-t border-gray-200 mb-8"></div>
+        <div className="bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 rounded-3xl shadow-xl p-8">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-2xl">🧪</span>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-blue-800">
+                Update About Lab Information
+              </h2>
+              <p className="text-gray-600">Manage your laboratory's core information</p>
+            </div>
+          </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
           {/* Lab Name */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Lab Name
+          <div className="bg-white rounded-2xl border border-blue-100 p-6 shadow-lg">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              🏷️ Lab Name
             </label>
             <input
               {...register("labName")}
               type="text"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition shadow-sm"
+              className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm"
               placeholder="Enter Lab Name"
             />
           </div>
 
           {/* Department & University Split */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Department Name
-              </label>
-              <input
-                {...register("department")}
-                type="text"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition shadow-sm"
-                placeholder="Enter Department Name"
-              />
-            </div>
+          <div className="bg-white rounded-2xl border border-blue-100 p-6 shadow-lg">
+            <h3 className="text-lg font-semibold text-blue-800 mb-4">🏛️ Institution Details</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Department Name
+                </label>
+                <input
+                  {...register("department")}
+                  type="text"
+                  className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm"
+                  placeholder="Enter Department Name"
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                University Name
-              </label>
-              <input
-                {...register("university")}
-                type="text"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition shadow-sm"
-                placeholder="Enter University Name"
-              />
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  University Name
+                </label>
+                <input
+                  {...register("university")}
+                  type="text"
+                  className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm"
+                  placeholder="Enter University Name"
+                />
+              </div>
             </div>
           </div>
 
           {/* Lab Introduction */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Lab Introduction
+          <div className="bg-white rounded-2xl border border-blue-100 p-6 shadow-lg">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              📖 Lab Introduction
             </label>
             <textarea
               {...register("labIntroduction")}
-              rows="4"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none shadow-sm"
+              rows="5"
+              className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-vertical shadow-sm"
               placeholder="Write Lab Introduction"
-            ></textarea>
+            />
           </div>
 
           {/* Mission & Vision */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Mission
-              </label>
-              <textarea
-                {...register("mission")}
-                rows="4"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none shadow-sm"
-                placeholder="Write Mission"
-              ></textarea>
-            </div>
+          <div className="bg-white rounded-2xl border border-blue-100 p-6 shadow-lg">
+            <h3 className="text-lg font-semibold text-blue-800 mb-4">🎯 Mission & Vision</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Mission Statement
+                </label>
+                <textarea
+                  {...register("mission")}
+                  rows="5"
+                  className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-vertical shadow-sm"
+                  placeholder="Write Mission Statement"
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Vision
-              </label>
-              <textarea
-                {...register("vision")}
-                rows="4"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none shadow-sm"
-                placeholder="Write Vision"
-              ></textarea>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Vision Statement
+                </label>
+                <textarea
+                  {...register("vision")}
+                  rows="5"
+                  className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-vertical shadow-sm"
+                  placeholder="Write Vision Statement"
+                />
+              </div>
             </div>
           </div>
-          <div className="flex justify-end mt-4">
+          {/* Submit Button */}
+          <div className="flex justify-end pt-6 border-t-2 border-blue-200">
             <button
               type="submit"
               disabled={saveMutation.isPending}
-              className="px-6 py-2 text-sm font-medium text-white 
-    bg-indigo-600 rounded-lg 
-    hover:bg-indigo-700 
-    disabled:opacity-50"
+              className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              {saveMutation.isPending
-                ? "Saving..."
-                : aboutLab?._id
-                  ? "Update"
-                  : "Save"}
+              {saveMutation.isPending ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Saving...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  💾 {aboutLab?._id ? "Update" : "Save"}
+                </span>
+              )}
             </button>
           </div>
 
 
         </form>
+        </div>
       </div>
     </div>
   );

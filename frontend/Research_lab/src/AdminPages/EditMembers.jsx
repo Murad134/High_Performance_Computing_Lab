@@ -1,474 +1,3 @@
-
-// import React, { useState, useRef } from "react";
-// import { useForm } from "react-hook-form";
-// import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-// import Swal from "sweetalert2";
-// import useAxiosSecure from "../hooks/useAxiosSecure";
-
-// /* ================= Reusable Input ================= */
-// const Input = ({ label, registerProps, type = "text" }) => (
-//   <div className="flex flex-col gap-1">
-//     <label className="text-sm font-semibold text-gray-700">{label}</label>
-//     <input
-//       type={type}
-//       {...registerProps}
-//       className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-//     />
-//   </div>
-// );
-// const AdminStudentProjectPage = () => {
-//   const axiosSecure = useAxiosSecure();
-//   const queryClient = useQueryClient();
-//   const formRef = useRef(null);
-
-//   const { register, handleSubmit, reset, watch, setValue } = useForm({
-//     shouldUnregister: false,
-//     defaultValues: {
-//       type: "project",
-//       studentLevel: "BSc",
-//     },
-//   });
-
-//   const type = watch("type");
-//   const [editingId, setEditingId] = useState(null);
-//   const [searchRoll, setSearchRoll] = useState("");
-
-//   /* ================= GET DATA ================= */
-//   const { data: projects = [], isLoading } = useQuery({
-//     queryKey: ["studentProjects"],
-//     queryFn: async () => {
-//       const res = await axiosSecure.get("/studentProject");
-//       return res.data;
-//     },
-//   });
-
-//   /* ================= CREATE / UPDATE ================= */
-//   const createMutation = useMutation({
-//     mutationFn: async (payload) => {
-//       if (editingId) {
-//         const res = await axiosSecure.put(
-//           `/studentProject/update/${editingId}`,
-//           payload
-//         );
-//         return res.data;
-//       } else {
-//         const res = await axiosSecure.post("/studentProject/add", payload);
-//         return res.data;
-//       }
-//     },
-//     onSuccess: () => {
-//       Swal.fire(
-//         "Success",
-//         editingId ? "Updated Successfully" : "Created Successfully",
-//         "success"
-//       );
-//       queryClient.invalidateQueries({ queryKey: ["studentProjects"] });
-//       resetForm();
-//     },
-//     onError: () => {
-//       Swal.fire("Error", "Something went wrong", "error");
-//     },
-//   });
-
-//   /* ================= SUBMIT ================= */
-
-//   const onSubmit = (formData) => {
-//     const payload = {
-//       type: formData.type,
-//       stdntstatus: "ongoing",
-//       student: {
-//         studentName: formData.studentName,
-//         studentLevel: formData.studentLevel,
-//         session: formData.session,
-//         roll: formData.roll,
-//         studentImage: studentImageUrl,
-//         department: formData.department,
-//       },
-//       ...(formData.type === "project"
-//         ? {
-//           project: {
-//             projectTitle: formData.projectTitle,
-//             projectImage: formData.projectImage?.[0],
-//             technologies: formData.technologies
-//               ? formData.technologies.split(",").map(t => t.trim())
-//               : [],
-//             projectStartDate: formData.projectStartDate,
-//             projectDetails: formData.projectDetails,
-//             projectstatus: "ongoing",
-//           },
-//         }
-//         : {
-//           thesis: {
-//             thesisTitle: formData.thesisTitle,
-//             keywords: formData.keywords
-//               ? formData.keywords.split(",").map(k => k.trim())
-//               : [],
-//             publicationDate: formData.publicationDate,
-//             publication: formData.publication,
-//             thesisStartDate: formData.thesisStartDate,
-//             abstract: formData.abstract,
-//             thesisstatus: "ongoing",
-//           },
-//         }),
-//     };
-
-//     createMutation.mutate(payload);
-//   };
-
-//   const handleEdit = (item) => {
-//     setEditingId(item._id);
-//     // common fields
-//     setValue("type", item.type);
-//     setValue("studentName", item.student?.studentName);
-//     setValue("studentLevel", item.student?.studentLevel);
-//     setValue("session", item.student?.session);
-//     setValue("roll", item.student?.roll);
-//     setValue("studentImage", item.student?.studentImage?.[0]);
-//     setValue("department", item.student?.department);
-
-//     if (item.type === "project") {
-//       setValue("projectTitle", item.project?.projectTitle);
-//       setValue("projectImage", item.project?.projectImage?.[0]);
-//       setValue(
-//         "technologies",
-//         item.project?.technologies?.join(", ")
-//       );
-//       setValue("projectStartDate", item.project?.projectStartDate);
-//       setValue("projectDetails", item.project?.projectDetails);
-//     }
-
-//     if (item.type === "thesis") {
-//       setValue("thesisTitle", item.thesis?.thesisTitle);
-//       setValue(
-//         "keywords",
-//         item.thesis?.keywords?.join(", ")
-//       );
-//       setValue("publicationDate", item.thesis?.publicationDate);
-//       setValue("publication", item.thesis?.publication);
-//       setValue("thesisStartDate", item.thesis?.thesisStartDate);
-//       setValue("abstract", item.thesis?.abstract);
-//     }
-//     setTimeout(() => {
-//       formRef.current.scrollIntoView({
-//         behavior: "smooth",
-//       });
-//     }, 100);
-//   };
-//   const handleCancel = () => {
-//     resetForm();
-//   };
-//   const resetForm = () => {
-//     reset({
-//       // ✅ keep these
-//       type: "project",
-//       studentLevel: "BSc",
-
-//       // ❌ clear student fields
-//       studentName: "",
-//       session: "",
-//       roll: "",
-//       studentImage: "",
-//       department: "",
-
-//       // ❌ clear project fields
-//       projectTitle: "",
-//       projectImage: "",
-//       technologies: "",
-//       projectStartDate: "",
-//       projectDetails: "",
-
-//       // ❌ clear thesis fields
-//       thesisTitle: "",
-//       keywords: "",
-//       publicationDate: "",
-//       publication: "",
-//       thesisStartDate: "",
-//       abstract: "",
-//     });
-
-//     setEditingId(null);
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-//   };
-
-//   return (
-//     <div className="max-w-6xl mx-auto p-6 space-y-10">
-//       <h2 className="text-3xl font-bold text-center text-indigo-700">
-//         {editingId ? "Edit Student Record" : "Add Student Project / Thesis"}
-//       </h2>
-
-//       <div ref={formRef}>
-//         <form
-//           onSubmit={handleSubmit(onSubmit)}
-//           className="bg-white rounded-3xl p-8 space-y-8"
-//         >
-//           {/* ================= STUDENT HEADER ================= */}
-//           <h3 className="text-2xl font-bold text-blue-600 border-b pb-2">
-//             Student Information
-//           </h3>
-
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//             <Input label="Student Name" registerProps={register("studentName")} />
-//             <Input label="Session" registerProps={register("session")} />
-//             <Input label="Roll" registerProps={register("roll")} />
-//             <div className="flex flex-col gap-1">
-//               <label className="text-sm font-semibold text-gray-700">
-//                 Student Image
-//               </label>
-
-//               <input
-//                 type="file"
-//                 accept="image/png, image/jpeg, image/jpg"
-//                 {...register("studentImage")}
-//                 className="border border-gray-300 rounded-lg px-3 py-2"
-//               />
-//             </div>
-//             <Input label="Department" registerProps={register("department")} />
-//             <div className="flex flex-col gap-1">
-//               <label className="text-sm font-semibold text-gray-700">
-//                 Student Level
-//               </label>
-//               <select
-//                 {...register("studentLevel")}
-//                 className="border rounded-lg px-3 py-2"
-//               >
-//                 <option>BSc</option>
-//                 <option>MSc</option>
-//                 <option>PhD</option>
-//               </select>
-//             </div>
-//           </div>
-
-//           {/* ================= TYPE HEADER ================= */}
-//           <h3 className="text-2xl font-bold text-indigo-600 border-b pb-2">
-//             Select Record Type
-//           </h3>
-
-//           <select
-//             {...register("type")}
-//             className="border rounded-lg p-3 w-full"
-//           >
-//             <option value="project">Project</option>
-//             <option value="thesis">Thesis</option>
-//           </select>
-
-//           {/* ================= PROJECT HEADER ================= */}
-//           {type === "project" && (
-//             <>
-//               <h3 className="text-2xl font-bold text-green-600 border-b pb-2">
-//                 Project Information
-//               </h3>
-
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                 <Input
-//                   label="Project Title"
-//                   registerProps={register("projectTitle")}
-//                 />
-//                 <div className="flex flex-col gap-1">
-//                   <label className="text-sm font-semibold text-gray-700">
-//                     Project Image
-//                   </label>
-
-//                   <input
-//                     type="file"
-//                     accept="image/png, image/jpeg, image/jpg"
-//                     {...register("projectImage")}
-//                     className="border border-gray-300 rounded-lg px-3 py-2"
-//                   />
-//                 </div>
-//                 <Input
-//                   label="Technologies (comma separated)"
-//                   registerProps={register("technologies")}
-//                 />
-//                 <Input
-//                   type="date"
-//                   label="Project Start Date"
-//                   registerProps={register("projectStartDate")}
-//                 />
-
-//                 <div className="md:col-span-2 flex flex-col gap-1">
-//                   <label className="text-sm font-semibold text-gray-700">
-//                     Project Details
-//                   </label>
-//                   <textarea
-//                     {...register("projectDetails")}
-//                     className="border rounded-lg p-3"
-//                   />
-//                 </div>
-//               </div>
-//             </>
-//           )}
-
-//           {/* ================= THESIS HEADER ================= */}
-//           {type === "thesis" && (
-//             <>
-//               <h3 className="text-2xl font-bold text-purple-600 border-b pb-2">
-//                 Thesis Information
-//               </h3>
-
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                 <Input
-//                   label="Thesis Title"
-//                   registerProps={register("thesisTitle")}
-//                 />
-//                 <Input
-//                   label="Keywords (comma separated)"
-//                   registerProps={register("keywords")}
-//                 />
-//                 <Input
-//                   type="date"
-//                   label="Publication Date"
-//                   registerProps={register("publicationDate")}
-//                 />
-//                 <Input
-//                   label="Publication"
-//                   registerProps={register("publication")}
-//                 />
-//                 <Input
-//                   type="date"
-//                   label="Thesis Start Date"
-//                   registerProps={register("thesisStartDate")}
-//                 />
-
-//                 <div className="md:col-span-2 flex flex-col gap-1">
-//                   <label className="text-sm font-semibold text-gray-700">
-//                     Abstract
-//                   </label>
-//                   <textarea
-//                     {...register("abstract")}
-//                     className="border rounded-lg p-3"
-//                   />
-//                 </div>
-//               </div>
-//             </>
-//           )}
-
-//           {/* ================= BUTTON SECTION ================= */}
-//           <div className="flex justify-end gap-4 pt-4">
-//             {editingId && (
-//               <button
-//                 type="button"
-//                 onClick={handleCancel}
-//                 className="px-6 py-3 bg-gray-400 text-white rounded-xl font-semibold hover:bg-gray-600 transition"
-//               >
-//                 Cancel
-//               </button>
-//             )}
-//             <button
-//               type="submit"
-//               className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-900 transition"
-//             >
-//               {editingId ? "Update" : "Submit"}
-//             </button>
-//           </div>
-//         </form>
-
-//       </div>
-
-
-
-//       {/* ================= DISPLAY SECTION ================= */}
-//       <div className="mt-14 space-y-8 border-t-2 border-red-500 pt-10">
-
-//         <h2 className="text-3xl font-bold text-center text-indigo-700 pb-4">
-//           All Student Records
-//         </h2>
-
-//         {/* Search Bar */}
-//         <div className="flex justify-center">
-//           <input
-//             type="text"
-//             placeholder="Search by Roll Number..."
-//             value={searchRoll}
-//             onChange={(e) => setSearchRoll(e.target.value)}
-//             className="w-full max-w-md border border-gray-300 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-//           />
-//         </div>
-
-//         {isLoading && (
-//           <p className="text-center text-gray-500 italic">
-//             Loading records...
-//           </p>
-//         )}
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-//           {projects
-//             .filter((item) =>
-//               searchRoll
-//                 ? item.student?.roll?.toString().includes(searchRoll)
-//                 : true
-//             )
-//             .map((item) => (
-//               <div
-//                 key={item._id}
-//                 className="bg-white border rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col justify-between"
-//               >
-
-//                 {/* CARD HEADER */}
-//                 <div className="space-y-2">
-//                   <h3 className="text-xl font-bold text-gray-800">
-//                     Name : {item.student?.studentName || "N/A"}
-//                   </h3>
-
-//                   <p className="text-gray-600 font-medium">
-//                     Title : {item.type === "project"
-//                       ? item.project?.projectTitle
-//                       : item.thesis?.thesisTitle}
-//                   </p>
-//                 </div>
-
-//                 {/* CARD BODY */}
-//                 <div className="mt-2 space-y-2 text-sm">
-//                   <p>
-//                     <span className="font-semibold text-indigo-600">Roll:</span>{" "}
-//                     {item.student?.roll}
-//                   </p>
-//                   <p>
-//                     <span className="font-semibold text-indigo-600">Department:</span>{" "}
-//                     {item.student?.department}
-//                   </p>
-//                   <p>
-//                     <span className="font-semibold text-indigo-600">Session:</span>{" "}
-//                     {item.student?.session}
-//                   </p>
-//                   <p>
-//                     <span className="font-semibold text-indigo-600">Program:</span>{" "}
-//                     {item.student?.studentLevel}
-//                   </p>
-//                 </div>
-
-//                 {/* CARD FOOTER */}
-//                 <div className="mt-4 flex justify-between items-center">
-
-//                   <button
-//                     onClick={() => handleEdit(item)}
-//                     className="px-4 py-2 bg-yellow-500 text-white rounded-xl font-semibold hover:bg-yellow-600 transition"
-//                   >
-//                     Edit
-//                   </button>
-
-//                   <span
-//                     className={`px-3 py-1 rounded-full text-xs font-semibold ${item.type === "project"
-//                       ? "bg-blue-100 text-blue-700"
-//                       : "bg-green-100 text-green-700"
-//                       }`}
-//                   >
-//                     {item.type?.toUpperCase()}
-//                   </span>
-
-//                 </div>
-//               </div>
-//             ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminStudentProjectPage;
-
-
-
-
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -689,103 +218,178 @@ const AdminStudentProjectPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-10">
-      <h2 className="text-3xl font-bold text-center text-indigo-700">
+    <div className="max-w-7xl mx-auto p-6 space-y-10">
+      {/* <h2 className="text-3xl font-bold text-center text-blue-700 flex items-center justify-center gap-3">
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+        </svg>
         {editingId ? "Edit Student Record" : "Add Student Project / Thesis"}
-      </h2>
+      </h2> */}
 
-      <div ref={formRef}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-white rounded-3xl p-8 space-y-8"
-        >
+      <div ref={formRef} className="bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 shadow-xl rounded-3xl p-8">
+          {/* Header with Icon */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 shadow-lg">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-blue-800 mb-2">
+              {editingId ? "Edit Student Record" : "Add Student Project / Thesis"}
+            </h2>
+            <p className="text-blue-600 font-medium">Manage student projects and thesis records</p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* ================= STUDENT INFO ================= */}
-          <h3 className="text-2xl font-bold text-blue-600 border-b pb-2">
-            Student Information
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Input label="Student Name" registerProps={register("studentName")} />
-            <Input label="Session" registerProps={register("session")} />
-            <Input label="Roll" registerProps={register("roll")} />
-
-            {/* ✅ Student Image */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-semibold text-gray-700">
-                Student Image
-              </label>
-              <input
-                type="file"
-                accept="image/png, image/jpeg, image/jpg"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setStudentImageFile(file);
-                  setStudentImagePreview(URL.createObjectURL(file));
-                }}
-                className="border border-gray-300 rounded-lg px-3 py-2"
-              />
-              {studentImagePreview && (
-                <img
-                  src={studentImagePreview}
-                  alt="Student Preview"
-                  className="mt-2 h-20 w-20 rounded-full object-cover border"
-                />
-              )}
+          <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-blue-800">Student Information</h3>
             </div>
 
-            <Input label="Department" registerProps={register("department")} />
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-semibold text-gray-700">
-                Student Level
-              </label>
-              <div className="relative">
-                <select
-                  {...register("studentLevel")}
-                  className="w-full appearance-none rounded-xl border border-slate-300 bg-gradient-to-r from-slate-50 to-white px-3 py-2.5 pr-10 font-medium text-slate-700 shadow-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
-                >
-                  <option value="BSc">BSc</option>
-                  <option value="MSc">MSc</option>
-                  <option value="PhD">PhD</option>
-                </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">
-                  v
-                </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Student Name</label>
+                <input
+                  type="text"
+                  {...register("studentName")}
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter student name"
+                />
               </div>
-              <p className="text-xs text-slate-500">Used to group the member under BSc, MSc, or PhD views.</p>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Session</label>
+                <input
+                  type="text"
+                  {...register("session")}
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter session"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Roll</label>
+                <input
+                  type="text"
+                  {...register("roll")}
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter roll number"
+                />
+              </div>
+
+              {/* ✅ Student Image */}
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Student Image</label>
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    setStudentImageFile(file);
+                    setStudentImagePreview(URL.createObjectURL(file));
+                  }}
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+                {studentImagePreview && (
+                  <img
+                    src={studentImagePreview}
+                    alt="Student Preview"
+                    className="mt-2 h-20 w-20 rounded-full object-cover border-2 border-blue-200 shadow-md"
+                  />
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Department</label>
+                <input
+                  type="text"
+                  {...register("department")}
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter department"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Student Level</label>
+                <div className="relative">
+                  <select
+                    {...register("studentLevel")}
+                    className="w-full appearance-none rounded-xl border-2 border-blue-200 bg-white px-4 py-3 pr-10 font-medium text-gray-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  >
+                    <option value="BSc">BSc</option>
+                    <option value="MSc">MSc</option>
+                    <option value="PhD">PhD</option>
+                  </select>
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-blue-500">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </div>
+                <p className="text-xs text-blue-600">Used to group the member under BSc, MSc, or PhD views.</p>
+              </div>
             </div>
           </div>
 
           {/* ================= TYPE ================= */}
-          <h3 className="text-2xl font-bold text-indigo-600 border-b pb-2">
-            Select Record Type
-          </h3>
-          <div className="relative">
-            <select
-              {...register("type")}
-              className="w-full appearance-none rounded-xl border border-slate-300 bg-gradient-to-r from-slate-50 to-white p-3 pr-10 font-medium text-slate-700 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-            >
-              <option value="project">Project</option>
-              <option value="thesis">Thesis</option>
-            </select>
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">
-              v
-            </span>
+          <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-blue-800">Select Record Type</h3>
+            </div>
+
+            <div className="relative">
+              <select
+                {...register("type")}
+                className="w-full appearance-none rounded-xl border-2 border-blue-200 bg-white px-4 py-3 pr-10 font-medium text-gray-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              >
+                <option value="project">Project</option>
+                <option value="thesis">Thesis</option>
+              </select>
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-blue-500">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </div>
           </div>
 
           {/* ================= PROJECT INFO ================= */}
           {type === "project" && (
-            <>
-              <h3 className="text-2xl font-bold text-green-600 border-b pb-2">
-                Project Information
-              </h3>
+            <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-blue-800">Project Information</h3>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input label="Project Title" registerProps={register("projectTitle")} />
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Project Title</label>
+                  <input
+                    type="text"
+                    {...register("projectTitle")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                    placeholder="Enter project title"
+                  />
+                </div>
 
                 {/* ✅ Project Image */}
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm font-semibold text-gray-700">
-                    Project Image
-                  </label>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Project Image</label>
                   <input
                     type="file"
                     accept="image/png, image/jpeg, image/jpg"
@@ -794,85 +398,150 @@ const AdminStudentProjectPage = () => {
                       setProjectImageFile(file);
                       setProjectImagePreview(URL.createObjectURL(file));
                     }}
-                    className="border border-gray-300 rounded-lg px-3 py-2"
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   {projectImagePreview && (
                     <img
                       src={projectImagePreview}
                       alt="Project Preview"
-                      className="mt-2 h-20 w-32 rounded-lg object-cover border"
+                      className="mt-2 h-20 w-32 rounded-lg object-cover border-2 border-blue-200 shadow-md"
                     />
                   )}
                 </div>
 
-                <Input
-                  label="Technologies (comma separated)"
-                  registerProps={register("technologies")}
-                />
-                <Input
-                  type="date"
-                  label="Project Start Date"
-                  registerProps={register("projectStartDate")}
-                />
-                <div className="md:col-span-2 flex flex-col gap-1">
-                  <label className="text-sm font-semibold text-gray-700">
-                    Project Details
-                  </label>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Technologies (comma separated)</label>
+                  <input
+                    type="text"
+                    {...register("technologies")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                    placeholder="React, Node.js, MongoDB"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Project Start Date</label>
+                  <input
+                    type="date"
+                    {...register("projectStartDate")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  />
+                </div>
+
+                <div className="md:col-span-2 flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Project Details</label>
                   <textarea
                     {...register("projectDetails")}
-                    className="border rounded-lg p-3"
+                    rows="4"
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 resize-vertical"
+                    placeholder="Enter project details..."
                   />
                 </div>
               </div>
-            </>
+            </div>
           )}
 
           {/* ================= THESIS INFO ================= */}
           {type === "thesis" && (
-            <>
-              <h3 className="text-2xl font-bold text-purple-600 border-b pb-2">
-                Thesis Information
-              </h3>
+            <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-blue-800">Thesis Information</h3>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input label="Thesis Title" registerProps={register("thesisTitle")} />
-                <Input label="Keywords (comma separated)" registerProps={register("keywords")} />
-                <Input type="date" label="Publication Date" registerProps={register("publicationDate")} />
-                <Input label="Publication" registerProps={register("publication")} />
-                <Input type="date" label="Thesis Start Date" registerProps={register("thesisStartDate")} />
-                <div className="md:col-span-2 flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Thesis Title</label>
+                  <input
+                    type="text"
+                    {...register("thesisTitle")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                    placeholder="Enter thesis title"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Keywords (comma separated)</label>
+                  <input
+                    type="text"
+                    {...register("keywords")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                    placeholder="Machine Learning, AI, Data Science"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Publication Date</label>
+                  <input
+                    type="date"
+                    {...register("publicationDate")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Publication</label>
+                  <input
+                    type="text"
+                    {...register("publication")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                    placeholder="Journal/Conference name"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Thesis Start Date</label>
+                  <input
+                    type="date"
+                    {...register("thesisStartDate")}
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  />
+                </div>
+
+                <div className="md:col-span-2 flex flex-col gap-2">
                   <label className="text-sm font-semibold text-gray-700">Abstract</label>
                   <textarea
                     {...register("abstract")}
-                    className="border rounded-lg p-3"
+                    rows="4"
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 resize-vertical"
+                    placeholder="Enter thesis abstract..."
                   />
                 </div>
               </div>
-            </>
+            </div>
           )}
 
           {/* ================= BUTTONS ================= */}
-          <div className="flex justify-end gap-4 pt-4">
+          <div className="flex justify-center gap-4 pt-6">
             {editingId && (
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-6 py-3 bg-gray-400 text-white rounded-xl font-semibold hover:bg-gray-600 transition"
+                className="px-8 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105 flex items-center gap-2"
               >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
                 Cancel
               </button>
             )}
             <button
               type="submit"
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-900 transition"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 disabled:hover:scale-100 flex items-center gap-2"
             >
-              {editingId ? "Update" : "Submit"}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              {editingId ? "Update Record" : "Add Record"}
             </button>
           </div>
         </form>
       </div>
-
-      {/* ================= DISPLAY SECTION ================= */}
-      <div className="mt-14 space-y-8 border-t-2 border-red-500 pt-10">
+      <div className="mt-14 space-y-8 border-t-2 border-teal-500 pt-10">
         <h2 className="text-3xl font-bold text-center text-indigo-700 pb-4">
           All Student Records
         </h2>
@@ -904,7 +573,7 @@ const AdminStudentProjectPage = () => {
                 className="bg-gradient-to-br from-teal-50 to-white border-2 border-teal-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden min-h-[450px] flex flex-col"
               >
                 {/* Header Section */}
-                <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-4 border-b-2 border-teal-300">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 border-b-2 border-teal-300">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-white/20 rounded-lg">
@@ -963,7 +632,7 @@ const AdminStudentProjectPage = () => {
                 <div className="bg-gradient-to-r from-teal-100 to-white p-4 border-t-2 border-teal-200">
                   <button
                     onClick={() => handleEdit(item)}
-                    className="w-full px-4 py-2 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl font-semibold hover:from-teal-700 hover:to-teal-800 transition-all duration-200 transform hover:scale-105 shadow-md"
+                    className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md"
                   >
                     Edit Record
                   </button>

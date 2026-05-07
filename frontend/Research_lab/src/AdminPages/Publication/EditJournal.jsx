@@ -111,294 +111,402 @@ const AdminArticleFormSections = () => {
   if (isLoading) return <p>Loading journals...</p>;
 
   return (
-    <div className="mx-auto px-10 py-6 rounded-lg mt-8">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Add Journal Article</h2>
+    <div className="max-w-7xl mx-auto p-6 space-y-10">
+      {/* <h2 className="text-3xl font-bold text-center text-blue-700 flex items-center justify-center gap-3">
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+        {editingId ? "Edit Journal Article" : "Add Journal Article"}
+      </h2> */}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <div className="bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 shadow-xl rounded-3xl p-8">
+        {/* Header with Icon */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 shadow-lg">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h2 className="text-3xl font-bold text-blue-800 mb-2">
+            {editingId ? "Edit Journal Article" : "Add Journal Article"}
+          </h2>
+          <p className="text-blue-600 font-medium">Manage journal publication records</p>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
         {/* ====================== 1. Basic Info ====================== */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Basic Info</h3>
-          <div className="space-y-4">
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-blue-800">Basic Information</h3>
+          </div>
+          <div className="space-y-6">
 
             {/* Title */}
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Title *</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Title *</label>
               <input
                 {...register("title")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="Enter article title"
                 required
               />
             </div>
 
             {/* Authors */}
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Authors</label>
-              <div className="space-y-2">
+            <div className="space-y-4">
+              <label className="text-sm font-semibold text-gray-700">Authors</label>
+              <div className="space-y-3">
                 {authorFields.map((author, index) => (
-                  <div key={author.id} className="grid grid-cols-12 gap-2 items-center">
-                    <div className="col-span-4">
-                      <input
-                        {...register(`authors.${index}.name`)}
-                        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      />
-                    </div>
-                    <div className="col-span-5">
-                      <input
-                        {...register(`authors.${index}.affiliation`)}
-                        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <input
-                        type="number"
-                        {...register(`authors.${index}.authorOrder`)}
-                        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      {authorFields.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeAuthor(index)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          Remove
-                        </button>
-                      )}
+                  <div key={author.id} className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                    <div className="grid grid-cols-12 gap-3 items-end">
+                      <div className="col-span-4">
+                        <label className="block text-xs font-medium text-gray-600 mb-1">Author Name</label>
+                        <input
+                          {...register(`authors.${index}.name`)}
+                          className="w-full border-2 border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-all duration-200 text-sm"
+                          placeholder="Author name"
+                        />
+                      </div>
+                      <div className="col-span-5">
+                        <label className="block text-xs font-medium text-gray-600 mb-1">Affiliation</label>
+                        <input
+                          {...register(`authors.${index}.affiliation`)}
+                          className="w-full border-2 border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-all duration-200 text-sm"
+                          placeholder="Institution/Organization"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <label className="block text-xs font-medium text-gray-600 mb-1">Order</label>
+                        <input
+                          type="number"
+                          {...register(`authors.${index}.authorOrder`)}
+                          className="w-full border-2 border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-all duration-200 text-sm"
+                          placeholder="1"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        {authorFields.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeAuthor(index)}
+                            className="w-full bg-red-500 hover:bg-red-600 text-white rounded-lg px-2 py-2 transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
+                            title="Remove author"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
                 <button
                   type="button"
                   onClick={() => appendAuthor({ name: "", affiliation: "", authorOrder: authorFields.length + 1 })}
-                  className="mt-2 bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-colors"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
                 >
-                  + Add Author
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Author
                 </button>
               </div>
             </div>
 
             {/* Corresponding Author + Journal Name */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 mb-1 font-medium">Corresponding Author</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Corresponding Author</label>
                 <input
                   {...register("correspondingAuthor")}
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter corresponding author"
                 />
               </div>
-              <div>
-                <label className="block text-gray-700 mb-1 font-medium">Journal Name</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Journal Name</label>
                 <input
                   {...register("journalName")}
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter journal name"
                 />
               </div>
             </div>
 
             {/* Publisher + ISSN */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 mb-1 font-medium">Publisher</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Publisher</label>
                 <input
                   {...register("publisher")}
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter publisher"
                 />
               </div>
-              <div>
-                <label className="block text-gray-700 mb-1 font-medium">ISSN</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">ISSN</label>
                 <input
                   {...register("issn")}
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  placeholder="Enter ISSN"
                 />
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ====================== 2. Publication Details ====================== */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Publication Details</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Volume</label>
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-blue-800">Publication Details</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Volume</label>
               <input
                 {...register("volume")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="Enter volume"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Issue</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Issue</label>
               <input
                 {...register("issue")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="Enter issue"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Pages</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Pages</label>
               <input
                 {...register("pages")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="e.g., 123-145"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Month</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Month</label>
               <input
                 {...register("month")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="e.g., January"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Year</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Year</label>
               <input
                 type="number"
                 {...register("year")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="2024"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Impact Factor</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Impact Factor</label>
               <input
                 type="number"
                 step="any"
                 {...register("impactFactor")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="e.g., 2.5"
               />
             </div>
-            <div className="col-span-2">
-              <label className="block text-gray-700 mb-1 font-medium">DOI</label>
+            <div className="md:col-span-2 flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">DOI</label>
               <input
                 {...register("doi")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="Enter DOI"
               />
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ====================== 3. Links & Files ====================== */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Links & Files</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Article URL</label>
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-blue-800">Links & Files</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Article URL</label>
               <input
                 {...register("articleUrl")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="https://example.com/article"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">PDF URL</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">PDF URL</label>
               <input
                 {...register("pdfUrl")}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                placeholder="https://example.com/article.pdf"
               />
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ====================== 4. Keywords & IndexedIn ====================== */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Keywords & Indexed In</h3>
-          <div className="space-y-4">
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-blue-800">Keywords & Indexed In</h3>
+          </div>
+          <div className="space-y-6">
             {/* Keywords */}
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Keywords</label>
-              <div className="space-y-2">
+            <div className="space-y-4">
+              <label className="text-sm font-semibold text-gray-700">Keywords</label>
+              <div className="space-y-3">
                 {keywordFields.map((field, index) => (
-                  <div key={field.id} className="flex gap-2 items-center">
+                  <div key={field.id} className="flex gap-3 items-center">
                     <input
                       {...register(`keywords.${index}`)}
-                      className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="flex-1 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                      placeholder="Enter keyword"
                     />
                     <button
                       type="button"
                       onClick={() => removeKeyword(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="bg-red-500 hover:bg-red-600 text-white rounded-xl px-3 py-3 transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
+                      title="Remove keyword"
                     >
-                      Remove
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
                     </button>
                   </div>
                 ))}
                 <button
                   type="button"
                   onClick={() => appendKeyword("")}
-                  className="mt-2 bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-colors"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
                 >
-                  + Add Keyword
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Keyword
                 </button>
               </div>
             </div>
 
             {/* IndexedIn */}
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Indexed In</label>
-              <div className="space-y-2">
+            <div className="space-y-4">
+              <label className="text-sm font-semibold text-gray-700">Indexed In</label>
+              <div className="space-y-3">
                 {indexedFields.map((field, index) => (
-                  <div key={field.id} className="flex gap-2 items-center">
+                  <div key={field.id} className="flex gap-3 items-center">
                     <input
                       {...register(`indexedIn.${index}`)}
-                      className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="flex-1 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                      placeholder="Enter indexed database"
                     />
                     <button
                       type="button"
                       onClick={() => removeIndexed(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="bg-red-500 hover:bg-red-600 text-white rounded-xl px-3 py-3 transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
+                      title="Remove indexed database"
                     >
-                      Remove
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
                     </button>
                   </div>
                 ))}
                 <button
                   type="button"
                   onClick={() => appendIndexed("")}
-                  className="mt-2 bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-colors"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
                 >
-                  + Add Indexed In
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Indexed Database
                 </button>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ====================== 5. Abstract ====================== */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Abstract</h3>
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-blue-800">Abstract</h3>
+          </div>
           <div className="space-y-4">
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">Abstract</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-gray-700">Abstract</label>
               <textarea
                 {...register("abstract")}
-                rows={3}
-                className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                rows={4}
+                className="border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 resize-none"
+                placeholder="Enter article abstract"
               ></textarea>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ====================== Submit Button ====================== */}
-        <div className="flex justify-end pt-3">
-          <section>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white font-semibold py-3 px-3 rounded-md hover:bg-blue-700 transition-colors"
-            >
-              {editingId ? "Update Journal" : "Submit Article"}
-            </button>
-          </section>
+        <div className="flex justify-center pt-6">
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-4 px-8 rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-xl flex items-center justify-center gap-3 text-lg"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+            {editingId ? "Update Journal Article" : "Submit Journal Article"}
+          </button>
         </div>
       </form>
-      <div className="border-t border-red-500 mt-10 pt-10">
-        <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4 text-center pb-10">All Journals Records </h3>
+      <div className="border-t-2 border-blue-200 mt-12 pt-12">
+        <h3 className="text-3xl font-bold text-center text-blue-800 mb-8 flex items-center justify-center gap-3">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          All Journal Records
+        </h3>
         {/* ================= Search Section ================= */}
-        <div className="mb-6 flex justify-center">
-          <input
-            type="text"
-            placeholder="Search by title..."
-            className="w-full md:w-1/3 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="mb-8 flex justify-center">
+          <div className="relative w-full md:w-1/2">
+            <input
+              type="text"
+              placeholder="Search by title..."
+              className="w-full border-2 border-blue-200 rounded-full px-6 py-3 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 pl-12"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <svg className="w-5 h-5 text-blue-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {journals.filter((journal) =>
@@ -407,52 +515,86 @@ const AdminArticleFormSections = () => {
             .map((journal) => (
               <div
                 key={journal._id}
-                className="border rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col justify-between"
+                className="bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden min-h-[350px] flex flex-col"
               >
                 {/* ================= Header ================= */}
-                <div className="mb-3">
-                  <h4 className="font-bold text-lg">Title : {journal.title}</h4>
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 border-b-2 border-blue-200">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-white/20 rounded-lg">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-lg truncate">Title: {journal.title}</h4>
+                      <span className="inline-block px-2 py-1 rounded-full text-xs font-semibold mt-1 bg-blue-100 text-blue-700">
+                        Journal Article
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* ================= Body ================= */}
-                <div className="flex-1 text-sm text-gray-600 space-y-1">
-                  <p>
-                    <strong>Journal Name:</strong> {journal.journalName || "-"}
-                  </p>
-                  <p>
-                    <strong>Publisher:</strong> {journal.publisher || "-"}
-                  </p>
+                <div className="p-4 flex-1 text-sm text-gray-600 space-y-2">
+                  <div>
+                    <span className="font-semibold text-blue-600">Journal Name:</span>
+                    <p className="text-gray-700 mt-1">{journal.journalName || "Not specified"}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-blue-600">Publisher:</span>
+                    <p className="text-gray-700 mt-1">{journal.publisher || "Not specified"}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-blue-600">Year:</span>
+                    <p className="text-gray-700 mt-1">{journal.year || "Not specified"}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-blue-600">DOI:</span>
+                    <p className="text-gray-700 mt-1 break-all">{journal.doi || "Not specified"}</p>
+                  </div>
                 </div>
 
                 {/* ================= Footer ================= */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-3 gap-2">
-                  <a
-                    href={journal.articleUrl || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline hover:text-blue-800"
-                  >
-                    Article URL
-                  </a>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEdit(journal)}
-                      className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                <div className="bg-gradient-to-r from-blue-100 to-white p-4 border-t-2 border-blue-200">
+                  <div className="flex flex-col gap-3">
+                    <a
+                      href={journal.articleUrl || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-teal-500 hover:bg-teal-600 text-white rounded-xl font-semibold py-2 px-4 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
                     >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(journal._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      View Article
+                    </a>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(journal)}
+                        className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-teal-600 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(journal._id)}
+                        className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold py-2 px-4 hover:from-red-600 hover:to-red-700 transition-all duration-200 transform hover:scale-105 shadow-md flex items-center justify-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
         </div>
       </div>
+    </div>
     </div>
   );
 };

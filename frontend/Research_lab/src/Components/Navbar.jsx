@@ -622,7 +622,7 @@ function Header() {
             )}
             {/* Main Navbar */}
             <div className="fixed top-0 left-0 w-full z-50">
-                <div className="navbar bg-gradient-to-r bg-teal-600 shadow-md text-white px-4">
+                <div className="navbar bg-teal-600 shadow-md text-white px-4">
                     {/* Left Side - Menu Button & Logo */}
                     <div className="navbar-start">
                         {/* Hamburger Menu Button (Mobile/Tablet only) */}

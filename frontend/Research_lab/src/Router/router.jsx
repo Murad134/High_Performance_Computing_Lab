@@ -42,7 +42,6 @@ import EditTeams from "../AdminPages/Research/EditTeams.jsx";
 import EditNavigation from "../AdminPages/Research/EditNavigation.jsx";
 import EditJournal from "../AdminPages/Publication/EditJournal.jsx";
 import EditConferences from "../AdminPages/Publication/EditConferences.jsx";
-import EditSeminar from "../AdminPages/Publication/EditSeminar.jsx";
 import EditBookChapter from "../AdminPages/Publication/EditBookChapter.jsx";
 import EditAcademicThesis from "../AdminPages/Supervisors/EditAcademicThesis.jsx";
 import EditAcademicProjects from "../AdminPages/Supervisors/EditAcademicProjects.jsx";
@@ -228,10 +227,6 @@ const router = createBrowserRouter([
             {
                 path: "publication/conferences",
                 element: <EditConferences />
-            },
-            {
-                path: "publication/seminar",
-                element: <EditSeminar />
             },
             {
                 path: "publication/book-chapter",

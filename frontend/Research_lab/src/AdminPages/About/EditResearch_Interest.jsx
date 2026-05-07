@@ -140,7 +140,7 @@ const AdminResearchInterest = () => {
                       setEditingId(item._id);
                       setEditingTitle(item.title);
                     }}
-                    className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition"
+                    className="bg-blue-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition"
                   >
                     Edit
                   </button>
