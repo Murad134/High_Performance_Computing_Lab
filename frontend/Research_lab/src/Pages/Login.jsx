@@ -135,7 +135,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4 pt-24">
       <div className="w-full max-w-md">
         <div className="backdrop-blur-2xl bg-white/20 border border-white/30 shadow-2xl rounded-2xl p-8 transition-transform hover:scale-[1.02]">
-          <h2 className="text-4xl font-semibold text-center mb-6">
+          <h2 className="text-4xl font-semibold text-teal-700 text-center mb-6">
             Login to Your Account
           </h2>
 
@@ -201,7 +201,7 @@ export default function Login() {
             )}
 
             {/* Login button */}
-            <button className="btn w-full bg-gradient-to-r from-sky-400 to-blue-500 text-white font-bold border-none shadow-lg hover:from-sky-500 hover:to-blue-600 transition-all">
+            <button className="btn w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold border-none shadow-lg hover:from-sky-500 hover:to-blue-600 transition-all">
               Login
             </button>
 

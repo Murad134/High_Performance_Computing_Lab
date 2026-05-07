@@ -120,7 +120,7 @@ export default function Register() {
         <div className="min-h-screen px-4 py-28">
             <div className="mx-auto max-w-md">
                 <div className="backdrop-blur-2xl bg-white/20 border border-white/30 shadow-2xl rounded-2xl p-8 transition-transform hover:scale-[1.02]">
-                    <h2 className="text-4xl font-bold text-center mb-6">
+                    <h2 className="text-4xl font-bold text-teal-700 text-center mb-6">
                         Register For New Account
                     </h2>
 
@@ -190,14 +190,14 @@ export default function Register() {
                         </div>
 
                         {/* Register button */}
-                        <button className="btn w-full bg-gradient-to-r from-sky-400 to-blue-500 text-white font-bold border-none shadow-lg hover:from-sky-500 hover:to-blue-600 transition-all">
+                        <button className="btn w-full bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold border-none shadow-lg hover:from-teal-600 hover:to-teal-700 transition-all">
                             Register
                         </button>
 
                         {/* Login link */}
                         <p className="text-center mt-3">
                             Already registered? Please{" "}
-                            <Link to="/auth/login" className="text-green-600 font-semibold hover:underline text-[18px]">
+                            <Link to="/auth/login" className="text-teal-600 font-semibold hover:underline text-[18px]">
                                 Login
                             </Link>
                         </p>
