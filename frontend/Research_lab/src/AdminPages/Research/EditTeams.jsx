@@ -146,6 +146,26 @@ const AdminAddUpdateTeamForm = () => {
   return (
     <section className="max-w-7xl mx-auto p-6 space-y-12">
 
+      {/* Custom Animations */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes slideInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+          }
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+          }
+          .animate-slide-in-up {
+            animation: slideInUp 0.6s ease-out forwards;
+          }
+          .animate-pulse-gentle {
+            animation: pulse 2s ease-in-out infinite;
+          }
+        `
+      }} />
+
       {/* ================= FORM SECTION ================= */}
       <div className="bg-white shadow-xl rounded-2xl p-8">
         <h2 className="text-3xl font-bold text-center text-indigo-700 mb-10">
@@ -389,60 +409,214 @@ const AdminAddUpdateTeamForm = () => {
         </form>
       </div>
 
-      {/* ================= TEAM LIST ================= */}
-      <section>
-        <div className="flex justify-between mb-6">
-          <h2 className="text-2xl font-bold text-indigo-700">
-            Research Teams
-          </h2>
-
-          <input
-            type="text"
-            placeholder="Search by Team Name..."
-            value={teamSearch}
-            onChange={(e) => setTeamSearch(e.target.value)}
-            className="border px-4 py-2 rounded-lg w-64"
-          />
+      {/* ================= PREMIUM TEAM CARDS SECTION ================= */}
+      <section className="relative">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-400 to-teal-500 rounded-full blur-2xl"></div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 p-2">
-          {filteredTeams.map((team) => (
-            <div
-              key={team._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition flex flex-col border"
-            >
-              {/* Header */}
-              <div className="py-2 px-4 rounded-lg">
-                <h3 className="text-lg font-bold">Team Name : {team.teamName}</h3>
-                <p className="text-sm opacity-90">
-                  Department Name : {team.departmentName}
-                </p>
-              </div>
-
-              {/* Body */}
-              <div className="py-2 px-4 space-y-2 text-sm text-gray-700 flex-1 border-t border-gray-200">
-                <p><strong>Leader:</strong> {team.leaderName || "N/A"}</p>
-                <p><strong>Email:</strong> {team.leaderEmail || "N/A"}</p>
-                <p><strong>Vision:</strong> {team.visionStatement?.slice(0, 60) || "N/A"}...</p>
-              </div>
-
-              {/* Footer */}
-              <div className="bg-gray-50 py-3 px-4 flex justify-between rounded-b-2xl">
-                <button
-                  onClick={() => handleEdit(team)}
-                  className="text-yellow-600 font-semibold"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(team._id)}
-                  className="text-red-600 font-semibold"
-                >
-                  Delete
-                </button>
-              </div>
+        <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-8">
+          {/* Section Header */}
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                Research Teams
+              </h2>
+              <p className="text-gray-600 font-medium">Manage and organize your research teams</p>
             </div>
-          ))}
+
+            {/* Enhanced Search Bar */}
+            <div className="relative w-80">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg className="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search teams by name..."
+                value={teamSearch}
+                onChange={(e) => setTeamSearch(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 border-2 border-teal-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-teal-100 focus:border-teal-400 transition-all duration-300 text-gray-700 placeholder-gray-400 font-medium"
+              />
+              {teamSearch && (
+                <button
+                  onClick={() => setTeamSearch("")}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-teal-400 hover:text-teal-600 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Premium Cards Grid */}
+          <div className="grid md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+            {filteredTeams.map((team, index) => (
+              <div
+                key={team._id}
+                className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl border border-teal-50 overflow-hidden transition-all duration-500 hover:-translate-y-2 animate-slide-in-up flex flex-col min-h-[450px]"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Background Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-50/30 via-white to-blue-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                {/* Top Accent Bar */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+
+                {/* ===== CARD HEADER ===== */}
+                <div className="relative p-6 border-b border-teal-100/30 bg-gradient-to-r from-teal-50/20 to-blue-50/20">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <div className="text-right">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-teal-100 text-teal-700 border border-teal-200">
+                        Team #{team.teamName?.slice(0, 8) || "N/A"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors duration-300 mb-2 line-clamp-2">
+                    {team.teamName || "Unnamed Team"}
+                  </h3>
+
+                  <div className="flex items-center text-sm text-gray-600">
+                    <svg className="w-4 h-4 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    {team.departmentName || "No Department"}
+                  </div>
+                </div>
+
+                {/* ===== CARD BODY ===== */}
+                <div className="relative flex-1 p-6 space-y-4 bg-white">
+                  {/* Team Leader */}
+                  <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl border border-teal-100/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-700 mb-1">Team Leader</p>
+                      <p className="text-sm text-gray-600 truncate">{team.leaderName || "Not assigned"}</p>
+                      {team.leaderEmail && (
+                        <p className="text-xs text-teal-600 mt-1 truncate">{team.leaderEmail}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Team Stats */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-center">
+                      <div className="text-lg font-bold text-teal-600">{team.members?.length || 0}</div>
+                      <div className="text-xs text-gray-600">Members</div>
+                    </div>
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-center">
+                      <div className="text-lg font-bold text-blue-600">
+                        {team.coreResearchAreas && typeof team.coreResearchAreas === 'string' ? team.coreResearchAreas.split(',').length : 0}
+                      </div>
+                      <div className="text-xs text-gray-600">Research Areas</div>
+                    </div>
+                  </div>
+
+                  {/* Vision Statement */}
+                  {team.visionStatement && (
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 mb-2">
+                        <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span className="text-sm font-semibold text-gray-700">Vision</span>
+                      </div>
+                      <p className="text-xs text-gray-600 line-clamp-3 italic">
+                        "{team.visionStatement.length > 120 ? `${team.visionStatement.substring(0, 120)}...` : team.visionStatement}"
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Research Areas Preview */}
+                  {team.coreResearchAreas && (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        <span className="text-sm font-semibold text-gray-700">Research Focus</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2 min-h-[40px]">
+                        {team.coreResearchAreas && typeof team.coreResearchAreas === 'string' ? (
+                          team.coreResearchAreas.split(',').slice(0, 2).map((area, index) => (
+                            <span
+                              key={index}
+                              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-teal-100 to-blue-100 text-teal-700 border border-teal-200"
+                            >
+                              {area.trim()}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-sm text-gray-400 italic">No research areas defined</span>
+                        )}
+                        {team.coreResearchAreas && typeof team.coreResearchAreas === 'string' && team.coreResearchAreas.split(',').length > 2 && (
+                          <span className="text-xs text-teal-600 font-medium">
+                            +{team.coreResearchAreas.split(',').length - 2} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* ===== CARD FOOTER ===== */}
+                <div className="relative px-6 pb-6 border-t border-teal-100/30 bg-gradient-to-r from-gray-50/50 to-teal-50/30">
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      onClick={() => handleEdit(team)}
+                      className="flex-1 bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:scale-105 flex items-center justify-center gap-2 group/btn"
+                    >
+                      <svg className="w-4 h-4 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(team._id)}
+                      className="px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-md hover:scale-105 flex items-center justify-center"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Empty State */}
+          {filteredTeams.length === 0 && (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gradient-to-br from-teal-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-12 h-12 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                {teamSearch ? "No teams found" : "No teams yet"}
+              </h3>
+              <p className="text-gray-500">
+                {teamSearch ? `No teams match "${teamSearch}"` : "Start by adding your first research team above"}
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </section>

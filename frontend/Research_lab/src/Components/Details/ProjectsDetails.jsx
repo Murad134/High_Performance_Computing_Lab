@@ -222,7 +222,7 @@ const ViewDetails = () => {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
                 <User className="w-6 h-6 text-teal-600" />
-                <h3 className="text-xl font-semibold text-gray-900">Researcher</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Student</h3>
               </div>
 
               <div className="space-y-3">

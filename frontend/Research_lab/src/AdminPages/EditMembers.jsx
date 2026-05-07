@@ -901,40 +901,72 @@ const AdminStudentProjectPage = () => {
             .map((item) => (
               <div
                 key={item._id}
-                className="bg-white border rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col justify-between"
+                className="bg-gradient-to-br from-teal-50 to-white border-2 border-teal-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden min-h-[450px] flex flex-col"
               >
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-gray-800">
-                    Name: {item.student?.studentName || "N/A"}
-                  </h3>
-                  <p className="text-gray-600 font-medium">
-                    Title:{" "}
-                    {item.type === "project"
-                      ? item.project?.projectTitle
-                      : item.thesis?.thesisTitle}
-                  </p>
+                {/* Header Section */}
+                <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-4 border-b-2 border-teal-300">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-white/20 rounded-lg">
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold truncate">
+                          {item.student?.studentName || "N/A"}
+                        </h3>
+                        <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold mt-1 ${
+                          item.type === "project"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-green-100 text-green-700"
+                        }`}>
+                          {item.type?.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-2 space-y-2 text-sm">
-                  <p><span className="font-semibold text-indigo-600">Roll:</span> {item.student?.roll}</p>
-                  <p><span className="font-semibold text-indigo-600">Department:</span> {item.student?.department}</p>
-                  <p><span className="font-semibold text-indigo-600">Session:</span> {item.student?.session}</p>
-                  <p><span className="font-semibold text-indigo-600">Program:</span> {item.student?.studentLevel}</p>
+
+                {/* Body Section */}
+                <div className="flex-1 p-4 space-y-3">
+                  <div>
+                    <h4 className="text-sm font-semibold text-teal-700 mb-1">Title</h4>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      {item.type === "project"
+                        ? item.project?.projectTitle
+                        : item.thesis?.thesisTitle}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-semibold text-teal-600">Roll:</span>
+                      <p className="text-gray-700">{item.student?.roll}</p>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-teal-600">Session:</span>
+                      <p className="text-gray-700">{item.student?.session}</p>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-teal-600">Department:</span>
+                      <p className="text-gray-700">{item.student?.department}</p>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-teal-600">Program:</span>
+                      <p className="text-gray-700">{item.student?.studentLevel}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-4 flex justify-between items-center">
+
+                {/* Footer Section */}
+                <div className="bg-gradient-to-r from-teal-100 to-white p-4 border-t-2 border-teal-200">
                   <button
                     onClick={() => handleEdit(item)}
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-xl font-semibold hover:bg-yellow-600 transition"
+                    className="w-full px-4 py-2 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl font-semibold hover:from-teal-700 hover:to-teal-800 transition-all duration-200 transform hover:scale-105 shadow-md"
                   >
-                    Edit
+                    Edit Record
                   </button>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${item.type === "project"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-green-100 text-green-700"
-                      }`}
-                  >
-                    {item.type?.toUpperCase()}
-                  </span>
                 </div>
               </div>
             ))}
