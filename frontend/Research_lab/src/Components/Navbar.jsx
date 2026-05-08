@@ -588,7 +588,9 @@ function Header() {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
             // Cleanup timers
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             if (researchTimerRef.current) clearTimeout(researchTimerRef.current);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             if (supervisionsTimerRef.current) clearTimeout(supervisionsTimerRef.current);
         };
     }, []);

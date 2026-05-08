@@ -16,7 +16,6 @@ function SocialLogin() {
 
                 //update userinfo in the database
 
-                const user = result.user;
                 const userInfo = {
                     created_at: new Date().toISOString(),
                     last_log_in: new Date().toISOString(),

@@ -36,7 +36,7 @@ function StudentList() {
 
       return matchesLevel && matchesType && matchesSearch;
     });
-  }, [data, level, type, searchRoll]);
+  }, [data, level, searchRoll, isAlumni]);
 
   return (
     <div className="min-h-screen">
