@@ -1,10 +1,12 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 import { resolveBackendAssetUrl } from "../../utils";
 
 function Aboutsection() {
     const axios = useAxios();
+    const navigate = useNavigate();
 
     const { data: home, isLoading, isError } = useQuery({
         queryKey: ["homeData"],
@@ -40,12 +42,15 @@ function Aboutsection() {
                 >
                     {home?.aboutDescription || "No description available"}
                 </p>
-                <a
-                    href={home?.aboutButtonLink || "#"}
+                <button
+                    onClick={() => {
+                        navigate(home?.aboutButtonLink || "/");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     className="inline-block bg-teal-600  px-6 py-3 rounded-lg hover:bg-teal-700 transition"
                 >
                     {home?.aboutButtonName || "Read More"}
-                </a>
+                </button>
             </div>
         </section>
     );

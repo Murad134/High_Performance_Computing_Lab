@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 
 function Departments() {
     const axiosInstance = useAxios();
+    const navigate = useNavigate();
 
     // Fetch departments
     const { data: departments = [], isLoading, isError } = useQuery({
@@ -50,12 +51,15 @@ function Departments() {
                         {/* Content */}
                         <div className="p-6">
                             <h4 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-600 transition-colors">
-                                <Link
-                                    to={`/research/researchs/departments/${dept._id}`}
-                                    className="hover:underline"
+                                <button
+                                    onClick={() => {
+                                        navigate(`/research/researchs/departments/${dept._id}`);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className="hover:underline text-left"
                                 >
                                     {dept.name}
-                                </Link>
+                                </button>
                             </h4>
 
                             <div className="space-y-3">
@@ -82,13 +86,16 @@ function Departments() {
 
                             {/* View Details Button */}
                             <div className="mt-4 pt-4 border-t border-gray-100">
-                                <Link
-                                    to={`/research/researchs/departments/${dept._id}`}
+                                <button
+                                    onClick={() => {
+                                        navigate(`/research/researchs/departments/${dept._id}`);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
                                     className="inline-flex items-center gap-2 bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors duration-200 text-sm font-medium"
                                 >
                                     View Details
                                     <span className="text-xs">→</span>
-                                </Link>
+                                </button>
                             </div>
                         </div>
                     </div>
