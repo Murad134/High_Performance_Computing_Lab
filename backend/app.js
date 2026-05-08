@@ -33,6 +33,10 @@ app.use(express.json());
 // Static folder - keep for backward compatibility with old images
 app.use('/uploads', express.static('uploads'));
 
+// Favicon routes to avoid 404 logs
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+app.get('/favicon.png', (req, res) => res.status(204).end());
+
 // Test route
 app.get('/', (req, res) => {
     res.send('Project Backend is running');
