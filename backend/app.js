@@ -5,8 +5,6 @@ const { connectToDb } = require('./config/db');
 
 const verifyToken = require('./middleware/verifyFBToken');
 
-
-
 // Routers
 const footerRoutes = require('./routes/footerRoutes');
 const contactRoutes = require('./routes/contactRoutes');
