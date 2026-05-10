@@ -7,10 +7,21 @@ const { connectToDb } = require('./config/db');
 const app = express();
 const port = process.env.PORT || 2500;
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+const allowedOrigins = new Set([
+    frontendUrl,
+    'http://localhost:5173',
+    'http://localhost:5174',
+].filter(Boolean));
 
 // ✅ Middleware
 app.use(cors({
-    origin: frontendUrl,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error(`Not allowed by CORS: ${origin}`));
+    },
     credentials: true,
 }));
 app.use(express.json());

@@ -1,0 +1,11 @@
+{
+  "name": "frontend-proxy",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix Research_lab run dev",
+    "build": "npm --prefix Research_lab run build",
+    "built": "npm --prefix Research_lab run build",
+    "lint": "npm --prefix Research_lab run lint",
+    "preview": "npm --prefix Research_lab run preview"
+  }
+}

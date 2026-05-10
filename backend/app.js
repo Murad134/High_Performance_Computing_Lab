@@ -23,10 +23,22 @@ const bookRoutes = require('./routes/bookRoutes');
 
 // create app
 const app = express();
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+const allowedOrigins = new Set([
+    frontendUrl,
+    'http://localhost:5173',
+    'http://localhost:5174',
+].filter(Boolean));
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error(`Not allowed by CORS: ${origin}`));
+    },
     credentials: true
 }));
 app.use(express.json());
