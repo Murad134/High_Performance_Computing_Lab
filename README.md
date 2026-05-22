@@ -650,43 +650,43 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Welcome Section
 
-![Welcome](images/Interface/Welcome.png)
+<img src="https://i.ibb.co.com/3m2yxPYt/Screenshot-2026-05-22-202803.png" alt="Welcome" />
 
 ---
 
 ## About Section
 
-![About Section](images/Interface/aboutpicture.png)
+<img src="images/Interface/aboutpicture.png" alt="About Section" />
 
 ---
 
 ## Laboratory Statistics
 
-![Lab Statistics](images/Interface/Lab_Statistics.png)
+<img src="images/Interface/Lab_Statistics.png" alt="Lab Statistics" />
 
 ---
 
 ## Research Department Section
 
-![Department Section](images/Interface/DepartmntHome.png)
+<img src="images/Interface/DepartmntHome.png" alt="Department Section" />
 
 ---
 
 ## Publication Highlight Section
 
-![Publication Section](images/Interface/PublicationHome.png)
+<img src="images/Interface/PublicationHome.png" alt="Publication Section" />
 
 ---
 
 ## Awards & Achievements Section
 
-![Awards Section](images/Interface/AwardsHome.png)
+<img src="images/Interface/AwardsHome.png" alt="Awards Section" />
 
 ---
 
 # About Page
 
-![About Page](images/Interface/about.png)
+<img src="images/Interface/about.png" alt="About Page" />
 
 ---
 
@@ -694,25 +694,25 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Research Departments
 
-![Research Department](images/Interface/Research_Department.png)
+<img src="images/Interface/Research_Department.png" alt="Research Department" />
 
 ---
 
 ## Department Details
 
-![Department Details](images/Interface/Department_Details.png)
+<img src="images/Interface/Department_Details.png" alt="Department Details" />
 
 ---
 
 ## Research Teams
 
-![Research Team](images/Interface/Team.png)
+<img src="images/Interface/Team.png" alt="Research Team" />
 
 ---
 
 ## Team Details
 
-![Team Details](images/Interface/TeamDetails.png)
+<img src="images/Interface/TeamDetails.png" alt="Team Details" />
 
 ---
 
@@ -720,25 +720,25 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Current Thesis
 
-![Current Thesis](images/Interface/Current_Thesis.png)
+<img src="images/Interface/Current_Thesis.png" alt="Current Thesis" />
 
 ---
 
 ## Completed Thesis
 
-![Completed Thesis](images/Interface/Completed_Thesis.png)
+<img src="images/Interface/Completed_Thesis.png" alt="Completed Thesis" />
 
 ---
 
 ## Current Projects
 
-![Current Project](images/Interface/Current_Project.png)
+<img src="images/Interface/Current_Project.png" alt="Current Project" />
 
 ---
 
 ## Completed Projects
 
-![Completed Project](images/Interface/Completed_Project.png)
+<img src="images/Interface/Completed_Project.png" alt="Completed Project" />
 
 ---
 
@@ -746,19 +746,19 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Current Students
 
-![Current Students](images/Interface/CurrentStudent.png)
+<img src="images/Interface/CurrentStudent.png" alt="Current Students" />
 
 ---
 
 ## Alumni Members
 
-![Alumni](images/Interface/Alumni.png)
+<img src="images/Interface/Alumni.png" alt="Alumni" />
 
 ---
 
 # Contact Module
 
-![Contact](images/Interface/Contact.png)
+<img src="images/Interface/Contact.png" alt="Contact" />
 
 ---
 
@@ -766,13 +766,13 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Registration Interface
 
-![Register](images/Interface/Register.png)
+<img src="images/Interface/Register.png" alt="Register" />
 
 ---
 
 ## Login Interface
 
-![Login](images/Interface/login.png)
+<img src="images/Interface/login.png" alt="Login" />
 
 ---
 
@@ -780,67 +780,67 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Dashboard Overview
 
-![Dashboard](images/Interface/AD_Dashboard.png)
+<img src="images/Interface/AD_Dashboard.png" alt="Dashboard" />
 
 ---
 
 ## Homepage Management
 
-![Home CRUD](images/Interface/AD_Home.png)
+<img src="images/Interface/AD_Home.png" alt="Home CRUD" />
 
 ---
 
 ## Welcome Banner Management
 
-![Welcome CRUD](images/Interface/AD_welcome.png)
+<img src="images/Interface/AD_welcome.png" alt="Welcome CRUD" />
 
 ---
 
 ## Department Management
 
-![Department CRUD](images/Interface/AD_Department.png)
+<img src="images/Interface/AD_Department.png" alt="Department CRUD" />
 
 ---
 
 ## Team Management
 
-![Team CRUD](images/Interface/AD_Team.png)
+<img src="images/Interface/AD_Team.png" alt="Team CRUD" />
 
 ---
 
 ## Journal Management
 
-![Journals CRUD](images/Interface/AD_jounals.png)
+<img src="images/Interface/AD_jounals.png" alt="Journals CRUD" />
 
 ---
 
 ## Conference Management
 
-![Conferences CRUD](images/Interface/AD_Conferences.png)
+<img src="images/Interface/AD_Conferences.png" alt="Conferences CRUD" />
 
 ---
 
 ## Book Management
 
-![Books CRUD](images/Interface/AD_Books.png)
+<img src="images/Interface/AD_Books.png" alt="Books CRUD" />
 
 ---
 
 ## Student & Member Management
 
-![Member CRUD](images/Interface/AD_Member.png)
+<img src="images/Interface/AD_Member.png" alt="Member CRUD" />
 
 ---
 
 ## Contact Information Management
 
-![Contact CRUD](images/Interface/AD_contact.png)
+<img src="images/Interface/AD_contact.png" alt="Contact CRUD" />
 
 ---
 
 # Super Admin Dashboard
 
-![Super Admin](images/Interface/Super_AD.png)
+<img src="images/Interface/Super_AD.png" alt="Super Admin" />
 
 ---
 
