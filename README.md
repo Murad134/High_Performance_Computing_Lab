@@ -9,7 +9,7 @@ The platform provides a centralized digital ecosystem where professors, research
 ## 🌐 Live Links
 
 - **Frontend**: https://high-performance-computing-lab-2vkn.vercel.app
-- **Backend API**: https://high-performance-computing-lab.vercel.app
+
 
 ---
 
@@ -656,37 +656,38 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## About Section
 
-![About Section](images/Interface/aboutpicture.png)
+<img src="https://i.ibb.co.com/M5kqcxRK/about.png" alt="About Section" />
 
 ---
 
 ## Laboratory Statistics
 
-![Lab Statistics](images/Interface/Lab_Statistics.png)
+<img src="https://i.ibb.co.com/4gWF2BvR/lab-statistics.png" alt="Lab Statistics" />
 
 ---
 
 ## Research Department Section
 
-![Department Section](images/Interface/DepartmntHome.png)
+<img src="https://i.ibb.co.com/xtgYtr24/department.png" alt="Department Section" />
 
 ---
 
 ## Publication Highlight Section
 
-![Publication Section](images/Interface/PublicationHome.png)
+<img src="https://i.ibb.co.com/jvwnw39b/Feature-Publication.png" alt="Publication Section" />
 
 ---
 
 ## Awards & Achievements Section
 
-![Awards Section](images/Interface/AwardsHome.png)
+<img src="https://i.ibb.co.com/LD19KYkz/Awards.png" alt="Awards Section" />
 
 ---
 
+
 # About Page
 
-![About Page](images/Interface/about.png)
+<img src="https://i.ibb.co.com/xtvrTqKp/Screenshot-2026-05-22-205727.png" alt="About Page" />
 
 ---
 
@@ -694,51 +695,69 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Research Departments
 
-![Research Department](images/Interface/Research_Department.png)
+<img src="https://i.ibb.co.com/1tzfpQTh/Screenshot-2026-05-22-205741.png" alt="Research Department" />
 
 ---
 
 ## Department Details
 
-![Department Details](images/Interface/Department_Details.png)
+<img src="https://i.ibb.co.com/B2vjk7cy/Screenshot-2026-05-22-205816.png" alt="Department Details" />
 
 ---
 
 ## Research Teams
 
-![Research Team](images/Interface/Team.png)
+<img src="https://i.ibb.co.com/HDQGCj7S/Screenshot-2026-05-22-205913.png" alt="Research Team" />
 
 ---
 
 ## Team Details
 
-![Team Details](images/Interface/TeamDetails.png)
+<img src="https://i.ibb.co.com/wNMPMQwd/Screenshot-2026-05-22-205842.png" alt="Team Details" />
 
 ---
+
+
+# Publications Module
+
+# Journal Publications
+
+<img src="https://i.ibb.co.com/C5XMp6rP/Screenshot-2026-05-22-210020.png" alt="Team Details" />
+
+
+# Conference Paper
+
+<img src="https://i.ibb.co.com/CpSKL0fQ/Screenshot-2026-05-22-210031.png" alt="Team Details" />
+
+
+# Book Chapter
+
+<img src="https://i.ibb.co.com/s9BFd0Dc/Screenshot-2026-05-22-210045.png" alt="Team Details" />
+
 
 # Supervisions Module
 
 ## Current Thesis
 
-![Current Thesis](images/Interface/Current_Thesis.png)
+<img src="https://i.ibb.co.com/v4jgXMTq/Screenshot-2026-05-22-213351.png" alt="Current Thesis" />
 
 ---
 
 ## Completed Thesis
 
-![Completed Thesis](images/Interface/Completed_Thesis.png)
+<img src="https://i.ibb.co.com/qFYVgtqb/Screenshot-2026-05-22-213403.png" alt="Completed Thesis" />
 
 ---
 
 ## Current Projects
 
-![Current Project](images/Interface/Current_Project.png)
+<img src="https://i.ibb.co.com/4Z8BxyTW/Screenshot-2026-05-22-213451.png" alt="Current Project" />
 
 ---
 
 ## Completed Projects
 
-![Completed Project](images/Interface/Completed_Project.png)
+<img src="https://i.ibb.co.com/fYQv2yDY/Screenshot-2026-05-22-213506.png" alt="Completed Project" />
 
 ---
 
@@ -746,19 +765,19 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Current Students
 
-![Current Students](images/Interface/CurrentStudent.png)
+<img src="https://i.ibb.co.com/RpgHJbVW/Screenshot-2026-05-22-213608.png" alt="Current Students" />
 
 ---
 
 ## Alumni Members
 
-![Alumni](images/Interface/Alumni.png)
+<img src="https://i.ibb.co.com/MyRTr8Ss/Screenshot-2026-05-22-213630.png" alt="Alumni" />
 
 ---
 
 # Contact Module
 
-![Contact](images/Interface/Contact.png)
+<img src="https://i.ibb.co.com/6dznW8R/Screenshot-2026-05-22-213641.png" alt="Contact" />
 
 ---
 
@@ -766,13 +785,13 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Registration Interface
 
-![Register](images/Interface/Register.png)
+<img src="https://i.ibb.co.com/fYwfjhcH/Screenshot-2026-05-22-214847.png" alt="Register" />
 
 ---
 
 ## Login Interface
 
-![Login](images/Interface/login.png)
+<img src="https://i.ibb.co.com/QF6qTcSD/Screenshot-2026-05-22-214836.png" alt="Login" />
 
 ---
 
@@ -780,67 +799,67 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Dashboard Overview
 
-![Dashboard](images/Interface/AD_Dashboard.png)
+<img src="https://i.ibb.co.com/q3S3rs8v/Screenshot-2026-05-22-221237.png" alt="Dashboard" />
 
 ---
 
-## Homepage Management
+## Home Management
 
-![Home CRUD](images/Interface/AD_Home.png)
+<img src="https://i.ibb.co.com/tgypcLv/Screenshot-2026-05-22-221331.png" alt="Home CRUD" />
 
 ---
 
-## Welcome Banner Management
+## Image Management
 
-![Welcome CRUD](images/Interface/AD_welcome.png)
+<img src="https://i.ibb.co.com/Vd9Y0Ln/Screenshot-2026-05-22-222321.png" alt="Welcome CRUD" />
 
 ---
 
 ## Department Management
 
-![Department CRUD](images/Interface/AD_Department.png)
+<img src="https://i.ibb.co.com/Q3x7C356/d.png" alt="Department CRUD" />
 
 ---
 
 ## Team Management
 
-![Team CRUD](images/Interface/AD_Team.png)
+<img src="https://i.ibb.co.com/5htV03hZ/t.png" alt="Team CRUD" />
 
 ---
 
 ## Journal Management
 
-![Journals CRUD](images/Interface/AD_jounals.png)
+<img src="https://i.ibb.co.com/YB3dwTR8/j.png" alt="Journals CRUD" />
 
 ---
 
 ## Conference Management
 
-![Conferences CRUD](images/Interface/AD_Conferences.png)
+<img src="https://i.ibb.co.com/BHnC9f2v/c.png" alt="Conferences CRUD" />
 
 ---
 
 ## Book Management
 
-![Books CRUD](images/Interface/AD_Books.png)
+<img src="https://i.ibb.co.com/2Yp88R8j/Screenshot-2026-05-22-221929.png" alt="Books CRUD" />
 
 ---
 
 ## Student & Member Management
 
-![Member CRUD](images/Interface/AD_Member.png)
+<img src="https://i.ibb.co.com/9dYSjDx/m.png" alt="Member CRUD" />
 
 ---
 
 ## Contact Information Management
 
-![Contact CRUD](images/Interface/AD_contact.png)
+<img src="https://i.ibb.co.com/qLzVsYwz/Screenshot-2026-05-22-222031.png" alt="Contact CRUD" />
 
 ---
 
 # Super Admin Dashboard
 
-![Super Admin](images/Interface/Super_AD.png)
+<img src="https://i.ibb.co.com/BVXpW2tZ/Screenshot-2026-05-22-222119.png" alt="Super Admin" />
 
 ---
 
