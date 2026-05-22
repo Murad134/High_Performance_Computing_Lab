@@ -1,12 +1,10 @@
 import React from 'react'
 import useAuth from '../../hooks/useAuth'
-// import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 function SocialLogin() {
     const { signInGoogle  } = useAuth();
-    // const location = useLocation();
-    // const navigate = useNavigate();
-    // const from = location.state?.from || '/';
+    const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
 
     const handleGoogleSignIn = () => {
@@ -23,7 +21,7 @@ function SocialLogin() {
                 const res = await axiosSecure.post('/users', userInfo)
                 console.log('User updated info', res.data);
 
-                // navigate(from, { replace: true });
+                navigate('/', { replace: true });
 
             })
             .catch(error => {
