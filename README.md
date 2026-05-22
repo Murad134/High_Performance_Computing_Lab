@@ -200,7 +200,118 @@ Provides RESTful APIs, authentication, authorization, and business logic using N
 
 Stores structured laboratory and user-related information using MongoDB.
 
----
+
+
+
+# Installation Guide
+
+## Prerequisites
+
+Before running the project locally, make sure you have:
+
+* Node.js 14 or later
+* npm or yarn
+* MongoDB Atlas account or local MongoDB instance
+* Firebase project
+* Cloudinary account
+
+## Setup Steps
+
+1. Clone the repository.
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_LINK
+cd YOUR_PROJECT_FOLDER
+```
+
+2. Install backend dependencies.
+
+```bash
+cd backend
+npm install
+```
+
+3. Install frontend dependencies.
+
+```bash
+cd ../frontend/Research_lab
+npm install
+```
+
+4. Create the backend environment file.
+
+Create a `.env` file inside the backend folder and add the required values.
+
+```env
+PORT=2500
+DB_USER=YOUR_DB_USER
+DB_PASS=YOUR_DB_PASSWORD
+FB_SERVICE_KEY=YOUR_BASE64_ENCODED_FIREBASE_SERVICE_ACCOUNT
+FRONTEND_URL=YOUR_FRONTEND_URL
+CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
+```
+
+5. Create the frontend environment file.
+
+Create a `.env` file inside `frontend/Research_lab`.
+
+```env
+VITE_backend_url=YOUR_BACKEND_API_URL
+VITE_apiKey=YOUR_FIREBASE_API_KEY
+VITE_authDomain=YOUR_FIREBASE_AUTH_DOMAIN
+VITE_projectId=YOUR_FIREBASE_PROJECT_ID
+VITE_storageBucket=YOUR_FIREBASE_STORAGE_BUCKET
+VITE_messagingSenderId=YOUR_FIREBASE_MESSAGING_SENDER_ID
+VITE_appId=YOUR_FIREBASE_APP_ID
+```
+
+## How to Run
+
+### Development Mode
+
+Start the backend server.
+
+```bash
+cd backend
+npm run dev
+```
+
+Start the frontend application.
+
+```bash
+cd frontend/Research_lab
+npm run dev
+```
+
+Visit:
+
+```text
+http://localhost:5173
+```
+
+### Production Build
+
+Build the frontend.
+
+```bash
+cd frontend/Research_lab
+npm run build
+```
+
+Preview the production build.
+
+```bash
+npm run preview
+```
+
+Start the backend in production mode.
+
+```bash
+cd backend
+npm start
+```
 
 # Folder Structure
 
@@ -733,70 +844,6 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ---
 
-# Installation Guide
-
-## Clone Repository
-
-```bash
-git clone YOUR_GITHUB_REPOSITORY_LINK
-```
-
----
-
-## Navigate to Project Directory
-
-```bash
-cd project-name
-```
-
----
-
-## Install Dependencies
-
-### Frontend
-
-```bash
-npm install
-```
-
-### Backend
-
-```bash
-npm install
-```
-
----
-
-# Environment Variables
-
-Create a `.env` file in the backend root directory and configure the following variables:
-
-```env
-PORT=5000
-MONGODB_URI=YOUR_MONGODB_CONNECTION_STRING
-JWT_SECRET=YOUR_SECRET_KEY
-CLIENT_URL=YOUR_FRONTEND_URL
-```
-
----
-
-# Running the Project Locally
-
-## Start Backend Server
-
-```bash
-npm run server
-```
-
----
-
-## Start Frontend Application
-
-```bash
-npm run dev
-```
-
----
 
 # Future Enhancements
 
