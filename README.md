@@ -650,7 +650,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Welcome Section
 
-![Welcome](img src="https://i.ibb.co.com/3m2yxPYt/Screenshot-2026-05-22-202803.png")
+<img src="https://i.ibb.co.com/3m2yxPYt/Screenshot-2026-05-22-202803.png" alt="Welcome" />
 
 ---
 
