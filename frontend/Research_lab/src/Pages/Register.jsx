@@ -11,7 +11,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
     const { register: formRegister, handleSubmit, reset, formState: { errors } } = useForm();
-    const { createUser, updateUserProfile } = useAuth(); // Firebase auth
+    const { createUser, updateUserProfile ,signout } = useAuth(); // Firebase auth
     const navigate = useNavigate();
     const [photoURL, setPhotoURL] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -91,17 +91,20 @@ export default function Register() {
                 photoURL: photoURL || ""
             });
 
+            // 6 Sign out immediately so the new account is not left logged in
+            await signout();
+
             // ✅ Success SweetAlert
             await Swal.fire({
                 title: "Registration Successful!",
-                text: `Welcome ${data.name}!`,
+                text: `Verification email sent to ${data.email}. Please log in after verifying your account.`,
                 icon: "success",
                 confirmButtonText: "Continue",
                 confirmButtonColor: "#3085d6"
             });
 
             reset();
-            navigate('/auth/login');
+            navigate('/auth/login', { replace: true });
 
         } catch (err) {
             setErrorMessage(err.message);
