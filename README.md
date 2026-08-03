@@ -6,10 +6,9 @@ The platform provides a centralized digital ecosystem where professors, research
 
 ---
 
-## 🌐 Live Links
+## 🌐 Live Application
 
-- **Frontend**: https://high-performance-computing-lab-2vkn.vercel.app
-- **Backend API**: https://high-performance-computing-lab.vercel.app
+[![Live Demo](https://img.shields.io/badge/Explore_Live_Project-Click_Here-blue?style=for-the-badge&logo=vercel)](https://high-performance-computing-lab-2vkn.vercel.app)
 
 ---
 
@@ -652,41 +651,56 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/3m2yxPYt/Screenshot-2026-05-22-202803.png" alt="Welcome" />
 
+*The dynamic welcome banner displaying the laboratory's main theme and initial introduction.*
+
 ---
 
 ## About Section
 
-<img src="images/Interface/aboutpicture.png" alt="About Section" />
+<img src="https://i.ibb.co.com/M5kqcxRK/about.png" alt="About Section" />
+
+*An overview of the laboratory's mission, vision, and core values.*
 
 ---
 
 ## Laboratory Statistics
 
-<img src="images/Interface/Lab_Statistics.png" alt="Lab Statistics" />
+<img src="https://i.ibb.co.com/4gWF2BvR/lab-statistics.png" alt="Lab Statistics" />
+
+*A quick numerical snapshot of the lab's achievements, publications, and members.*
 
 ---
 
 ## Research Department Section
 
-<img src="images/Interface/DepartmntHome.png" alt="Department Section" />
+<img src="https://i.ibb.co.com/xtgYtr24/department.png" alt="Department Section" />
+
+*Displays the various research departments currently active within the HPC lab.*
 
 ---
 
 ## Publication Highlight Section
 
-<img src="images/Interface/PublicationHome.png" alt="Publication Section" />
+<img src="https://i.ibb.co.com/jvwnw39b/Feature-Publication.png" alt="Publication Section" />
+
+*Highlights the recent and notable research publications from the laboratory.*
 
 ---
 
 ## Awards & Achievements Section
 
-<img src="images/Interface/AwardsHome.png" alt="Awards Section" />
+<img src="https://i.ibb.co.com/LD19KYkz/Awards.png" alt="Awards Section" />
+
+*Showcases the diverse awards, honors, and recognition received by the lab.*
 
 ---
 
+
 # About Page
 
-<img src="images/Interface/about.png" alt="About Page" />
+<img src="https://i.ibb.co.com/xtvrTqKp/Screenshot-2026-05-22-205727.png" alt="About Page" />
+
+*Comprehensive details regarding the laboratory, including its professors and main focus areas.*
 
 ---
 
@@ -694,51 +708,88 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Research Departments
 
-<img src="images/Interface/Research_Department.png" alt="Research Department" />
+<img src="https://i.ibb.co.com/1tzfpQTh/Screenshot-2026-05-22-205741.png" alt="Research Department" />
+
+*Detailed view of the different departments driving the core research initiatives.*
 
 ---
 
 ## Department Details
 
-<img src="images/Interface/Department_Details.png" alt="Department Details" />
+<img src="https://i.ibb.co.com/B2vjk7cy/Screenshot-2026-05-22-205816.png" alt="Department Details" />
+
+*In-depth information and documentation for a specific research department.*
 
 ---
 
 ## Research Teams
 
-<img src="images/Interface/Team.png" alt="Research Team" />
+<img src="https://i.ibb.co.com/HDQGCj7S/Screenshot-2026-05-22-205913.png" alt="Research Team" />
+
+*Overview of the specialized research teams collaborating within the laboratory.*
 
 ---
 
 ## Team Details
 
-<img src="images/Interface/TeamDetails.png" alt="Team Details" />
+<img src="https://i.ibb.co.com/wNMPMQwd/Screenshot-2026-05-22-205842.png" alt="Team Details" />
+
+*Provides a closer look into a specific research team, their vision, and methodologies.*
 
 ---
+
+
+# Publications Module
+
+# Journal Publications
+
+<img src="https://i.ibb.co.com/C5XMp6rP/Screenshot-2026-05-22-210020.png" alt="Team Details" />
+
+*A structured list displaying all journal publications published by the laboratory members.*
+
+# Conference Paper
+
+<img src="https://i.ibb.co.com/CpSKL0fQ/Screenshot-2026-05-22-210031.png" alt="Team Details" />
+
+*Highlights the conference papers and presentations delivered at various academic events.*
+
+# Book Chapter
+
+<img src="https://i.ibb.co.com/s9BFd0Dc/Screenshot-2026-05-22-210045.png" alt="Team Details" />
+
+*Showcases book chapters and related academic resources authored by the team.*
 
 # Supervisions Module
 
 ## Current Thesis
 
-<img src="images/Interface/Current_Thesis.png" alt="Current Thesis" />
+<img src="https://i.ibb.co.com/v4jgXMTq/Screenshot-2026-05-22-213351.png" alt="Current Thesis" />
+
+*A dashboard tracking the ongoing thesis supervisions for current students.*
 
 ---
 
 ## Completed Thesis
 
-<img src="images/Interface/Completed_Thesis.png" alt="Completed Thesis" />
+<img src="https://i.ibb.co.com/qFYVgtqb/Screenshot-2026-05-22-213403.png" alt="Completed Thesis" />
+
+*Archive of all successfully completed thesis works with their respective details.*
 
 ---
 
 ## Current Projects
 
-<img src="images/Interface/Current_Project.png" alt="Current Project" />
+<img src="https://i.ibb.co.com/4Z8BxyTW/Screenshot-2026-05-22-213451.png" alt="Current Project" />
+
+*Monitor the active academic projects currently being undertaken in the lab.*
 
 ---
 
 ## Completed Projects
 
-<img src="images/Interface/Completed_Project.png" alt="Completed Project" />
+<img src="https://i.ibb.co.com/fYQv2yDY/Screenshot-2026-05-22-213506.png" alt="Completed Project" />
+
+*Record of all finalized academic projects and their lifecycle outcomes.*
 
 ---
 
@@ -746,19 +797,25 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Current Students
 
-<img src="images/Interface/CurrentStudent.png" alt="Current Students" />
+<img src="https://i.ibb.co.com/RpgHJbVW/Screenshot-2026-05-22-213608.png" alt="Current Students" />
+
+*Profiles of the currently active BSc, MSc, and PhD students in the laboratory.*
 
 ---
 
 ## Alumni Members
 
-<img src="images/Interface/Alumni.png" alt="Alumni" />
+<img src="https://i.ibb.co.com/MyRTr8Ss/Screenshot-2026-05-22-213630.png" alt="Alumni" />
+
+*A directory of former laboratory members and their academic or professional transitions.*
 
 ---
 
 # Contact Module
 
-<img src="images/Interface/Contact.png" alt="Contact" />
+<img src="https://i.ibb.co.com/6dznW8R/Screenshot-2026-05-22-213641.png" alt="Contact" />
+
+*Official contact information, office address, and social links to get in touch with the lab.*
 
 ---
 
@@ -766,13 +823,17 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Registration Interface
 
-<img src="images/Interface/Register.png" alt="Register" />
+<img src="https://i.ibb.co.com/fYwfjhcH/Screenshot-2026-05-22-214847.png" alt="Register" />
+
+*A secure user registration form for onboarding new members to the platform.*
 
 ---
 
 ## Login Interface
 
-<img src="images/Interface/login.png" alt="Login" />
+<img src="https://i.ibb.co.com/QF6qTcSD/Screenshot-2026-05-22-214836.png" alt="Login" />
+
+*The secure login portal for administrators and members to access the dashboard.*
 
 ---
 
@@ -780,67 +841,89 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ## Dashboard Overview
 
-<img src="images/Interface/AD_Dashboard.png" alt="Dashboard" />
+<img src="https://i.ibb.co.com/q3S3rs8v/Screenshot-2026-05-22-221237.png" alt="Dashboard" />
+
+*A centralized administrative dashboard providing a quick summary of laboratory statistics.*
 
 ---
 
-## Homepage Management
+## Home Management
 
-<img src="images/Interface/AD_Home.png" alt="Home CRUD" />
+<img src="https://i.ibb.co.com/tgypcLv/Screenshot-2026-05-22-221331.png" alt="Home CRUD" />
+
+*Admin interface for managing homepage content such as statistics and awards.*
 
 ---
 
-## Welcome Banner Management
+## Image Management
 
-<img src="images/Interface/AD_welcome.png" alt="Welcome CRUD" />
+<img src="https://i.ibb.co.com/Vd9Y0Ln/Screenshot-2026-05-22-222321.png" alt="Welcome CRUD" />
+
+*Admin section for uploading and updating images featured on the main website.*
 
 ---
 
 ## Department Management
 
-<img src="images/Interface/AD_Department.png" alt="Department CRUD" />
+<img src="https://i.ibb.co.com/Q3x7C356/d.png" alt="Department CRUD" />
+
+*Allows admins to create, update, or remove research department information.*
 
 ---
 
 ## Team Management
 
-<img src="images/Interface/AD_Team.png" alt="Team CRUD" />
+<img src="https://i.ibb.co.com/5htV03hZ/t.png" alt="Team CRUD" />
+
+*Interface for managing research teams, their details, and focus areas.*
 
 ---
 
 ## Journal Management
 
-<img src="images/Interface/AD_jounals.png" alt="Journals CRUD" />
+<img src="https://i.ibb.co.com/YB3dwTR8/j.png" alt="Journals CRUD" />
+
+*Admin portal for adding, updating, and categorizing new journal publications.*
 
 ---
 
 ## Conference Management
 
-<img src="images/Interface/AD_Conferences.png" alt="Conferences CRUD" />
+<img src="https://i.ibb.co.com/BHnC9f2v/c.png" alt="Conferences CRUD" />
+
+*Manage and update conference publications efficiently through this interface.*
 
 ---
 
 ## Book Management
 
-<img src="images/Interface/AD_Books.png" alt="Books CRUD" />
+<img src="https://i.ibb.co.com/2Yp88R8j/Screenshot-2026-05-22-221929.png" alt="Books CRUD" />
+
+*Controls the details and listings of academic books and book chapters.*
 
 ---
 
 ## Student & Member Management
 
-<img src="images/Interface/AD_Member.png" alt="Member CRUD" />
+<img src="https://i.ibb.co.com/9dYSjDx/m.png" alt="Member CRUD" />
+
+*An interface to manage student profiles, track their current standing, and update alumni records.*
 
 ---
 
 ## Contact Information Management
 
-<img src="images/Interface/AD_contact.png" alt="Contact CRUD" />
+<img src="https://i.ibb.co.com/qLzVsYwz/Screenshot-2026-05-22-222031.png" alt="Contact CRUD" />
+
+*Admin panel to easily update laboratory contact details and office information.*
 
 ---
 
 # Super Admin Dashboard
 
-<img src="images/Interface/Super_AD.png" alt="Super Admin" />
+<img src="https://i.ibb.co.com/BVXpW2tZ/Screenshot-2026-05-22-222119.png" alt="Super Admin" />
+
+*Exclusive dashboard for the Super Admin to govern the entire system and manage admin roles.*
 
 ---
 
