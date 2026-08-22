@@ -312,6 +312,51 @@ cd backend
 npm start
 ```
 
+### Running with Docker
+
+This project can also be run entirely using Docker and Docker Compose, without manually installing Node.js or MongoDB tools locally.
+
+#### Prerequisites
+- Docker
+- Docker Compose
+- MongoDB Atlas connection string (or your own Mongo instance)
+- Firebase service account key (base64 encoded)
+- Cloudinary credentials
+
+#### Environment Setup
+Before running, create the required `.env` files:
+
+- `backend/.env` — same variables as listed in the [Installation Guide](#installation-guide)
+- `frontend/Research_lab/.env` — same variables as listed in the [Installation Guide](#installation-guide)
+
+Docker Compose reads these `.env` files automatically via the `env_file` directive in `docker-compose.yaml`.
+
+#### Build and Run
+From the project root, run:
+
+```bash
+docker-compose up --build
+```
+
+This will:
+- Build the backend image from `backend/Dockerfile`
+- Build the frontend image from `frontend/Research_lab/Dockerfile`
+- Start both containers and connect them on a shared Docker network
+
+#### Access the Application
+- Frontend: http://localhost:5173 (or the port mapped in `docker-compose.yaml`)
+- Backend API: http://localhost:2500 (or the port mapped in `docker-compose.yaml`)
+
+#### Stopping the Containers
+```bash
+docker-compose down
+```
+
+#### Rebuilding After Code Changes
+```bash
+docker-compose up --build --force-recreate
+```
+
 # Folder Structure
 
 ```text
