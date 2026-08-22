@@ -1,6 +1,6 @@
 # Personal Lab (High Performance Computing-HPC) Management System
 
-A scalable and role-based full-stack web application designed to streamline the management of academic research laboratory activities, publications, supervision records, research teams, and member administration.
+A scalable and role-based full-stack web application designed to streamline the management of academic research lab activities, publications, supervision records, research teams, and member administration.
 
 The platform provides a centralized digital ecosystem where professors, researchers, students, and administrators can efficiently manage and showcase research-related information through a modern, secure, and responsive web interface.
 
@@ -14,9 +14,9 @@ The platform provides a centralized digital ecosystem where professors, research
 
 # Project Overview
 
-The **Personal Lab (HPC) Management System** was developed to solve the limitations of manually maintained or static laboratory websites commonly used in academic environments.
+The **Personal Lab (HPC) Management System** was developed to solve the limitations of manually maintained or static lab websites commonly used in academic environments.
 
-Traditional research laboratory websites often suffer from:
+Traditional research lab websites often suffer from:
 
 * Difficult content management
 * Outdated information
@@ -33,7 +33,7 @@ To overcome these challenges, this system introduces a dynamic and scalable arch
 * Research publication management
 * Thesis and project supervision tracking
 * Student and alumni management
-* Interactive laboratory presentation
+* Interactive lab presentation
 
 The system is designed with modular architecture principles to ensure maintainability, scalability, and future extensibility.
 
@@ -63,13 +63,13 @@ The system is designed with modular architecture principles to ensure maintainab
 
 # User Roles & Permissions
 
-The platform provides three different access levels to ensure secure and structured management of laboratory resources.
+The platform provides three different access levels to ensure secure and structured management of lab resources.
 
 ---
 
 ## Viewer / Public User
 
-General visitors can explore all publicly available laboratory information without authentication.
+General visitors can explore all publicly available lab information without authentication.
 
 ### Viewer Capabilities
 
@@ -78,15 +78,15 @@ General visitors can explore all publicly available laboratory information witho
 * View journals, conferences, and books
 * Access current and completed projects/thesis
 * Explore student and alumni profiles
-* View laboratory statistics and achievements
-* Access laboratory contact information
+* View lab statistics and achievements
+* Access lab contact information
 * Read detailed research information
 
 ---
 
 ## Admin
 
-Admins are responsible for managing all laboratory-related operational content.
+Admins are responsible for managing all lab-related operational content.
 
 ### Admin Capabilities
 
@@ -119,7 +119,7 @@ Admins are responsible for managing all laboratory-related operational content.
 ### Website Content Management
 
 * Manage homepage content
-* Update laboratory information
+* Update lab information
 * Manage contact details
 * Manage footer information
 * Upload and update images
@@ -197,7 +197,7 @@ Provides RESTful APIs, authentication, authorization, and business logic using N
 
 ## Database Layer
 
-Stores structured laboratory and user-related information using MongoDB.
+Stores structured lab and user-related information using MongoDB.
 
 
 
@@ -429,19 +429,19 @@ npm start
 
 # System Modules
 
-The platform is divided into multiple independent and scalable modules to ensure maintainability, flexibility, and efficient management of academic laboratory resources.
+The platform is divided into multiple independent and scalable modules to ensure maintainability, flexibility, and efficient management of academic lab resources.
 
 ---
 
 ## Home Module
 
-The homepage acts as the central landing interface of the platform and provides summarized laboratory information.
+The homepage acts as the central landing interface of the platform and provides summarized lab information.
 
 ### Functionalities
 
 * Dynamic Welcome Banner
-* Research Laboratory Introduction
-* Laboratory Statistics & Achievements
+* Research lab Introduction
+* lab Statistics & Achievements
 * Featured Research Areas
 * Publication Highlights
 * Awards & Recognition Section
@@ -451,11 +451,11 @@ The homepage acts as the central landing interface of the platform and provides 
 
 ## About Module
 
-The About module provides comprehensive information regarding the laboratory and its academic vision.
+The About module provides comprehensive information regarding the lab and its academic vision.
 
 ### Functionalities
 
-* Laboratory Overview
+* lab Overview
 * Mission & Vision
 * Research Interests
 * Professor Information
@@ -551,11 +551,11 @@ The Members module organizes student and alumni information.
 
 ## Contact Module
 
-This module manages official communication and laboratory contact information.
+This module manages official communication and lab contact information.
 
 ### Functionalities
 
-* Laboratory Contact Information
+* lab Contact Information
 * Office Address Management
 * Email & Social Links
 * Professor Contact Profiles
@@ -586,7 +586,7 @@ The system implements modern authentication and authorization mechanisms to ensu
 
 # Database Design & Management
 
-The platform uses MongoDB as the primary database system for handling structured and semi-structured laboratory data efficiently.
+The platform uses MongoDB as the primary database system for handling structured and semi-structured lab data efficiently.
 
 ## Database Features
 
@@ -651,7 +651,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/3m2yxPYt/Screenshot-2026-05-22-202803.png" alt="Welcome" />
 
-*The dynamic welcome banner displaying the laboratory's main theme and initial introduction.*
+*The dynamic welcome banner displaying the lab's main theme and initial introduction.*
 
 ---
 
@@ -659,11 +659,11 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/M5kqcxRK/about.png" alt="About Section" />
 
-*An overview of the laboratory's mission, vision, and core values.*
+*An overview of the lab's mission, vision, and core values.*
 
 ---
 
-## Laboratory Statistics
+## lab Statistics
 
 <img src="https://i.ibb.co.com/4gWF2BvR/lab-statistics.png" alt="Lab Statistics" />
 
@@ -683,7 +683,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/jvwnw39b/Feature-Publication.png" alt="Publication Section" />
 
-*Highlights the recent and notable research publications from the laboratory.*
+*Highlights the recent and notable research publications from the lab.*
 
 ---
 
@@ -700,7 +700,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/xtvrTqKp/Screenshot-2026-05-22-205727.png" alt="About Page" />
 
-*Comprehensive details regarding the laboratory, including its professors and main focus areas.*
+*Comprehensive details regarding the lab, including its professors and main focus areas.*
 
 ---
 
@@ -726,7 +726,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/HDQGCj7S/Screenshot-2026-05-22-205913.png" alt="Research Team" />
 
-*Overview of the specialized research teams collaborating within the laboratory.*
+*Overview of the specialized research teams collaborating within the lab.*
 
 ---
 
@@ -745,7 +745,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/C5XMp6rP/Screenshot-2026-05-22-210020.png" alt="Team Details" />
 
-*A structured list displaying all journal publications published by the laboratory members.*
+*A structured list displaying all journal publications published by the lab members.*
 
 # Conference Paper
 
@@ -799,7 +799,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/RpgHJbVW/Screenshot-2026-05-22-213608.png" alt="Current Students" />
 
-*Profiles of the currently active BSc, MSc, and PhD students in the laboratory.*
+*Profiles of the currently active BSc, MSc, and PhD students in the lab.*
 
 ---
 
@@ -807,7 +807,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/MyRTr8Ss/Screenshot-2026-05-22-213630.png" alt="Alumni" />
 
-*A directory of former laboratory members and their academic or professional transitions.*
+*A directory of former lab members and their academic or professional transitions.*
 
 ---
 
@@ -843,7 +843,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/q3S3rs8v/Screenshot-2026-05-22-221237.png" alt="Dashboard" />
 
-*A centralized administrative dashboard providing a quick summary of laboratory statistics.*
+*A centralized administrative dashboard providing a quick summary of lab statistics.*
 
 ---
 
@@ -915,7 +915,7 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 <img src="https://i.ibb.co.com/qLzVsYwz/Screenshot-2026-05-22-222031.png" alt="Contact CRUD" />
 
-*Admin panel to easily update laboratory contact details and office information.*
+*Admin panel to easily update lab contact details and office information.*
 
 ---
 
@@ -948,7 +948,7 @@ The platform is designed with scalability in mind and can be extended with advan
 
 # Conclusion
 
-The Personal Lab (High Performance Computing-HPC) Management System successfully delivers a centralized, scalable, and secure solution for managing academic laboratory activities and research resources.
+The Personal Lab (High Performance Computing-HPC) Management System successfully delivers a centralized, scalable, and secure solution for managing academic lab activities and research resources.
 
 The platform enhances:
 
@@ -956,7 +956,7 @@ The platform enhances:
 * Administrative efficiency
 * Student and researcher collaboration
 * Academic publication management
-* Secure laboratory administration
+* Secure lab administration
 
 By integrating modern web technologies with role-based management architecture, the system provides a robust digital infrastructure suitable for modern academic and research environments.
 
