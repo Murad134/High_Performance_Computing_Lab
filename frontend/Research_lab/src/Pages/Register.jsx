@@ -82,7 +82,19 @@ export default function Register() {
                 photoURL: photoURL || ""
             };
 
-            const userRes = await axiosSecure.post("/users", userInfo);
+            //changing this sectionn 
+            
+            // const userRes = await axiosSecure.post("/users", userInfo);
+
+            const token = await loggedUser.getIdToken(true);
+            const userRes = await axiosSecure.post("/users", userInfo, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+
+
             console.log("Backend response:", userRes.data);
 
             // 5 Update Firebase profile

@@ -1,0 +1,219 @@
+const multer = require('multer');
+const fs = require('fs');
+const { addImages, getImages, updateImage, deleteImage } = require('../models/imageModel');
+const { upload, cloudinary } = require('../config/cloudinary');
+const { ObjectId } = require('mongodb');
+
+// Helper function to extract public_id from Cloudinary URL
+const getPublicIdFromUrl = (url) => {
+  const parts = url.split('/');
+  const uploadIndex = parts.indexOf('upload');
+  if (uploadIndex !== -1) {
+    // Skip 'upload' and version (v123...)
+    let publicIdParts = [];
+    for (let i = uploadIndex + 1; i < parts.length; i++) {
+      if (parts[i].startsWith('v') && /^\d+$/.test(parts[i].slice(1))) {
+        // Skip version
+        continue;
+      }
+      publicIdParts.push(parts[i]);
+    }
+    // Remove extension from last part
+    if (publicIdParts.length > 0) {
+      const lastPart = publicIdParts[publicIdParts.length - 1];
+      publicIdParts[publicIdParts.length - 1] = lastPart.replace(/\.[^/.]+$/, '');
+    }
+    return publicIdParts.join('/');
+  }
+  return null;
+};
+
+const getImageUrlsFromBody = (body) => {
+  if (Array.isArray(body?.imageUrls)) {
+    return body.imageUrls.filter((url) => typeof url === 'string' && url.trim());
+  }
+
+  if (typeof body?.imageUrls === 'string' && body.imageUrls.trim()) {
+    return [body.imageUrls.trim()];
+  }
+
+  if (typeof body?.imageUrl === 'string' && body.imageUrl.trim()) {
+    return [body.imageUrl.trim()];
+  }
+
+  return [];
+};
+
+// ================== AWARD IMAGES ==================
+
+// GET ALL AWARD IMAGES
+const getAllImages = async (req, res) => {
+  try {
+    const images = await getImages({ type: 'award' });
+    res.json(images);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ADD NEW AWARD IMAGES
+const addNewImages = [
+  upload.array('images'),
+  async (req, res) => {
+    try {
+      const { title } = req.body;
+      const files = req.files;
+
+      const uploadedUrls = files?.length
+        ? files.map((file) => file.path)
+        : getImageUrlsFromBody(req.body);
+
+      if (!uploadedUrls.length) return res.status(400).json({ error: 'No images uploaded' });
+
+      const imagesArray = uploadedUrls.map((imageUrl) => ({
+        title,
+        type: 'award',
+        imageUrl
+      }));
+
+      await addImages(imagesArray);
+      res.json({ message: 'Award images uploaded successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+];
+
+// UPDATE AWARD IMAGE
+const updateExistingImage = [
+  upload.array('images'), // accept images
+  async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { title } = req.body;
+      const data = { title };
+
+      if (req.files && req.files.length > 0) {
+        data.imageUrl = req.files[0].path; // Cloudinary URL
+      } else {
+        const uploadedUrls = getImageUrlsFromBody(req.body);
+        if (uploadedUrls[0]) {
+          data.imageUrl = uploadedUrls[0];
+        }
+      }
+
+      await updateImage(id, data);
+      res.json({ message: 'Image updated successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+];
+
+// DELETE AWARD IMAGE
+const deleteExistingImage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const images = await getImages({ _id: new ObjectId(id) }); // Get image to get URL
+    if (images && images.length > 0) {
+      const publicId = getPublicIdFromUrl(images[0].imageUrl);
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
+    await deleteImage(id);
+    res.json({ message: 'Image deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ================== WELCOME IMAGES ==================
+
+// GET WELCOME IMAGES
+const getWelcomeImages = async (req, res) => {
+  try {
+    const images = await getImages({ type: 'welcome' });
+    res.json(images);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ADD NEW WELCOME IMAGES
+const addNewWelcomeImages = [
+  upload.array('images'),
+  async (req, res) => {
+    try {
+      const files = req.files;
+
+      const uploadedUrls = files?.length
+        ? files.map((file) => file.path)
+        : getImageUrlsFromBody(req.body);
+
+      if (!uploadedUrls.length) return res.status(400).json({ error: 'No images uploaded' });
+
+      const imagesArray = uploadedUrls.map((imageUrl) => ({
+        type: 'welcome',
+        imageUrl
+      }));
+
+      await addImages(imagesArray);
+      res.json({ message: 'Welcome images uploaded successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+];
+
+// UPDATE WELCOME IMAGE
+const updateWelcomeImage = [
+  upload.array('images'),
+  async (req, res) => {
+    try {
+      const id = req.params.id;
+      const data = {};
+
+      if (req.files && req.files.length > 0) {
+        data.imageUrl = req.files[0].path;
+      } else {
+        const uploadedUrls = getImageUrlsFromBody(req.body);
+        if (uploadedUrls[0]) {
+          data.imageUrl = uploadedUrls[0];
+        }
+      }
+
+      await updateImage(id, data);
+      res.json({ message: 'Welcome image updated successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+];
+
+const deleteWelcomeImage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const images = await getImages({ _id: new ObjectId(id) }); // Get image to get URL
+    if (images && images.length > 0) {
+      const publicId = getPublicIdFromUrl(images[0].imageUrl);
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
+    await deleteImage(id);
+    res.json({ message: 'Welcome image deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+module.exports = {
+  getAllImages,
+  addNewImages,
+  updateExistingImage,
+  deleteExistingImage,
+  getWelcomeImages,
+  addNewWelcomeImages,
+  updateWelcomeImage,
+  deleteWelcomeImage
+};

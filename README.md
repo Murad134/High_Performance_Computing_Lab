@@ -200,8 +200,6 @@ Provides RESTful APIs, authentication, authorization, and business logic using N
 Stores structured lab and user-related information using MongoDB.
 
 
-
-
 # Installation Guide
 
 ## Prerequisites

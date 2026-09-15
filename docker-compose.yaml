@@ -1,40 +1,189 @@
+# services:
+#   frontend:
+#     build:
+#       context: ./frontend/Research_lab
+#       dockerfile: Dockerfile
+#     image: hpc-frontend:v1
+#     container_name: hpc-frontend-v1
+#     ports:
+#       - "5173:5173"
+#     volumes:
+#       - ./frontend/Research_lab:/app
+#       - frontend_node_modules:/app/node_modules
+#     depends_on:
+#       - backend
+#     networks:
+#       - hpc-network
+
+#   backend:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     image: hpc-backend:v1
+#     container_name: hpc-backend-v1
+#     ports:
+#       - "2500:2500"
+#     volumes:
+#       - ./backend:/app
+#       - backend_node_modules:/app/node_modules
+#       - ./backend/uploads:/app/uploads
+#     env_file:
+#       - ./backend/.env
+#     networks:
+#       - hpc-network
+
+# volumes:
+#   frontend_node_modules:
+#   backend_node_modules:
+
+# networks:
+#   hpc-network:
+#     driver: bridge
+
+
 services:
   frontend:
     build:
       context: ./frontend/Research_lab
       dockerfile: Dockerfile
-    image: hpc-frontend:v1
-    container_name: hpc-frontend-v1
+    image: hpc-frontend:latest
+    container_name: hpc-frontend
     ports:
       - "5173:5173"
     volumes:
       - ./frontend/Research_lab:/app
       - frontend_node_modules:/app/node_modules
     depends_on:
-      - backend
+      - api-gateway
     networks:
       - hpc-network
 
-  backend:
+  api-gateway:
     build:
-      context: ./backend
+      context: ./services/api-gateway
       dockerfile: Dockerfile
-    image: hpc-backend:v1
-    container_name: hpc-backend-v1
+    image: hpc-api-gateway:latest
+    container_name: hpc-api-gateway
     ports:
-      - "2500:2500"
+      - "5000:5000"
     volumes:
-      - ./backend:/app
-      - backend_node_modules:/app/node_modules
-      - ./backend/uploads:/app/uploads
+      - ./services/api-gateway:/app
+      - api_gateway_node_modules:/app/node_modules
+    environment:
+      PORT: 5000
+      AUTH_SERVICE_URL: http://auth-service:5001
+      CONTENT_SERVICE_URL: http://content-service:5002
+      ACADEMIC_SERVICE_URL: http://academic-service:5003
+      RESEARCH_SERVICE_URL: http://research-service:5004
+      DASHBOARD_SERVICE_URL: http://dashboard-service:5005
+      FRONTEND_URL: http://localhost:5173
+    depends_on:
+      - auth-service
+      - content-service
+      - academic-service
+      - research-service
+      - dashboard-service
+    networks:
+      - hpc-network
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    image: hpc-auth-service:latest
+    container_name: hpc-auth-service
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./services/auth-service:/app
+      - auth_node_modules:/app/node_modules
     env_file:
-      - ./backend/.env
+      - ./services/auth-service/.env
+    networks:
+      - hpc-network
+
+  content-service:
+    build:
+      context: ./services/content-service
+      dockerfile: Dockerfile
+    image: hpc-content-service:latest
+    container_name: hpc-content-service
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./services/content-service:/app
+      - content_node_modules:/app/node_modules
+    env_file:
+      - ./services/content-service/.env
+    networks:
+      - hpc-network
+
+  academic-service:
+    build:
+      context: ./services/academic-service
+      dockerfile: Dockerfile
+    image: hpc-academic-service:latest
+    container_name: hpc-academic-service
+    ports:
+      - "5003:5003"
+    volumes:
+      - ./services/academic-service:/app
+      - academic_node_modules:/app/node_modules
+    env_file:
+      - ./services/academic-service/.env
+    networks:
+      - hpc-network
+
+  research-service:
+    build:
+      context: ./services/research-service
+      dockerfile: Dockerfile
+    image: hpc-research-service:latest
+    container_name: hpc-research-service
+    ports:
+      - "5004:5004"
+    volumes:
+      - ./services/research-service:/app
+      - research_node_modules:/app/node_modules
+    env_file:
+      - ./services/research-service/.env
+    networks:
+      - hpc-network
+
+  dashboard-service:
+    build:
+      context: ./services/dashboard-service
+      dockerfile: Dockerfile
+    image: hpc-dashboard-service:latest
+    container_name: hpc-dashboard-service
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./services/dashboard-service:/app
+      - dashboard_node_modules:/app/node_modules
+    env_file:
+      - ./services/dashboard-service/.env
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:5001
+      CONTENT_SERVICE_URL: http://content-service:5002
+      ACADEMIC_SERVICE_URL: http://academic-service:5003
+      RESEARCH_SERVICE_URL: http://research-service:5004
+    depends_on:
+      - auth-service
+      - content-service
+      - academic-service
+      - research-service
     networks:
       - hpc-network
 
 volumes:
   frontend_node_modules:
-  backend_node_modules:
+  api_gateway_node_modules:
+  auth_node_modules:
+  content_node_modules:
+  academic_node_modules:
+  research_node_modules:
+  dashboard_node_modules:
 
 networks:
   hpc-network:
