@@ -40,7 +40,6 @@
 #   hpc-network:
 #     driver: bridge
 
-
 services:
   frontend:
     build:
