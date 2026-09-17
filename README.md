@@ -35,7 +35,7 @@ To overcome these challenges, this system introduces a dynamic and scalable arch
 * Student and alumni management
 * Interactive lab presentation
 
-The system is designed with modular architecture principles to ensure maintainability, scalability, and future extensibility.
+The system is designed with modular architecture principles to ensure maintainability, scalability, and future extensibility. It has been recently upgraded from a monolithic backend to a robust **Microservices Architecture**.
 
 ---
 
@@ -43,7 +43,7 @@ The system is designed with modular architecture principles to ensure maintainab
 
 ## Core Functionalities
 
-* Full Stack MERN-Based Architecture
+* Full Stack MERN-Based Architecture (Microservices)
 * Role-Based Access Control (RBAC)
 * JWT Authentication & Authorization
 * Secure Password Encryption (bcrypt)
@@ -58,6 +58,7 @@ The system is designed with modular architecture principles to ensure maintainab
 * Super Admin Role Management
 * Scalable Modular Structure
 * Optimized Database Operations
+* API Gateway integration
 
 ---
 
@@ -162,13 +163,14 @@ Super Admin has complete authority over the entire system infrastructure and adm
 
 ---
 
-## Backend Technologies
+## Backend Technologies (Microservices)
 
 | Technology | Purpose                        |
 | ---------- | ------------------------------ |
 | Node.js    | Server-Side Runtime            |
-| Express.js | REST API Development           |
+| Express.js | Microservices & API Gateway    |
 | MongoDB    | NoSQL Database                 |
+| Docker     | Containerization               |
 | JWT        | Authentication & Authorization |
 | bcrypt     | Password Security              |
 
@@ -177,6 +179,7 @@ Super Admin has complete authority over the entire system infrastructure and adm
 ## Development Tools
 
 * Visual Studio Code
+* Docker & Docker Compose
 * Git & GitHub
 * Postman
 * MongoDB Atlas
@@ -185,20 +188,57 @@ Super Admin has complete authority over the entire system infrastructure and adm
 
 # System Architecture
 
-The project follows a modern multi-tier architecture for scalability and maintainability.
+The project has evolved into a modern multi-tier **Microservices architecture** for scalability, fault tolerance, and independent deployability.
+
+## Microservices Architecture Diagram
+
+```mermaid
+graph TD
+    Client[React Frontend] -->|REST / JSON| Gateway[API Gateway :5000]
+    
+    Gateway -->|/users| Auth[Auth Service :5001]
+    Gateway -->|/api/*| Content[Content Service :5002]
+    Gateway -->|/departments, /teams...| Academic[Academic Service :5003]
+    Gateway -->|/books, /journals...| Research[Research Service :5004]
+    Gateway -->|/dashboard| Dashboard[Dashboard Service :5005]
+    
+    Auth --> DB[(MongoDB Atlas)]
+    Content --> DB
+    Academic --> DB
+    Research --> DB
+    Dashboard --> DB
+```
+
+## Microservice Responsibilities
+
+- **API Gateway (`api-gateway`)**: Acts as the single entry point for the frontend. Handles request routing, CORS, and basic token presence checks.
+- **Auth Service (`auth-service`)**: Manages user authentication, Firebase JWT verification, role management (User/Admin/SuperAdmin), and user profiles.
+- **Content Service (`content-service`)**: Manages dynamic website content including homepage banners, about pages, contact info, footer, and image uploads.
+- **Academic Service (`academic-service`)**: Handles core academic domain logic including department details, research teams, and academic project/thesis supervisions.
+- **Research Service (`research-service`)**: Manages all lab publications, including journal articles, conference papers, and book chapters.
+- **Dashboard Service (`dashboard-service`)**: Aggregates cross-service statistics and metrics to power the administrative dashboard.
 
 ## Frontend Layer
 
 Handles user interaction and responsive UI rendering using React.js.
 
-## Backend Layer
+## Backend Layer (Microservices)
 
-Provides RESTful APIs, authentication, authorization, and business logic using Node.js and Express.js.
+Provides RESTful APIs, authentication, authorization, and business logic using an API Gateway routing to independent Node.js microservices. The services include:
+* **API Gateway** (Port 5000)
+* **Auth Service** (Port 5001)
+* **Content Service** (Port 5002)
+* **Academic Service** (Port 5003)
+* **Research Service** (Port 5004)
+* **Dashboard Service** (Port 5005)
+
+*(Note: The legacy monolithic backend is also preserved in the repository.)*
 
 ## Database Layer
 
 Stores structured lab and user-related information using MongoDB.
 
+---
 
 # Installation Guide
 
@@ -208,6 +248,7 @@ Before running the project locally, make sure you have:
 
 * Node.js 14 or later
 * npm or yarn
+* Docker and Docker Compose
 * MongoDB Atlas account or local MongoDB instance
 * Firebase project
 * Cloudinary account
@@ -221,41 +262,12 @@ git clone YOUR_GITHUB_REPOSITORY_LINK
 cd YOUR_PROJECT_FOLDER
 ```
 
-2. Install backend dependencies.
+2. Create the frontend environment file.
 
-```bash
-cd backend
-npm install
-```
-
-3. Install frontend dependencies.
-
-```bash
-cd ../frontend/Research_lab
-npm install
-```
-
-4. Create the backend environment file.
-
-Create a `.env` file inside the backend folder and add the required values.
+Create a `.env` file inside `frontend/Research_lab` or modify `.env.local`:
 
 ```env
-PORT=2500
-DB_USER=YOUR_DB_USER
-DB_PASS=YOUR_DB_PASSWORD
-FB_SERVICE_KEY=YOUR_BASE64_ENCODED_FIREBASE_SERVICE_ACCOUNT
-FRONTEND_URL=YOUR_FRONTEND_URL
-CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
-CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
-CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
-```
-
-5. Create the frontend environment file.
-
-Create a `.env` file inside `frontend/Research_lab`.
-
-```env
-VITE_backend_url=YOUR_BACKEND_API_URL
+VITE_backend_url=http://localhost:5000
 VITE_apiKey=YOUR_FIREBASE_API_KEY
 VITE_authDomain=YOUR_FIREBASE_AUTH_DOMAIN
 VITE_projectId=YOUR_FIREBASE_PROJECT_ID
@@ -264,159 +276,210 @@ VITE_messagingSenderId=YOUR_FIREBASE_MESSAGING_SENDER_ID
 VITE_appId=YOUR_FIREBASE_APP_ID
 ```
 
-## How to Run
+3. Configure Environment Variables for Microservices.
 
-### Development Mode
+Each microservice requires its own environment configuration. You can use a shared `.env` in the root (for `docker-compose.yml`) or individual `.env` files in each service directory (e.g., `services/api-gateway/.env`).
 
-Start the backend server.
+**Example backend variables (`.env`):**
+```env
+# Database
+MONGO_URI=your_mongodb_atlas_connection_string
 
-```bash
-cd backend
-npm run dev
+# API Gateway Configuration
+FRONTEND_URL=http://localhost:5173
+PORT=5000
+AUTH_SERVICE_URL=http://auth-service:5001
+CONTENT_SERVICE_URL=http://content-service:5002
+ACADEMIC_SERVICE_URL=http://academic-service:5003
+RESEARCH_SERVICE_URL=http://research-service:5004
+DASHBOARD_SERVICE_URL=http://dashboard-service:5005
+
+# Firebase & Cloudinary configs
+FB_SERVICE_KEY=YOUR_BASE64_ENCODED_FIREBASE_SERVICE_ACCOUNT
+CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
 ```
 
-Start the frontend application.
+## How to Run (Microservices with Docker)
+
+The recommended way to run the entire stack (Microservices + Frontend) is via Docker Compose.
 
 ```bash
-cd frontend/Research_lab
-npm run dev
+# Build and run all containers
+docker-compose up --build -d
 ```
 
-Visit:
+**What this does:**
+1. Builds individual Docker images for the frontend and all backend microservices.
+2. Provisions an isolated Docker network (`hpc-network`).
+3. Maps internal container ports to your localhost for easy access.
 
-```text
-http://localhost:5173
-```
+**Access Points:**
+- **Frontend App**: [http://localhost:5173](http://localhost:5173)
+- **API Gateway**: [http://localhost:5000](http://localhost:5000) (All frontend requests go here)
+- **Individual Services**: Accessible on ports `5001` - `5005` for direct debugging.
 
-### Production Build
-
-Build the frontend.
-
+**Helpful Docker Commands:**
 ```bash
-cd frontend/Research_lab
-npm run build
-```
+# View logs for all services
+docker-compose logs -f
 
-Preview the production build.
-
-```bash
-npm run preview
-```
-
-Start the backend in production mode.
-
-```bash
-cd backend
-npm start
-```
-
-### Running with Docker
-
-This project can also be run entirely using Docker and Docker Compose, without manually installing Node.js or MongoDB tools locally.
-
-#### Prerequisites
-- Docker
-- Docker Compose
-- MongoDB Atlas connection string (or your own Mongo instance)
-- Firebase service account key (base64 encoded)
-- Cloudinary credentials
-
-#### Environment Setup
-Before running, create the required `.env` files:
-
-- `backend/.env` — same variables as listed in the [Installation Guide](#installation-guide)
-- `frontend/Research_lab/.env` — same variables as listed in the [Installation Guide](#installation-guide)
-
-Docker Compose reads these `.env` files automatically via the `env_file` directive in `docker-compose.yaml`.
-
-#### Build and Run
-From the project root, run:
-
-```bash
-docker-compose up --build
-```
-
-This will:
-- Build the backend image from `backend/Dockerfile`
-- Build the frontend image from `frontend/Research_lab/Dockerfile`
-- Start both containers and connect them on a shared Docker network
-
-#### Access the Application
-- Frontend: http://localhost:5173 (or the port mapped in `docker-compose.yaml`)
-- Backend API: http://localhost:2500 (or the port mapped in `docker-compose.yaml`)
-
-#### Stopping the Containers
-```bash
+# Stop all services
 docker-compose down
+
+# Rebuild a specific service after code changes
+docker-compose up -d --build api-gateway
 ```
 
-#### Rebuilding After Code Changes
+*(Note: Ensure your frontend `VITE_backend_url` is pointed to the API Gateway at `http://localhost:5000`)*
+
+## Running the Legacy Monolith
+
+If you need to run the old monolith instead:
+
 ```bash
-docker-compose up --build --force-recreate
+cd backend
+npm install
+npm run dev
 ```
+(Starts on port 2500. You will need to change your frontend `.env` to point to port 2500).
+
+---
 
 # Folder Structure
 
 ```text
-├── backend/
-│   ├── api/
-│   │   └── index.js
-│   ├── config/
-│   │   ├── cloudinary.js
-│   │   ├── db.js
-│   │   └── firebase.js
-│   ├── controllers/
-│   │   ├── aboutLabController.js
-│   │   ├── aboutProfController.js
-│   │   ├── bookController.js
-│   │   ├── conferenceController.js
-│   │   ├── contactController.js
-│   │   ├── dashboardController.js
-│   │   ├── imageController.js
-│   │   ├── homeController.js
-│   │   ├── journalController.js
-│   │   ├── studentProjectController.js
-│   │   ├── teamController.js
-│   │   └── userController.js
-│   ├── middleware/
-│   │   ├── verifyAdmin.js
-│   │   ├── verifyFBToken.js
-│   │   └── verifySuperadmin.js
-│   ├── models/
-│   │   ├── aboutLabModel.js
-│   │   ├── aboutProfModel.js
-│   │   ├── bookModel.js
-│   │   ├── conferenceModel.js
-│   │   ├── contactModel.js
-│   │   ├── departmentModel.js
-│   │   ├── footerModel.js
-│   │   ├── homeModel.js
-│   │   ├── imageModel.js
-│   │   ├── journalModel.js
-│   │   ├── otherCountryProjectModel.js
-│   │   ├── studentProjectModel.js
-│   │   └── userModel.js
-│   ├── routes/
-│   │   ├── aboutLabRoutes.js
-│   │   ├── aboutProfRoutes.js
-│   │   ├── bookRoutes.js
-│   │   ├── conferenceRoutes.js
-│   │   ├── contactRoutes.js
-│   │   ├── dashboardRoutes.js
-│   │   ├── departmentRoutes.js
-│   │   ├── footerRoutes.js
-│   │   ├── homeRoutes.js
-│   │   ├── imageRoutes.js
-│   │   ├── journalRoutes.js
-│   │   ├── studentProjectRoutes.js
-│   │   ├── teamRoutes.js
-│   │   └── userRoutes.js
-│   ├── uploads/
-│   ├── app.js
-│   ├── index.js
-│   ├── package.json
-│   └── vercel.json
+HPC-Lab/
+├── services/
+│   ├── api-gateway/          ← :5000 (public-facing)
+│   │   ├── src/
+│   │   │   ├── index.js
+│   │   │   ├── proxy.js
+│   │   │   ├── authMiddleware.js
+│   │   │   ├── routeConfig.js
+│   │   │   └── middleware/
+│   │   │       ├── requestId.js
+│   │   │       ├── headerSanitizer.js
+│   │   │       └── errorHandler.js
+│   │   ├── package.json
+│   │   └── Dockerfile
+│   │
+│   ├── auth-service/         ← :5001
+│   │   ├── src/
+│   │   │   ├── index.js
+│   │   │   ├── config/
+│   │   │   │   ├── db.js
+│   │   │   │   └── firebase.js
+│   │   │   ├── models/
+│   │   │   │   └── userModel.js
+│   │   │   ├── controllers/
+│   │   │   │   └── userController.js
+│   │   │   ├── routes/
+│   │   │   │   ├── userRoutes.js
+│   │   │   │   └── internalRoutes.js
+│   │   │   └── middleware/
+│   │   │       ├── verifyFBToken.js
+│   │   │       ├── verifyAdmin.js
+│   │   │       ├── verifySuperadmin.js
+│   │   │       └── internalAuth.js
+│   │   ├── package.json
+│   │   └── Dockerfile
+│   │
+│   ├── content-service/      ← :5002
+│   │   ├── src/
+│   │   │   ├── index.js
+│   │   │   ├── config/
+│   │   │   │   ├── db.js
+│   │   │   │   └── cloudinary.js
+│   │   │   ├── models/
+│   │   │   │   ├── homeModel.js
+│   │   │   │   ├── aboutLabModel.js
+│   │   │   │   ├── aboutProfModel.js
+│   │   │   │   ├── contactModel.js
+│   │   │   │   ├── footerModel.js
+│   │   │   │   └── imageModel.js
+│   │   │   ├── controllers/
+│   │   │   │   ├── homeController.js
+│   │   │   │   ├── aboutLabController.js
+│   │   │   │   ├── aboutProfController.js
+│   │   │   │   ├── contactController.js
+│   │   │   │   ├── footerController.js
+│   │   │   │   └── imageController.js
+│   │   │   ├── routes/
+│   │   │   │   ├── homeRoutes.js
+│   │   │   │   ├── aboutLabRoutes.js
+│   │   │   │   ├── aboutProfRoutes.js
+│   │   │   │   ├── contactRoutes.js
+│   │   │   │   ├── footerRoutes.js
+│   │   │   │   ├── imageRoutes.js
+│   │   │   │   └── internalRoutes.js
+│   │   │   └── middleware/
+│   │   │       └── internalAuth.js
+│   │   ├── package.json
+│   │   └── Dockerfile
+│   │
+│   ├── academic-service/     ← :5003
+│   │   ├── src/
+│   │   │   ├── index.js
+│   │   │   ├── config/
+│   │   │   │   └── db.js
+│   │   │   ├── models/
+│   │   │   │   ├── departmentModel.js
+│   │   │   │   ├── studentProjectModel.js
+│   │   │   │   └── otherCountryProjectModel.js
+│   │   │   ├── controllers/
+│   │   │   │   ├── departmentController.js
+│   │   │   │   ├── teamController.js
+│   │   │   │   └── studentProjectController.js
+│   │   │   ├── routes/
+│   │   │   │   ├── departmentRoutes.js
+│   │   │   │   ├── teamRoutes.js
+│   │   │   │   ├── studentProjectRoutes.js
+│   │   │   │   └── internalRoutes.js
+│   │   │   └── middleware/
+│   │   │       └── internalAuth.js
+│   │   ├── package.json
+│   │   └── Dockerfile
+│   │
+│   ├── research-service/     ← :5004
+│   │   ├── src/
+│   │   │   ├── index.js
+│   │   │   ├── config/
+│   │   │   │   └── db.js
+│   │   │   ├── models/
+│   │   │   │   ├── journalModel.js
+│   │   │   │   ├── conferenceModel.js
+│   │   │   │   └── bookModel.js
+│   │   │   ├── controllers/
+│   │   │   │   ├── journalController.js
+│   │   │   │   ├── conferenceController.js
+│   │   │   │   └── bookController.js
+│   │   │   ├── routes/
+│   │   │   │   ├── journalRoutes.js
+│   │   │   │   ├── conferenceRoutes.js
+│   │   │   │   ├── bookRoutes.js
+│   │   │   │   └── internalRoutes.js
+│   │   │   └── middleware/
+│   │   │       └── internalAuth.js
+│   │   ├── package.json
+│   │   └── Dockerfile
+│   │
+│   └── dashboard-service/    ← :5005
+│       ├── src/
+│       │   ├── index.js
+│       │   ├── controllers/
+│       │   │   └── dashboardController.js
+│       │   ├── routes/
+│       │   │   └── dashboardRoutes.js
+│       │   └── middleware/
+│       │       └── internalAuth.js
+│       ├── package.json
+│       └── Dockerfile
 │
+├── docker-compose.yml        ← New multi-service compose
+├── .env                      ← Shared env variables
+├── backend/                  ← Original monolith (preserved)
 ├── frontend/
 │   └── Research_lab/
 │       ├── public/
@@ -453,7 +516,7 @@ docker-compose up --build --force-recreate
 
 * JWT-Based Authentication
 * Role-Based Authorization
-* Protected API Routes
+* Protected API Routes via Gateway
 * Password Hashing using bcrypt
 * Secure User Session Handling
 * Access Restriction for Administrative Routes
@@ -610,6 +673,35 @@ This module manages official communication and lab contact information.
 
 The system implements modern authentication and authorization mechanisms to ensure secure access control and protected administrative operations.
 
+## Authentication Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Firebase
+    participant Gateway as API Gateway
+    participant Auth as Auth Service
+    
+    User->>Frontend: Enters Email & Password
+    Frontend->>Firebase: Authenticate (Login/Register)
+    Firebase-->>Frontend: Returns JWT ID Token
+    
+    Frontend->>Gateway: API Request + Bearer Token
+    Gateway->>Gateway: Check if route requires auth
+    Gateway->>Auth: Forward Request + Bearer Token
+    Auth->>Auth: Verify Token via Firebase Admin SDK
+    
+    alt Token Valid
+        Auth->>Auth: Check RBAC Role (Admin/SuperAdmin)
+        Auth-->>Gateway: Authorize / Return Data
+        Gateway-->>Frontend: Send Response
+    else Token Invalid
+        Auth-->>Gateway: 401 Unauthorized
+        Gateway-->>Frontend: 401 Unauthorized
+    end
+```
+
 ## Authentication Features
 
 * JWT-Based Authentication
@@ -659,16 +751,17 @@ The platform supports dynamic real-time interactions between the frontend and ba
 
 # API & Backend Functionalities
 
-The backend architecture is designed using RESTful API principles.
+The backend architecture is designed using RESTful API principles via Microservices.
 
 ## Backend Features
 
 * REST API Architecture
+* Centralized API Gateway
+* Independent Microservices
 * Secure Route Handling
 * Middleware-Based Authorization
 * Error Handling System
 * Request Validation
-* Database Query Optimization
 
 ---
 
@@ -970,7 +1063,6 @@ The entire system is optimized for multiple screen sizes and modern devices.
 
 ---
 
-
 # Future Enhancements
 
 The platform is designed with scalability in mind and can be extended with advanced functionalities in future releases.
@@ -1002,5 +1094,3 @@ The platform enhances:
 * Secure lab administration
 
 By integrating modern web technologies with role-based management architecture, the system provides a robust digital infrastructure suitable for modern academic and research environments.
-
----
