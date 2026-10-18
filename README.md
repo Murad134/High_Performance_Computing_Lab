@@ -188,55 +188,128 @@ Super Admin has complete authority over the entire system infrastructure and adm
 
 # System Architecture
 
-The project has evolved into a modern multi-tier **Microservices architecture** for scalability, fault tolerance, and independent deployability.
+The active deployment is a Docker Compose microservices system. The React frontend sends REST/JSON requests to the API Gateway, which proxies resource paths to the owning service. Each domain service owns its controllers, routes, and MongoDB collections. The original `backend/` monolith remains in the repository for legacy deployment and comparison, but is not part of the active Compose request path.
 
-## Microservices Architecture Diagram
+## Full Architecture Diagram
 
 ```mermaid
-graph TD
-    Client[React Frontend] -->|REST / JSON| Gateway[API Gateway :5000]
-    
-    Gateway -->|/users| Auth[Auth Service :5001]
-    Gateway -->|/api/*| Content[Content Service :5002]
-    Gateway -->|/departments, /teams...| Academic[Academic Service :5003]
-    Gateway -->|/books, /journals...| Research[Research Service :5004]
-    Gateway -->|/dashboard| Dashboard[Dashboard Service :5005]
-    
-    Auth --> DB[(MongoDB Atlas)]
-    Content --> DB
-    Academic --> DB
-    Research --> DB
-    Dashboard --> DB
+flowchart LR
+    Browser[Browser] --> Frontend[React + Vite frontend\n:5173]
+    Frontend -->|REST / JSON\nBearer Firebase ID token| Gateway[API Gateway\nExpress :5000]
+
+    Gateway -->|/users| Auth[Auth service\n:5001]
+    Gateway -->|/home\n/about-lab\n/about-prof\n/contact\n/footer\n/images| Content[Content service\n:5002]
+    Gateway -->|/departments\n/teams\n/student-projects| Academic[Academic service\n:5003]
+    Gateway -->|/books\n/conferences\n/journals| Research[Research service\n:5004]
+    Gateway -->|/dashboard| Dashboard[Dashboard service\n:5005]
+
+    Auth -->|MongoDB driver| Mongo[(MongoDB database)]
+    Content -->|MongoDB driver| Mongo
+    Academic -->|MongoDB driver| Mongo
+    Research -->|MongoDB driver| Mongo
+
+    Dashboard -->|x-internal-secret| Auth
+    Dashboard -->|x-internal-secret| Content
+    Dashboard -->|x-internal-secret| Academic
+    Dashboard -->|x-internal-secret| Research
+    Auth --> Firebase[Firebase Admin SDK]
+    Content --> Cloudinary[Cloudinary image storage]
+
+    subgraph DockerNetwork[hpc-network]
+        Gateway
+        Auth
+        Content
+        Academic
+        Research
+        Dashboard
+    end
 ```
 
-## Microservice Responsibilities
+### Service responsibilities
 
-- **API Gateway (`api-gateway`)**: Acts as the single entry point for the frontend. Handles request routing, CORS, and basic token presence checks.
-- **Auth Service (`auth-service`)**: Manages user authentication, Firebase JWT verification, role management (User/Admin/SuperAdmin), and user profiles.
-- **Content Service (`content-service`)**: Manages dynamic website content including homepage banners, about pages, contact info, footer, and image uploads.
-- **Academic Service (`academic-service`)**: Handles core academic domain logic including department details, research teams, and academic project/thesis supervisions.
-- **Research Service (`research-service`)**: Manages all lab publications, including journal articles, conference papers, and book chapters.
-- **Dashboard Service (`dashboard-service`)**: Aggregates cross-service statistics and metrics to power the administrative dashboard.
+| Component | Port | Responsibility |
+| --- | ---: | --- |
+| React frontend | 5173 | Public pages, admin dashboard UI, Firebase client authentication |
+| API Gateway | 5000 | CORS, request IDs, header sanitization, path routing, proxy errors |
+| Auth service | 5001 | Firebase token verification, user profiles, roles, internal role verification |
+| Content service | 5002 | Home, about, contact, footer, and image content |
+| Academic service | 5003 | Departments, nested teams, student projects, and theses |
+| Research service | 5004 | Journals, conferences, and books |
+| Dashboard service | 5005 | Aggregated user, content, academic, and publication statistics |
 
-## Frontend Layer
+## API Design
 
-Handles user interaction and responsive UI rendering using React.js.
+The gateway base URL is `http://localhost:5000` in local Docker development. The same resource paths can be called directly on a service port for debugging. JSON request and response bodies are used unless an image upload route requires multipart form data.
 
-## Backend Layer (Microservices)
+### Public gateway endpoints
 
-Provides RESTful APIs, authentication, authorization, and business logic using an API Gateway routing to independent Node.js microservices. The services include:
-* **API Gateway** (Port 5000)
-* **Auth Service** (Port 5001)
-* **Content Service** (Port 5002)
-* **Academic Service** (Port 5003)
-* **Research Service** (Port 5004)
-* **Dashboard Service** (Port 5005)
+| Resource | Methods and paths | Access |
+| --- | --- | --- |
+| Health | `GET /health` | Public |
+| Users | `GET /users/check`, `GET /users/role?email=...` | Public lookup |
+| Home | `GET /home` | Public |
+| About | `GET /about-lab`, `GET /about-prof` | Public |
+| Contact and footer | `GET /contact`, `GET /footer` | Public |
+| Images | `GET /images`, `GET /images/welcome` | Public |
+| Academic | `GET /departments`, `GET /departments/:id`, `GET /teams`, `GET /student-projects`, `GET /student-projects/:id` | Public |
+| Publications | `GET /journals`, `GET /journals/:id`, `GET /conferences`, `GET /books`, `GET /books/:id` | Public |
+| Dashboard | `GET /dashboard/stats` | Admin or superadmin token |
 
-*(Note: The legacy monolithic backend is also preserved in the repository.)*
+The gateway also keeps compatibility aliases: `/welcomehome` rewrites to `/home`, `/aboutlab` to `/about-lab`, `/aboutprof` to `/about-prof`, and `/studentproject` to `/student-projects`.
 
-## Database Layer
+### Protected write and administration endpoints
 
-Stores structured lab and user-related information using MongoDB.
+All protected requests use `Authorization: Bearer <Firebase ID token>`. Admin operations require the `admin` or `superadmin` role; changing another user's role additionally requires `superadmin`.
+
+| Domain | Protected operations |
+| --- | --- |
+| Users | `POST /users`, `PATCH /users`, `GET /users/search`, `GET /users`, `GET /users/:id`, `PATCH /users/:id/role` |
+| Content | `POST`/`PUT` on `/home`, `/about-lab`, `/about-prof`, `/contact`, `/footer`; interest mutations on `/about-prof`; image `POST`/`PUT`/`DELETE` operations |
+| Academic | Department and team `POST`/`PUT`/`DELETE`; student project `POST /student-projects/add`, `PUT /student-projects/update/:id`, `PATCH` status operations, and `DELETE` |
+| Research | `POST`/`PUT`/`DELETE` on `/journals`, `/conferences`, and `/books` |
+
+### Internal service API
+
+Internal routes are service-to-service endpoints and require the `x-internal-secret` header. They are not frontend endpoints. The dashboard uses them to build `GET /dashboard/stats` in parallel:
+
+| Service | Internal endpoints |
+| --- | --- |
+| Auth | `GET /internal/stats/users`, `GET|POST /internal/verify-role`, `POST /internal/verify-token` |
+| Content | `GET /internal/health`, `GET /internal/stats/content` |
+| Academic | `GET /internal/stats/academic`, plus internal department, team, and project reads |
+| Research | `GET /internal/stats/research`, plus internal book, conference, and journal reads |
+
+The gateway forwards the incoming `Authorization` header and request ID. Firebase ID tokens are cryptographically verified by the auth service or the receiving domain service; the internal secret protects service-to-service calls. The dashboard caches successful aggregate responses and marks responses with `fromCache` when served from cache.
+
+## Request and Data Flow
+
+```mermaid
+sequenceDiagram
+    participant UI as React frontend
+    participant G as API Gateway
+    participant S as Domain service
+    participant F as Firebase Admin
+    participant DB as MongoDB
+
+    UI->>G: REST request + Bearer Firebase ID token
+    G->>S: Proxy request + Authorization + X-Request-Id
+    S->>F: Verify ID token for protected route
+    F-->>S: Decoded identity
+    S->>DB: Read or mutate owned collection
+    DB-->>S: Document or operation result
+    S-->>G: JSON response
+    G-->>UI: JSON response
+```
+
+### Collection ownership
+
+| Service | Collections |
+| --- | --- |
+| Auth | `users` |
+| Content | `home`, `aboutlab`, `aboutprof`, `contact`, `footer`, `images` |
+| Academic | `departments`, `studentProject` |
+| Research | `journals`, `conferences`, `books` |
+| Dashboard | No primary domain collection; reads statistics from other services |
 
 ---
 
